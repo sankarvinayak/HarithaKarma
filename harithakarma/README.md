@@ -1,4 +1,4 @@
-# harithakarma
+# HarithaKarma
 
 A new Flutter project.
 
