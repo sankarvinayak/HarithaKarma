@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'signup.dart';
+import 'sidedrawer.dart';
 
-class Login extends State<Myapp> {
+class Login extends StatefulWidget {
+  @override
+  _Login createState() => _Login();
+}
+
+class _Login extends State<Login> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -78,7 +84,13 @@ class Login extends State<Myapp> {
                         primary: Color(0xffEE7B23),
                         onPrimary: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SideDrawer()));
+                      },
                       child: Text('Login'),
                     )
                   ],

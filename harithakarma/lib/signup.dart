@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'login.dart';
+import 'sidedrawer.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -134,7 +135,13 @@ class _Signup extends State<Signup> {
                         primary: Color(0xffEE7B23),
                         onPrimary: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SideDrawer()));
+                      },
                       child: Text('Register'),
                     )
                   ],
