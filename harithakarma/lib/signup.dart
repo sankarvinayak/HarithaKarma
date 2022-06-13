@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'login.dart';
 import 'Homeuser/Dashbord.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -9,6 +10,10 @@ class Signup extends StatefulWidget {
 }
 
 class _Signup extends State<Signup> {
+  final _auth = FirebaseAuth.instance;
+  late String email;
+  late String password;
+  bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -46,6 +51,11 @@ class _Signup extends State<Signup> {
                 height: 30.0,
               ),
               TextField(
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  email = value;
+                },
                 decoration: InputDecoration(
                   hintText: 'Email',
                   suffixIcon: Icon(Icons.email),
@@ -59,6 +69,10 @@ class _Signup extends State<Signup> {
               ),
               TextField(
                 obscureText: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  password = value;
+                },
                 decoration: InputDecoration(
                   hintText: 'Password',
                   suffixIcon: Icon(Icons.visibility_off),
@@ -70,51 +84,51 @@ class _Signup extends State<Signup> {
               SizedBox(
                 height: 30.0,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Panchayath/Muncipality/Corperation',
-                  suffixIcon: Icon(Icons.location_city),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Ward',
-                  suffixIcon: Icon(Icons.location_on),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'House Number',
-                  suffixIcon: Icon(Icons.home),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Owner name',
-                  suffixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'Panchayath/Muncipality/Corperation',
+              //     suffixIcon: Icon(Icons.location_city),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(20.0),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 30.0,
+              // ),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'Ward',
+              //     suffixIcon: Icon(Icons.location_on),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(20.0),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 30.0,
+              // ),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'House Number',
+              //     suffixIcon: Icon(Icons.home),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(20.0),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 30.0,
+              // ),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'Owner name',
+              //     suffixIcon: Icon(Icons.person),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(20.0),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: 20.0,
               ),
@@ -135,12 +149,33 @@ class _Signup extends State<Signup> {
                         primary: Color(0xffEE7B23),
                         onPrimary: Colors.white,
                       ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SideDrawerHome()));
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          final newUser =
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: email, password: password);
+                          if (newUser != null) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SideDrawerHome()));
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                        setState(() {
+                          showSpinner = false;
+                        });
+
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (BuildContext context) =>
+                        //             SideDrawerHome()));
                       },
                       child: Text('Register'),
                     )
