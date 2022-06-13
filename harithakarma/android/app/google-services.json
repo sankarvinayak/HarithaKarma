@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1098205578075",
+    "project_id": "harithakarma",
+    "storage_bucket": "harithakarma.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098205578075:android:38f3c965a7aae9fb6bd07e",
+        "android_client_info": {
+          "package_name": "com.example.harithakarma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098205578075-6oo9t8rel2cku2qe62d75psnl6joekjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC2eNuKA4ibjMfV5J1fy8hsvlhkqvnQdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098205578075-6oo9t8rel2cku2qe62d75psnl6joekjh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1098205578075-eqknb8egiqosnle0uf8fk46l1f9ci5sh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.harithakarma"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
