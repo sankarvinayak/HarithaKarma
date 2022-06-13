@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'signup.dart';
-import 'sidedrawer.dart';
+import 'Homeuser/Dashbord.dart';
+import 'Adminuser/Dashbord.dart';
+import 'Fielduser/Dashbord.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
+  final email = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -53,6 +56,7 @@ class _Login extends State<Login> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
+                controller: email,
               ),
               SizedBox(
                 height: 20.0,
@@ -85,11 +89,25 @@ class _Login extends State<Login> {
                         onPrimary: Colors.white,
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SideDrawer()));
+                        if (email.text.compareTo("Admin") == 0) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      SideDrawerAdmin()));
+                        } else if (email.text.compareTo("Home") == 0) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      SideDrawerHome()));
+                        } else if (email.text.compareTo("Field") == 0) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      SideDrawerField()));
+                        }
                       },
                       child: Text('Login'),
                     )

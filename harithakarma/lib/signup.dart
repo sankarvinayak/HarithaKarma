@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'login.dart';
-import 'sidedrawer.dart';
+import 'Homeuser/Dashbord.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -140,7 +140,7 @@ class _Signup extends State<Signup> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    SideDrawer()));
+                                    SideDrawerHome()));
                       },
                       child: Text('Register'),
                     )
