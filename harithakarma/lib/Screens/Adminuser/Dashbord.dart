@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:harithakarma/login.dart';
+import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
 
-class SideDrawerField extends StatelessWidget {
+class SideDrawerAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _SideDrawer(),
       appBar: AppBar(
-        title: Text('Field user'),
+        title: Text('Admin'),
         backgroundColor: Color.fromARGB(255, 23, 75, 7),
       ),
       body: Center(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:harithakarma/login.dart';
+import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
 
-class SideDrawerHome extends StatelessWidget {
+class SideDrawerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _SideDrawer(),
       appBar: AppBar(
-        title: Text('Home user'),
+        title: Text('Field user'),
         backgroundColor: Color.fromARGB(255, 23, 75, 7),
       ),
       body: Center(
