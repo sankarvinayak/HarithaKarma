@@ -58,6 +58,7 @@ class _Login extends State<Login> {
                       height: 30.0,
                     ),
                     TextField(
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'Email',
                         suffixIcon: Icon(Icons.email),

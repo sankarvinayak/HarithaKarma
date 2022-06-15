@@ -24,7 +24,7 @@ class AuthService {
       //       .where("uid", isEqualTo: result.user!.uid);
       //       var docsnapshot=await collection.
       User? user = result.user;
-      return DatabaseService(user!.uid).getutype();
+      return DatabaseService().getutype(user!.uid);
     } catch (error) {
       print(error.toString());
       return null;
@@ -73,9 +73,9 @@ class AuthService {
 
       // AppUser user = AppUser(authResult.user!.uid, name, email, userRole);
       // FirebaseFirestore.instance.collection("Utype").add(user.toMap());
-      await DatabaseService(authResult.user!.uid)
-          .SetUserData(name, userRole, email);
-      return authResult.user;
+      await DatabaseService()
+          .SetUserData(authResult.user!.uid, name, userRole, email);
+      return authResult.user!.uid;
     } catch (e) {
       print(e.toString());
       return null;
