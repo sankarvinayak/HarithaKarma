@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:harithakarma/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/firestore_service.dart';
 
@@ -18,13 +19,43 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      //  var collection= FirebaseFirestore.instance
+      //       .collection("Utype")
+      //       .where("uid", isEqualTo: result.user!.uid);
+      //       var docsnapshot=await collection.
       User? user = result.user;
-      return user;
+      return DatabaseService(user!.uid).getutype();
     } catch (error) {
       print(error.toString());
       return null;
     }
   }
+
+  getType(UserCredential result) async {
+    List itemList = [];
+    try {
+      await FirebaseFirestore.instance
+          .collection('Utype')
+          .where('uid', isEqualTo: result.user!.uid)
+          .get();
+
+      return itemList;
+    } catch (e) {}
+  }
+// Future getData(String username) async {
+//     List dataList = [];
+//     try {
+//       await FirebaseFirestore.instance.collection('userdata').where('user', isEqualTo: username).get().then((QuerySnapshot querySnapshot) => {
+//             querySnapshot.docs.forEach((doc) {
+//               itemList.add(doc.data());
+//             }),
+//           });
+//       return itemList;
+//     } catch (e) {
+//       print(e.toString());
+//       return null;
+//     }
+//   }
 
   Future signUpEmail(
     String email,
@@ -39,11 +70,23 @@ class AuthService {
       //   await _firestoreService
       //       .createUser(AppUser(authResult.user!.uid, name, email, userRole));
       // }
-      AppUser user = AppUser(authResult.user!.uid, name, email, userRole);
-      FirebaseFirestore.instance.collection("Utype").add(user.toMap());
+
+      // AppUser user = AppUser(authResult.user!.uid, name, email, userRole);
+      // FirebaseFirestore.instance.collection("Utype").add(user.toMap());
+      await DatabaseService(authResult.user!.uid)
+          .SetUserData(name, userRole, email);
       return authResult.user;
     } catch (e) {
       print(e.toString());
+      return null;
+    }
+  }
+
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (error) {
+      print(error.toString());
       return null;
     }
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
 import 'package:harithakarma/Screens/Auth/auth.dart';
+import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
 import 'package:harithakarma/Shared/loading.dart';
 import '../../main.dart';
 import 'login.dart';
@@ -222,11 +224,25 @@ class _Signup extends State<Signup> {
                               final newUser = await _auth.signUpEmail(
                                   email!, password!, name!, _dropDownValue);
                               if (newUser != null) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            SideDrawerHome()));
+                                if (_dropDownValue == 'Admin') {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerAdmin()));
+                                } else if (_dropDownValue == 'Field') {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerField()));
+                                } else {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerHome()));
+                                }
                               } else {
                                 setState(() {
                                   isLoading = false;

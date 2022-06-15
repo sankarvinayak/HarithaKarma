@@ -24,4 +24,14 @@ class AppUser {
   Map<String, dynamic> toMap() {
     return {"uid": uid, "name": name, "email": email, "userRole": userRole};
   }
+
+  factory AppUser.fromDocumentSnapshot(
+      {required DocumentSnapshot<Map<String, dynamic>> doc}) {
+    return AppUser(
+      "",
+      "",
+      "",
+      doc.data()!["content"],
+    );
+  }
 }

@@ -129,6 +129,26 @@ class _Login extends State<Login> {
                                 setState(() {
                                   loading = false;
                                 });
+                              } else {
+                                if (result == "Admin") {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerAdmin()));
+                                } else if (result == "Field") {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerField()));
+                                } else {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerHome()));
+                                }
                               }
                             },
                             child: Text('Login'),
