@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/auth.dart';
+import 'package:harithakarma/Screens/Homeuser/profile.dart';
 import '../../Shared/loading.dart';
 import '../../main.dart';
 import 'signup.dart';
@@ -136,7 +137,7 @@ class _Login extends State<Login> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              SideDrawerAdmin()));
+                                              SideDrawerAdminHome()));
                                 } else if (result == "Field") {
                                   Navigator.pushReplacement(
                                       context,
@@ -160,8 +161,10 @@ class _Login extends State<Login> {
                     SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GetUserName()));
                       },
                       child: Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [

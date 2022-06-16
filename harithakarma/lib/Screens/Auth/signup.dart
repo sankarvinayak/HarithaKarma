@@ -277,42 +277,42 @@ class _Signup extends State<Signup> {
                                           style: BorderStyle.solid,
                                           width: 0.50),
                                     ),
-                                    child: DropdownButton(
-                                      hint: Container(
-                                        alignment: Alignment.center,
-                                        child: _Panchayath == null
-                                            ? Text(
-                                                'Panchayath/Muncipality/Corperation')
-                                            : Text(
-                                                _Panchayath,
-                                              ),
-                                      ),
-                                      isExpanded: true,
-                                      iconSize: 40.0,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 17.0),
-                                      items: [
-                                        'Sreekrishnapuram',
-                                        'Kadambazipuram',
-                                        'Karimpuza'
-                                      ].map(
-                                        (val) {
-                                          return DropdownMenuItem<String>(
-                                            value: val,
-                                            child: Text(
-                                              val,
-                                            ),
-                                          );
-                                        },
-                                      ).toList(),
-                                      onChanged: (val) {
-                                        setState(
-                                          () {
-                                            _Panchayath = val;
-                                          },
-                                        );
-                                      },
-                                    ),
+                                    // child: DropdownButton(
+                                    //   hint: Container(
+                                    //     alignment: Alignment.center,
+                                    //     child: _Panchayath == null
+                                    //         ? Text(
+                                    //             'Panchayath/Muncipality/Corperation')
+                                    //         : Text(
+                                    //             _Panchayath,
+                                    //           ),
+                                    //   ),
+                                    //   isExpanded: true,
+                                    //   iconSize: 40.0,
+                                    //   style: TextStyle(
+                                    //       color: Colors.black, fontSize: 17.0),
+                                    //   items: [
+                                    //     'Sreekrishnapuram',
+                                    //     'Kadambazipuram',
+                                    //     'Karimpuza'
+                                    //   ].map(
+                                    //     (val) {
+                                    //       return DropdownMenuItem<String>(
+                                    //         value: val,
+                                    //         child: Text(
+                                    //           val,
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //   ).toList(),
+                                    //   onChanged: (val) {
+                                    //     setState(
+                                    //       () {
+                                    //         _Panchayath = val;
+                                    //       },
+                                    //     );
+                                    //   },
+                                    // ),
                                   ),
                                   SizedBox(
                                     height: 30.0,
@@ -434,7 +434,7 @@ class _Signup extends State<Signup> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              SideDrawerAdmin()));
+                                              SideDrawerAdminHome()));
                                 } else if (_dropDownValue == 'Field') {
                                   DatabaseService()
                                       .addField(newUser, empid!, _Panchayath);

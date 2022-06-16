@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
 
-class SideDrawerAdmin extends StatelessWidget {
+class SideDrawerAdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +36,13 @@ class _SideDrawer extends StatelessWidget {
               color: Color.fromARGB(255, 23, 75, 7),
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.dashboard),
-            title: Text('Dashbord'),
-            onTap: () => {},
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.dashboard),
+          //   title: Text('Dashbord'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),

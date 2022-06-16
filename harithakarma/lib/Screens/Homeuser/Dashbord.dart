@@ -39,7 +39,7 @@ class _SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.dashboard),
             title: Text('Dashbord'),
-            onTap: () => {},
+            onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             leading: Icon(Icons.person),
