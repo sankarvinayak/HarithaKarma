@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
 import 'package:harithakarma/Screens/Auth/auth.dart';
@@ -21,8 +22,9 @@ class _Signup extends State<Signup> {
   String error = '';
   String? insti;
   bool isLoading = false;
+  // bool setDefaultpanchayath = true;
   var _dropDownValue;
-  var _Panchayath;
+  var _Panchayath = null;
   String? empid;
   String? wardno;
   String? houseno;
@@ -39,10 +41,6 @@ class _Signup extends State<Signup> {
             body: Container(
               height: height,
               width: width,
-              // child: isLoading
-              //             ? Center(
-              //                 child: CircularProgressIndicator(),
-              //               ):
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +104,6 @@ class _Signup extends State<Signup> {
                       height: 30.0,
                     ),
                     TextField(
-                      obscureText: true,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
                         name = value;
@@ -217,103 +214,113 @@ class _Signup extends State<Signup> {
                                     height: 30.0,
                                   ),
                                   Container(
-                                    height: 60,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      border: Border.all(
-                                          style: BorderStyle.solid,
-                                          width: 0.50),
-                                    ),
-                                    child: DropdownButton(
-                                      hint: Container(
-                                        alignment: Alignment.center,
-                                        child: _Panchayath == null
-                                            ? Text(
-                                                'Panchayath/Muncipality/Corperation')
-                                            : Text(
-                                                _Panchayath,
-                                              ),
+                                      height: 60,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        border: Border.all(
+                                            style: BorderStyle.solid,
+                                            width: 0.50),
                                       ),
-                                      isExpanded: true,
-                                      iconSize: 40.0,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 17.0),
-                                      items: [
-                                        'Sreekrishnapuram',
-                                        'Kadambazipuram',
-                                        'Karimpuza'
-                                      ].map(
-                                        (val) {
-                                          return DropdownMenuItem<String>(
-                                            value: val,
-                                            child: Text(
-                                              val,
+                                      child: StreamBuilder<QuerySnapshot>(
+                                        stream:
+                                            DatabaseService().getpanchayath(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          if (!snapshot.hasData)
+                                            return Container();
+
+                                          return DropdownButton(
+                                            hint: Container(
+                                              alignment: Alignment.center,
+                                              child: _Panchayath == null
+                                                  ? Text(
+                                                      'Panchayath/Muncipality/Corperation')
+                                                  : Text(
+                                                      _Panchayath,
+                                                    ),
                                             ),
+                                            isExpanded: true,
+                                            value: _Panchayath,
+                                            items: snapshot.data!.docs
+                                                .map((value) {
+                                              return DropdownMenuItem(
+                                                value: value.get('panchayath'),
+                                                child: Text(
+                                                    '${value.get('panchayath')}'),
+                                              );
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              debugPrint(
+                                                  'selected onchange: $value');
+                                              setState(
+                                                () {
+                                                  _Panchayath = value;
+                                                },
+                                              );
+                                            },
                                           );
                                         },
-                                      ).toList(),
-                                      onChanged: (val) {
-                                        setState(
-                                          () {
-                                            _Panchayath = val;
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                      )),
                                 ],
                               ))
                             : (Column(
                                 children: [
                                   Container(
-                                    height: 60,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      border: Border.all(
-                                          style: BorderStyle.solid,
-                                          width: 0.50),
-                                    ),
-                                    // child: DropdownButton(
-                                    //   hint: Container(
-                                    //     alignment: Alignment.center,
-                                    //     child: _Panchayath == null
-                                    //         ? Text(
-                                    //             'Panchayath/Muncipality/Corperation')
-                                    //         : Text(
-                                    //             _Panchayath,
-                                    //           ),
-                                    //   ),
-                                    //   isExpanded: true,
-                                    //   iconSize: 40.0,
-                                    //   style: TextStyle(
-                                    //       color: Colors.black, fontSize: 17.0),
-                                    //   items: [
-                                    //     'Sreekrishnapuram',
-                                    //     'Kadambazipuram',
-                                    //     'Karimpuza'
-                                    //   ].map(
-                                    //     (val) {
-                                    //       return DropdownMenuItem<String>(
-                                    //         value: val,
-                                    //         child: Text(
-                                    //           val,
-                                    //         ),
-                                    //       );
-                                    //     },
-                                    //   ).toList(),
-                                    //   onChanged: (val) {
-                                    //     setState(
-                                    //       () {
-                                    //         _Panchayath = val;
-                                    //       },
-                                    //     );
-                                    //   },
-                                    // ),
-                                  ),
+                                      height: 60,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        border: Border.all(
+                                            style: BorderStyle.solid,
+                                            width: 0.50),
+                                      ),
+                                      child: StreamBuilder<QuerySnapshot>(
+                                        stream:
+                                            DatabaseService().getpanchayath(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          if (!snapshot.hasData)
+                                            return Container();
+
+                                          return DropdownButton(
+                                            hint: Container(
+                                              alignment: Alignment.center,
+                                              child: _Panchayath == null
+                                                  ? Text(
+                                                      'Panchayath/Muncipality/Corperation')
+                                                  : Text(
+                                                      _Panchayath,
+                                                    ),
+                                            ),
+                                            isExpanded: true,
+                                            value: _Panchayath,
+                                            items: snapshot.data!.docs
+                                                .map((value) {
+                                              return DropdownMenuItem(
+                                                value: value.get('panchayath'),
+                                                child: Text(
+                                                    '${value.get('panchayath')}'),
+                                              );
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              debugPrint(
+                                                  'selected onchange: $value');
+                                              setState(
+                                                () {
+                                                  _Panchayath = value;
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                      )),
                                   SizedBox(
                                     height: 30.0,
                                   ),
@@ -364,42 +371,6 @@ class _Signup extends State<Signup> {
                                   )
                                 ],
                               )),
-                    // SizedBox(
-                    //   height: 30.0,
-                    // ),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //     hintText: 'Ward',
-                    //     suffixIcon: Icon(Icons.location_on),
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(20.0),
-                    //     ),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 30.0,
-                    // ),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //     hintText: 'House Number',
-                    //     suffixIcon: Icon(Icons.home),
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(20.0),
-                    //     ),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 30.0,
-                    // ),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //     hintText: 'Owner name',
-                    //     suffixIcon: Icon(Icons.person),
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(20.0),
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -459,12 +430,6 @@ class _Signup extends State<Signup> {
                                       'Could not sign in with those credentials';
                                 });
                               }
-
-                              // Navigator.pushReplacement(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (BuildContext context) =>
-                              //             SideDrawerHome()));
                             },
                             child: Text('Register'),
                           )
@@ -472,7 +437,6 @@ class _Signup extends State<Signup> {
                       ),
                     ),
                     SizedBox(height: 12.0),
-
                     Text(
                       error,
                       style: TextStyle(

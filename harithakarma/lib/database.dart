@@ -66,4 +66,8 @@ class DatabaseService {
     print(utype);
     return utype;
   }
+
+  getpanchayath() {
+    return adminCollection.orderBy('panchayath').snapshots();
+  }
 }

@@ -161,10 +161,8 @@ class _Login extends State<Login> {
                     SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => GetUserName()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Signup()));
                       },
                       child: Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [
