@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:harithakarma/Screens/Auth/auth.dart';
-import 'package:harithakarma/Screens/Homeuser/profile.dart';
+import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
-import '../../main.dart';
 import 'signup.dart';
 import '../Homeuser/Dashbord.dart';
 import '../Adminuser/Dashbord.dart';
@@ -105,25 +105,6 @@ class _Login extends State<Login> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              // if (email.text.compareTo("Admin") == 0) {
-                              //   Navigator.pushReplacement(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (BuildContext context) =>
-                              //               SideDrawerAdmin()));
-                              // } else if (email.text.compareTo("Home") == 0) {
-                              //   Navigator.pushReplacement(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (BuildContext context) =>
-                              //               SideDrawerHome()));
-                              // } else if (email.text.compareTo("Field") == 0) {
-                              //   Navigator.pushReplacement(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (BuildContext context) =>
-                              //               SideDrawerField()));
-                              // }
                               setState(() => loading = true);
                               dynamic result =
                                   await _auth.SignIn(email, password);
@@ -132,6 +113,9 @@ class _Login extends State<Login> {
                                   loading = false;
                                 });
                               } else {
+                                DatabaseService().getDetails(
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                    result);
                                 if (result == "Admin") {
                                   Navigator.pushReplacement(
                                       context,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../service/auth.dart';
 
 class SideDrawerAdminHome extends StatelessWidget {
   @override
@@ -56,14 +59,17 @@ class _SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {
+            onTap: () async {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.remove('utype');
+              AuthService().signOut();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => Login(),
                 ),
                 (route) => false,
-              )
+              );
             },
           ),
         ],

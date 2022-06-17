@@ -6,12 +6,10 @@ import 'package:harithakarma/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/firestore_service.dart';
 
-import '../../locator.dart';
-
 class AuthService {
-  AppUser? _userFromFirebaseUser(User? user) {
-    //return user != null ? AppUser(user.uid) : null;
-  }
+  // AppUser? _userFromFirebaseUser(User? user) {
+  //   //return user != null ? AppUser(user.uid) : null;
+  // }
 
   // late FirestoreService _firestoreService;
   final FirebaseAuth _auth = FirebaseAuth.instance;

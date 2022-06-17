@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
-import 'package:harithakarma/Screens/Auth/auth.dart';
+import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
 import 'package:harithakarma/Shared/loading.dart';
 import 'package:harithakarma/database.dart';
-import '../../main.dart';
-import 'login.dart';
 import '../Homeuser/Dashbord.dart';
 
 class Signup extends StatefulWidget {
@@ -16,18 +14,19 @@ class Signup extends StatefulWidget {
 
 class _Signup extends State<Signup> {
   final AuthService _auth = AuthService();
+  String? phone;
+  String? house;
   String? email;
   String? password;
   String? name;
   String error = '';
   String? insti;
   bool isLoading = false;
-  // bool setDefaultpanchayath = true;
   var _dropDownValue;
   var _Panchayath = null;
   String? empid;
-  String? wardno;
-  String? houseno;
+  int? wardno;
+  int? houseno;
   String? owner;
 
   @override
@@ -161,10 +160,28 @@ class _Signup extends State<Signup> {
                     SizedBox(
                       height: 30.0,
                     ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        phone = value;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Phone',
+                        suffixIcon: Icon(Icons.phone_android),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.0,
+                    ),
                     _dropDownValue == "Admin"
                         ? (Column(
                             children: <Widget>[
                               TextField(
+                                textAlign: TextAlign.center,
                                 onChanged: (value) {
                                   empid = value;
                                 },
@@ -180,12 +197,13 @@ class _Signup extends State<Signup> {
                                 height: 30.0,
                               ),
                               TextField(
+                                textAlign: TextAlign.center,
                                 onChanged: (value) {
                                   _Panchayath = value;
                                 },
                                 decoration: InputDecoration(
                                   hintText:
-                                      'Panchayath/Muncipality/Corperation',
+                                      'Panchayath/Muncipality/Corperation name',
                                   suffixIcon: Icon(Icons.location_city),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0),
@@ -198,6 +216,7 @@ class _Signup extends State<Signup> {
                             ? (Column(
                                 children: <Widget>[
                                   TextField(
+                                    textAlign: TextAlign.center,
                                     onChanged: (value) {
                                       empid = value;
                                     },
@@ -238,7 +257,7 @@ class _Signup extends State<Signup> {
                                               alignment: Alignment.center,
                                               child: _Panchayath == null
                                                   ? Text(
-                                                      'Panchayath/Muncipality/Corperation')
+                                                      'Panchayath/Muncipality/Corperation name')
                                                   : Text(
                                                       _Panchayath,
                                                     ),
@@ -294,7 +313,7 @@ class _Signup extends State<Signup> {
                                               alignment: Alignment.center,
                                               child: _Panchayath == null
                                                   ? Text(
-                                                      'Panchayath/Muncipality/Corperation')
+                                                      'Panchayath/Muncipality/Corperation name')
                                                   : Text(
                                                       _Panchayath,
                                                     ),
@@ -325,8 +344,10 @@ class _Signup extends State<Signup> {
                                     height: 30.0,
                                   ),
                                   TextField(
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      wardno = value;
+                                      wardno = int.parse(value);
                                     },
                                     decoration: InputDecoration(
                                       hintText: 'Ward number',
@@ -341,12 +362,14 @@ class _Signup extends State<Signup> {
                                     height: 30.0,
                                   ),
                                   TextField(
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      houseno = value;
+                                      houseno = int.parse(value);
                                     },
                                     decoration: InputDecoration(
                                       hintText: 'House no',
-                                      suffixIcon: Icon(Icons.location_city),
+                                      suffixIcon: Icon(Icons.house),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0),
@@ -357,12 +380,31 @@ class _Signup extends State<Signup> {
                                     height: 30.0,
                                   ),
                                   TextField(
+                                    textAlign: TextAlign.center,
+                                    onChanged: (value) {
+                                      house = value;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: 'House name',
+                                      suffixIcon: Icon(Icons.house),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 30.0,
+                                  ),
+                                  TextField(
+                                    textAlign: TextAlign.center,
                                     onChanged: (value) {
                                       owner = value;
                                     },
                                     decoration: InputDecoration(
                                       hintText: 'House Owner name',
-                                      suffixIcon: Icon(Icons.location_city),
+                                      suffixIcon:
+                                          Icon(Icons.person_outline_rounded),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0),
@@ -398,25 +440,36 @@ class _Signup extends State<Signup> {
                               final newUser = await _auth.signUpEmail(
                                   email!, password!, name!, _dropDownValue);
                               if (newUser != null) {
+                                DatabaseService()
+                                    .saveUser(newUser, _dropDownValue);
                                 if (_dropDownValue == 'Admin') {
-                                  DatabaseService()
-                                      .addAdmin(newUser, empid!, _Panchayath);
+                                  DatabaseService().addAdmin(name!, email!,
+                                      newUser, empid!, _Panchayath, phone!);
+
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
                                               SideDrawerAdminHome()));
                                 } else if (_dropDownValue == 'Field') {
-                                  DatabaseService()
-                                      .addField(newUser, empid!, _Panchayath);
+                                  DatabaseService().addField(name!, email!,
+                                      newUser, empid!, _Panchayath, phone!);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
                                               SideDrawerField()));
                                 } else {
-                                  DatabaseService().addHome(newUser,
-                                      _Panchayath, wardno!, houseno!, owner!);
+                                  DatabaseService().addHome(
+                                      name!,
+                                      email!,
+                                      newUser,
+                                      _Panchayath,
+                                      wardno!,
+                                      houseno!,
+                                      owner!,
+                                      house!,
+                                      phone!);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
