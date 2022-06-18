@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
+import 'package:harithakarma/Screens/Fielduser/profile.dart';
 import 'package:harithakarma/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,7 +48,12 @@ class _SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => fieldProfile()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),

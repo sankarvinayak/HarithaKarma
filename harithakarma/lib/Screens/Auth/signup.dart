@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
+import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
 import 'package:harithakarma/Shared/loading.dart';
@@ -273,8 +274,6 @@ class _Signup extends State<Signup> {
                                               );
                                             }).toList(),
                                             onChanged: (value) {
-                                              debugPrint(
-                                                  'selected onchange: $value');
                                               setState(
                                                 () {
                                                   _Panchayath = value;
@@ -329,8 +328,6 @@ class _Signup extends State<Signup> {
                                               );
                                             }).toList(),
                                             onChanged: (value) {
-                                              debugPrint(
-                                                  'selected onchange: $value');
                                               setState(
                                                 () {
                                                   _Panchayath = value;
@@ -440,9 +437,11 @@ class _Signup extends State<Signup> {
                               final newUser = await _auth.signUpEmail(
                                   email!, password!, name!, _dropDownValue);
                               if (newUser != null) {
-                                DatabaseService()
-                                    .saveUser(newUser, _dropDownValue);
+                                // DatabaseService()
+                                //     .saveUser(newUser, _dropDownValue);
                                 if (_dropDownValue == 'Admin') {
+                                  setadmin(newUser, name, email, _Panchayath,
+                                      phone, empid);
                                   DatabaseService().addAdmin(name!, email!,
                                       newUser, empid!, _Panchayath, phone!);
 
@@ -452,6 +451,8 @@ class _Signup extends State<Signup> {
                                           builder: (BuildContext context) =>
                                               SideDrawerAdminHome()));
                                 } else if (_dropDownValue == 'Field') {
+                                  setfield(newUser, name, email, _Panchayath,
+                                      phone, empid);
                                   DatabaseService().addField(name!, email!,
                                       newUser, empid!, _Panchayath, phone!);
                                   Navigator.pushReplacement(
@@ -460,6 +461,8 @@ class _Signup extends State<Signup> {
                                           builder: (BuildContext context) =>
                                               SideDrawerField()));
                                 } else {
+                                  sethome(newUser, name, email, _Panchayath,
+                                      phone, wardno, houseno, house, owner);
                                   DatabaseService().addHome(
                                       name!,
                                       email!,

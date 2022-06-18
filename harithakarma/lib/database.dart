@@ -34,9 +34,42 @@ class DatabaseService {
     });
   }
 
+  Future<void> updateAdmin(String name, String email, String uid, String empid,
+      String Panchayath, String phone) async {
+    return await adminCollection.doc(uid).update({
+      'name': name,
+      'email': email,
+      'empid': empid,
+      'panchayath': Panchayath,
+      'phone': phone
+    });
+  }
+
   Future<void> addHome(String name, String email, String uid, String Panchayath,
       int ward, int houseno, String owner, String house, String phone) async {
     return await homeCollection.doc(uid).set({
+      'name': name,
+      'panchayath': Panchayath,
+      'ward': ward,
+      'house_no': houseno,
+      'owner': owner,
+      'house': house,
+      'phone': phone
+      // 'timestamp': DateTime.now()
+    });
+  }
+
+  Future<void> updateHome(
+      String name,
+      String email,
+      String uid,
+      String Panchayath,
+      int ward,
+      int houseno,
+      String owner,
+      String house,
+      String phone) async {
+    return await homeCollection.doc(uid).update({
       'name': name,
       'panchayath': Panchayath,
       'ward': ward,
@@ -87,6 +120,14 @@ class DatabaseService {
     return adminCollection.orderBy('panchayath').snapshots();
   }
 
+  gethomename(uid, utype) async {
+    var docSnapshot = await homeCollection.doc(uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+      this.utype = data?['userRole'].toString();
+    }
+  }
+
   getDetails(String uid, String utype) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('uid', uid);
@@ -104,7 +145,8 @@ class DatabaseService {
         admin.name = data?['name'].toString();
         admin.panchayath = data?['panchayath'].toString();
         admin.phone = data?['phone'].toString();
-
+        setadmin(uid, admin.name, admin.email, admin.panchayath, admin.phone,
+            admin.empid);
         // <-- The value you want to retrieve.
         // Call setState if needed.
       }
@@ -120,13 +162,14 @@ class DatabaseService {
         home.phone = data?['phone'].toString();
         home.email = data?['email'].toString();
         home.panchayath = data?['panchayath'].toString();
-        home.house_no = int.parse(data?['house_no']);
-        home.ward_no = int.parse(data?['ward']);
+        home.house_no = data?['house_no'];
+        home.ward_no = data?['ward'];
         home.house = data?['house'].toString();
         home.name = data?['name'].toString();
         home.owner = data?['owner'].toString();
       }
-      return home;
+      sethome(uid, home.name, home.email, home.panchayath, home.phone,
+          home.ward_no, home.house_no, home.house, home.owner);
     } else {
       employee employ = employee.c();
       employ.uid = uid;
@@ -141,13 +184,20 @@ class DatabaseService {
         employ.panchayath = data?['panchayath'].toString();
         employ.phone = data?['phone'].toString();
       }
-      return employ;
+      setfield(uid, employ.name, employ.email, employ.panchayath, employ.phone,
+          employ.empid);
     }
   }
 
-  saveUser(uid, utype) async {
+  setuserAdmin(Panchayath) async {
+    QuerySnapshot querySnapshot =
+        await adminCollection.where('panchayath', isEqualTo: Panchayath).get();
+    var doc = querySnapshot.docs[0];
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('uid', uid);
-    await prefs.setString('utype', utype);
+    prefs.setString('Adminemail', doc['email']);
+    prefs.setString('Adminname', doc['name']);
+    prefs.setString('Adminphone', doc['phone']);
+    //print(doc['name']);
+    return "hi";
   }
 }

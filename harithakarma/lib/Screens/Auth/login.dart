@@ -116,6 +116,7 @@ class _Login extends State<Login> {
                                 DatabaseService().getDetails(
                                     FirebaseAuth.instance.currentUser!.uid,
                                     result);
+
                                 if (result == "Admin") {
                                   Navigator.pushReplacement(
                                       context,

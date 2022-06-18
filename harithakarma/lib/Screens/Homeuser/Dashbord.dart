@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Homeuser/profile.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
@@ -8,7 +9,7 @@ class SideDrawerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: _SideDrawer(),
+      drawer: homeSideDrawer(),
       appBar: AppBar(
         title: Text('Home user'),
         backgroundColor: Color.fromARGB(255, 23, 75, 7),
@@ -20,7 +21,7 @@ class SideDrawerHome extends StatelessWidget {
   }
 }
 
-class _SideDrawer extends StatelessWidget {
+class homeSideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -46,7 +47,12 @@ class _SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => homeProfile()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),
