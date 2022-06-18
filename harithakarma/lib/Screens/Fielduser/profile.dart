@@ -23,6 +23,7 @@ class _fieldProfile extends State<fieldProfile> {
   String? empid = globfield!.empid;
   String? panchayath = globfield!.panchayath;
   String error = '';
+  String success = '';
   // getUser() {
   //   user = DatabaseService().getDetails(uid!, 'Home');
   //   name = user!.name.toString();
@@ -42,10 +43,17 @@ class _fieldProfile extends State<fieldProfile> {
                 //IconButton
                 IconButton(
                   icon: const Icon(Icons.edit_note_rounded),
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       isedit = true;
                     });
+                    if (await checkInternet()) {
+                    } else {
+                      setState(() {
+                        error = 'network unavilable';
+                      });
+                    }
+                    ;
                   },
                 ), //IconButton
               ],
@@ -131,7 +139,7 @@ class _fieldProfile extends State<fieldProfile> {
               textAlign: TextAlign.center,
               enabled: isedit,
               controller: TextEditingController()..text = panchayath.toString(),
-              onChanged: (text) => {panchayath = text.toString()},
+              onChanged: (text) => {panchayath = text},
             ),
             SizedBox(
               height: 20.0,
@@ -144,6 +152,15 @@ class _fieldProfile extends State<fieldProfile> {
                     ),
                     onPressed: () async {
                       if (await checkInternet()) {
+                        var result = DatabaseService().addField(
+                            name!, email!, uid!, empid!, panchayath!, phone!);
+                        if (result != null) {
+                          setfield(uid, name, email, panchayath, phone, empid);
+                          setState(() {
+                            isedit = false;
+                            success = "Updated successfully";
+                          });
+                        }
                       } else {
                         setState(() {
                           error = 'network unavilable';
@@ -158,7 +175,10 @@ class _fieldProfile extends State<fieldProfile> {
                   ),
             Text(error,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0))
+                    color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0)),
+            Text(success,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0))
           ],
         ),
       ),

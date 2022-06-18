@@ -34,16 +34,16 @@ class DatabaseService {
     });
   }
 
-  Future<void> updateAdmin(String name, String email, String uid, String empid,
-      String Panchayath, String phone) async {
-    return await adminCollection.doc(uid).update({
-      'name': name,
-      'email': email,
-      'empid': empid,
-      'panchayath': Panchayath,
-      'phone': phone
-    });
-  }
+  // Future<void> updateAdmin(String name, String email, String uid, String empid,
+  //     String Panchayath, String phone) async {
+  //   return await adminCollection.doc(uid).update({
+  //     'name': name,
+  //     'email': email,
+  //     'empid': empid,
+  //     'panchayath': Panchayath,
+  //     'phone': phone
+  //   });
+  // }
 
   Future<void> addHome(String name, String email, String uid, String Panchayath,
       int ward, int houseno, String owner, String house, String phone) async {
@@ -59,27 +59,27 @@ class DatabaseService {
     });
   }
 
-  Future<void> updateHome(
-      String name,
-      String email,
-      String uid,
-      String Panchayath,
-      int ward,
-      int houseno,
-      String owner,
-      String house,
-      String phone) async {
-    return await homeCollection.doc(uid).update({
-      'name': name,
-      'panchayath': Panchayath,
-      'ward': ward,
-      'house_no': houseno,
-      'owner': owner,
-      'house': house,
-      'phone': phone
-      // 'timestamp': DateTime.now()
-    });
-  }
+  // Future<void> updateHome(
+  //     String name,
+  //     String email,
+  //     String uid,
+  //     String Panchayath,
+  //     int ward,
+  //     int houseno,
+  //     String owner,
+  //     String house,
+  //     String phone) async {
+  //   return await homeCollection.doc(uid).update({
+  //     'name': name,
+  //     'panchayath': Panchayath,
+  //     'ward': ward,
+  //     'house_no': houseno,
+  //     'owner': owner,
+  //     'house': house,
+  //     'phone': phone
+  //     // 'timestamp': DateTime.now()
+  //   });
+  // }
 
   Future<void> addField(String name, String email, String uid, String empid,
       String Panchayath, String phone) async {

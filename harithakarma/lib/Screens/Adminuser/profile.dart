@@ -23,6 +23,7 @@ class _adminProfile extends State<adminProfile> {
   String? empid = globadmin!.empid;
   String? panchayath = globadmin!.panchayath;
   String error = '';
+  String success = '';
   // getUser() {
   //   user = DatabaseService().getDetails(uid!, 'Home');
   //   name = user!.name.toString();
@@ -42,10 +43,17 @@ class _adminProfile extends State<adminProfile> {
                 //IconButton
                 IconButton(
                   icon: const Icon(Icons.edit_note_rounded),
-                  onPressed: () {
-                    setState(() {
-                      isedit = true;
-                    });
+                  onPressed: () async {
+                    if (await checkInternet()) {
+                      setState(() {
+                        isedit = true;
+                      });
+                    } else {
+                      setState(() {
+                        error = 'network unavilable';
+                      });
+                    }
+                    ;
                   },
                 ), //IconButton
               ],
@@ -144,6 +152,15 @@ class _adminProfile extends State<adminProfile> {
                     ),
                     onPressed: () async {
                       if (await checkInternet()) {
+                        var result = DatabaseService().addAdmin(
+                            name!, email!, uid!, empid!, panchayath!, phone!);
+                        if (result != null) {
+                          setadmin(uid, name, email, panchayath, phone, empid);
+                          setState(() {
+                            isedit = false;
+                            success = "Updated successfully";
+                          });
+                        }
                       } else {
                         setState(() {
                           error = 'network unavilable';
@@ -158,7 +175,10 @@ class _adminProfile extends State<adminProfile> {
                   ),
             Text(error,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0))
+                    color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0)),
+            Text(success,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0))
           ],
         ),
       ),

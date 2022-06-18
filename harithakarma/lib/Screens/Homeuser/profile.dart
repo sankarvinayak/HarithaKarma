@@ -31,6 +31,7 @@ class _homeProfile extends State<homeProfile> {
   String? owner = globhome!.owner;
   String? panchayath = globhome!.panchayath;
   String error = '';
+  String success = '';
   // getUser() {
   //   user = DatabaseService().getDetails(uid!, 'Home');
   //   name = user!.name.toString();
@@ -50,10 +51,17 @@ class _homeProfile extends State<homeProfile> {
                 //IconButton
                 IconButton(
                   icon: const Icon(Icons.edit_note_rounded),
-                  onPressed: () {
-                    setState(() {
-                      isedit = true;
-                    });
+                  onPressed: () async {
+                    if (await checkInternet()) {
+                      setState(() {
+                        isedit = true;
+                      });
+                    } else {
+                      setState(() {
+                        error = 'network unavilable';
+                      });
+                    }
+                    ;
                   },
                 ), //IconButton
               ],
@@ -200,8 +208,7 @@ class _homeProfile extends State<homeProfile> {
               enabled: isedit,
               controller: TextEditingController()..text = owner.toString(),
               onChanged: (text) {
-                owner = owner;
-                print(owner);
+                owner = text;
               },
             ),
             SizedBox(
@@ -214,8 +221,9 @@ class _homeProfile extends State<homeProfile> {
                       onPrimary: Colors.white,
                     ),
                     onPressed: () async {
+                      print(owner);
                       if (await checkInternet()) {
-                        var result = DatabaseService().updateHome(
+                        var result = DatabaseService().addHome(
                             name!,
                             email!,
                             uid!,
@@ -225,6 +233,14 @@ class _homeProfile extends State<homeProfile> {
                             owner!,
                             house!,
                             phone!);
+                        if (result != null) {
+                          sethome(uid, name, email, panchayath, phone, ward_no,
+                              house_no, house, owner);
+                          setState(() {
+                            isedit = false;
+                            success = "Updated successfully";
+                          });
+                        }
                       } else {
                         setState(() {
                           error = 'network unavilable';
@@ -239,7 +255,10 @@ class _homeProfile extends State<homeProfile> {
                   ),
             Text(error,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0))
+                    color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0)),
+            Text(success,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0))
           ],
         ),
       ),
