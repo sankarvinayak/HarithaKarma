@@ -113,6 +113,9 @@ class usertypes extends StatelessWidget {
                         } catch (e) {
                           ward = "No ward assigned";
                         }
+                        if (ward == '') {
+                          ward = "No ward assigned";
+                        }
 
                         return Card(
                           margin: const EdgeInsets.all(10),
@@ -124,6 +127,42 @@ class usertypes extends StatelessWidget {
                               Text(ward),
                               ElevatedButton(
                                 onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text("Edit wards assigned"),
+                                            content: ward.compareTo(
+                                                        "No ward assigned") !=
+                                                    0
+                                                ? TextField(
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            "wards seperated by comma"),
+                                                    controller:
+                                                        TextEditingController()
+                                                          ..text =
+                                                              ward.toString(),
+                                                    onChanged: (text) =>
+                                                        {ward = text},
+                                                  )
+                                                : TextField(
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            "wards seperated by comma"),
+                                                    onChanged: (text) =>
+                                                        {ward = text}),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    DatabaseService().ward(
+                                                        documentSnapshot
+                                                            .reference.id,
+                                                        ward);
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Submit'))
+                                            ],
+                                          ));
                                   print(documentSnapshot.reference.id);
                                   print(ward);
                                 },

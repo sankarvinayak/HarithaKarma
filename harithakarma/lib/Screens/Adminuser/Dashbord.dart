@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/profile.dart';
 import 'package:harithakarma/Screens/Adminuser/users.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
-import 'package:harithakarma/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../service/auth.dart';

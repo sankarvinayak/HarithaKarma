@@ -34,6 +34,12 @@ class DatabaseService {
     });
   }
 
+  Future<void> ward(String uid, String wards) async {
+    return await fieldCollection
+        .doc(uid)
+        .set({'ward': wards}, SetOptions(merge: true));
+  }
+
   // Future<void> updateAdmin(String name, String email, String uid, String empid,
   //     String Panchayath, String phone) async {
   //   return await adminCollection.doc(uid).update({

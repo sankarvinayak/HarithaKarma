@@ -1,13 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Shared/netcheck.dart';
 import 'package:harithakarma/database.dart';
 import 'package:harithakarma/models/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../Shared/loading.dart';
-import '../Homeuser/Dashbord.dart';
-import '../Adminuser/Dashbord.dart';
-import '../Fielduser/Dashbord.dart';
 
 class homeProfile extends StatefulWidget {
   @override
