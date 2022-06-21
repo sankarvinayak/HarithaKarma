@@ -25,8 +25,8 @@ class _homeProfile extends State<homeProfile> {
   String? uid = globhome!.uid;
   String? name = globhome!.name;
   String? phone = globhome!.phone;
-  int? ward_no = globhome!.ward_no;
-  int? house_no = globhome!.house_no;
+  String? ward_no = globhome!.ward_no;
+  String? house_no = globhome!.house_no;
   String? house = globhome!.house;
   String? owner = globhome!.owner;
   String? panchayath = globhome!.panchayath;
@@ -147,7 +147,7 @@ class _homeProfile extends State<homeProfile> {
               textAlign: TextAlign.center,
               enabled: isedit,
               controller: TextEditingController()..text = ward_no.toString(),
-              onChanged: (text) => {ward_no = int.parse(text)},
+              onChanged: (text) => {ward_no = text},
             ),
             SizedBox(
               height: 20.0,
@@ -167,7 +167,7 @@ class _homeProfile extends State<homeProfile> {
               textAlign: TextAlign.center,
               enabled: isedit,
               controller: TextEditingController()..text = house_no.toString(),
-              onChanged: (text) => {house_no = int.parse(text)},
+              onChanged: (text) => {house_no = text},
             ),
             SizedBox(
               height: 20.0,

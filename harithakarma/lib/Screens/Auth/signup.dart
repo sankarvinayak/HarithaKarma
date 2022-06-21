@@ -26,8 +26,8 @@ class _Signup extends State<Signup> {
   var _dropDownValue;
   var _Panchayath = null;
   String? empid;
-  int? wardno;
-  int? houseno;
+  String? wardno;
+  String? houseno;
   String? owner;
 
   @override
@@ -344,7 +344,7 @@ class _Signup extends State<Signup> {
                                     textAlign: TextAlign.center,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      wardno = int.parse(value);
+                                      wardno = value;
                                     },
                                     decoration: InputDecoration(
                                       hintText: 'Ward number',
@@ -362,7 +362,7 @@ class _Signup extends State<Signup> {
                                     textAlign: TextAlign.center,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      houseno = int.parse(value);
+                                      houseno = value;
                                     },
                                     decoration: InputDecoration(
                                       hintText: 'House no',

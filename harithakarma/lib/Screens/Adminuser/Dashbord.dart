@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/profile.dart';
+import 'package:harithakarma/Screens/Adminuser/users.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,13 +41,22 @@ class _SideDrawer extends StatelessWidget {
               color: Color.fromARGB(255, 23, 75, 7),
             ),
           ),
-          // ListTile(
-          //   leading: Icon(Icons.dashboard),
-          //   title: Text('Dashbord'),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //   },
-          // ),
+          ListTile(
+              leading: Icon(Icons.dashboard),
+              title: Text('Dashbord'),
+              onTap: () {
+                Navigator.of(context).pop();
+              }),
+          ListTile(
+            leading: Icon(Icons.people),
+            title: Text('Users'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => usertypes()));
+            },
+          ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),

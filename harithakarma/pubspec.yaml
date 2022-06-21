@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^3.1.17
   get_it: ^7.2.0
   shared_preferences: ^2.0.15
+  expansion_tile_card: ^2.0.0
 
 dev_dependencies:
   flutter_test:

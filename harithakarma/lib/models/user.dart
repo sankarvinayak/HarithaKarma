@@ -138,9 +138,9 @@ inithome() async {
 
   final String? phone = prefs.getString('phone');
 
-  final int? ward = prefs.getInt('ward');
+  final String? ward = prefs.getString('ward');
 
-  final int? house_no = prefs.getInt('house_no');
+  final String? house_no = prefs.getString('house_no');
 
   final String? house = prefs.getString('house');
 
@@ -207,8 +207,8 @@ cleardata() async {
 }
 
 class homeUser extends appUser {
-  int? ward_no;
-  int? house_no;
+  String? ward_no;
+  String? house_no;
   String? house;
   String? owner;
 

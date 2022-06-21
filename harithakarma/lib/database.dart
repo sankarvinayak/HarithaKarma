@@ -45,8 +45,16 @@ class DatabaseService {
   //   });
   // }
 
-  Future<void> addHome(String name, String email, String uid, String Panchayath,
-      int ward, int houseno, String owner, String house, String phone) async {
+  Future<void> addHome(
+      String name,
+      String email,
+      String uid,
+      String Panchayath,
+      String ward,
+      String houseno,
+      String owner,
+      String house,
+      String phone) async {
     return await homeCollection.doc(uid).set({
       'name': name,
       'panchayath': Panchayath,
@@ -57,6 +65,14 @@ class DatabaseService {
       'phone': phone
       // 'timestamp': DateTime.now()
     });
+  }
+
+  getHomeReference() {
+    return homeCollection;
+  }
+
+  getFieldReference() {
+    return fieldCollection;
   }
 
   // Future<void> updateHome(
