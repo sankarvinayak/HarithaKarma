@@ -40,7 +40,11 @@ class wards extends StatelessWidget {
                                           children: [
                                             Text(ward),
                                             ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  DatabaseService().gotoward(
+                                                      ward,
+                                                      globfield!.panchayath);
+                                                },
                                                 child: Text("Go"))
                                           ],
                                         ),

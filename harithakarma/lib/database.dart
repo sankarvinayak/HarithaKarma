@@ -103,6 +103,18 @@ class DatabaseService {
     }
   }
 
+  gotoward(ward, panchayath) async {
+    var querySnapshot = await homeCollection
+        .where('panchayath', isEqualTo: panchayath)
+        .where('ward', isEqualTo: ward)
+        .get();
+    for (var user in querySnapshot.docs) {
+      print(user['name']);
+      print(user.reference.id);
+    }
+    //print(querySnapshot.docs.length);
+  }
+
   // Future<void> updateHome(
   //     String name,
   //     String email,
