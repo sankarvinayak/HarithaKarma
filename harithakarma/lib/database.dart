@@ -82,7 +82,7 @@ class DatabaseService {
   }
 
   getWardDetails(uid) async {
-    var ward = null;
+    var ward;
     // await utypeCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
     //   var dic = snapshot.data() as Map<String, dynamic>;
     //   this.utype = dic['userRole'].toString();
@@ -94,7 +94,8 @@ class DatabaseService {
       ward = data?['ward'].toString(); // <-- The value you want to retrieve.
       // Call setState if needed.
     }
-    if (ward == null) {
+    //print(ward);
+    if (ward == 'null') {
       return '';
     } else {
       print(ward);

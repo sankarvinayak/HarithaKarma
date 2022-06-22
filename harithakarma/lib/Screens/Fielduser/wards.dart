@@ -10,22 +10,50 @@ class wards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: FutureBuilder(
-            future: DatabaseService().getWardDetails(globfield!.uid),
-            builder: ((context, snapshot) {
-              if (snapshot.data != null) {
-                ward = snapshot.data;
-                if (ward == '') {
-                  return Text("No ward assigned yet");
-                } else {
-                  return ListView(
-                      children: ward
-                          .map<Widget>((ward) => Container(child: Text(ward)))
-                          .toList());
-                }
-              }
-              return CircularProgressIndicator();
-            }))
+        // body: StreamBuilder(
+        //     stream: Stream.fromFuture(
+        //         DatabaseService().getWardDetails(globfield!.uid)),
+        //     builder: ((context, snapshot) {
+        //       print(snapshot);
+        //       return Text(snapshot.data['ward']);
+        //     })),
+        body: Container(
+          child: Column(
+            children: [
+              Text("Wards assigned"),
+              FutureBuilder(
+                  future: DatabaseService().getWardDetails(globfield!.uid),
+                  builder: ((context, snapshot) {
+                    if (snapshot.data != null) {
+                      ward = snapshot.data;
+                      if (ward == '') {
+                        return Text("No ward assigned yet");
+                      } else {
+                        return Expanded(
+                          child: ListView(
+                              children: ward
+                                  .map<Widget>((ward) => Container(
+                                          child: Card(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(ward),
+                                            ElevatedButton(
+                                                onPressed: () {},
+                                                child: Text("Go"))
+                                          ],
+                                        ),
+                                      )))
+                                  .toList()),
+                        );
+                      }
+                    }
+                    return CircularProgressIndicator();
+                  })),
+            ],
+          ),
+        )
         // StreamBuilder(
         //   stream: DatabaseService().getFieldReference().snapshots(y),
         //   builder: (context, AsyncSnapshot streamSnapshot) {
@@ -100,7 +128,6 @@ class wards extends StatelessWidget {
         //     );
         //   },
         // ),
-
         );
   }
 }
