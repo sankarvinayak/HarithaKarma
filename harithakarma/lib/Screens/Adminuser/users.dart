@@ -124,52 +124,68 @@ class usertypes extends StatelessWidget {
                             subtitle: Text(
                                 "Employee id:" + documentSnapshot['empid']),
                             children: [
-                              Text(ward),
-                              ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text("Edit wards assigned"),
-                                            content: ward.compareTo(
-                                                        "No ward assigned") !=
-                                                    0
-                                                ? TextField(
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            "wards seperated by comma"),
-                                                    controller:
-                                                        TextEditingController()
-                                                          ..text =
-                                                              ward.toString(),
-                                                    onChanged: (text) =>
-                                                        {ward = text},
-                                                  )
-                                                : TextField(
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            "wards seperated by comma"),
-                                                    onChanged: (text) =>
-                                                        {ward = text}),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    DatabaseService().ward(
-                                                        documentSnapshot
-                                                            .reference.id,
-                                                        ward);
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Submit'))
-                                            ],
-                                          ));
-                                  print(documentSnapshot.reference.id);
-                                  print(ward);
-                                },
-                                child: Text("+"),
-                                style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder()),
-                              )
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Text("Wards assigned:" + ward),
+                                    Container(
+                                      //margin: EdgeInsets.all(5),
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    title: Text(
+                                                        "Edit wards assigned"),
+                                                    content: ward.compareTo(
+                                                                "No ward assigned") !=
+                                                            0
+                                                        ? TextField(
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        "wards seperated by comma"),
+                                                            controller:
+                                                                TextEditingController()
+                                                                  ..text = ward
+                                                                      .toString(),
+                                                            onChanged: (text) =>
+                                                                {ward = text},
+                                                          )
+                                                        : TextField(
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        "wards seperated by comma"),
+                                                            onChanged: (text) =>
+                                                                {ward = text}),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            DatabaseService().ward(
+                                                                documentSnapshot
+                                                                    .reference
+                                                                    .id,
+                                                                ward);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text('Submit'))
+                                                    ],
+                                                  ));
+                                          print(documentSnapshot.reference.id);
+                                          print(ward);
+                                        },
+                                        child: Text("Edit"),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         );

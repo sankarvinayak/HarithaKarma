@@ -81,6 +81,27 @@ class DatabaseService {
     return fieldCollection;
   }
 
+  getWardDetails(uid) async {
+    var ward = null;
+    // await utypeCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
+    //   var dic = snapshot.data() as Map<String, dynamic>;
+    //   this.utype = dic['userRole'].toString();
+    // });
+    //     var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await fieldCollection.doc(uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+      ward = data?['ward'].toString(); // <-- The value you want to retrieve.
+      // Call setState if needed.
+    }
+    if (ward == null) {
+      return '';
+    } else {
+      print(ward);
+      return ward.toString().split(',');
+    }
+  }
+
   // Future<void> updateHome(
   //     String name,
   //     String email,
