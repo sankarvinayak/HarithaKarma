@@ -6,7 +6,8 @@ class DatabaseService {
   //String? uid;
   String? utype;
   var panchayath;
-
+  final CollectionReference collection_historycollection =
+      FirebaseFirestore.instance.collection('collection_history');
   final CollectionReference utypeCollection =
       FirebaseFirestore.instance.collection('Utype');
   final CollectionReference adminCollection =
@@ -31,6 +32,27 @@ class DatabaseService {
       'empid': empid,
       'panchayath': Panchayath,
       'phone': phone
+    });
+  }
+
+  Future<void> add_collection_history(
+      String uid,
+      String name,
+      String? collector_id,
+      String ward,
+      String Panchayath,
+      String house_name,
+      String house_no) async {
+    return await collection_historycollection.doc().set({
+      'uid': uid,
+      'name': name,
+      'collector': collector_id,
+      'collector_name': globfield!.name,
+      'ward': ward,
+      'panchayath': Panchayath,
+      'house_no': house_no,
+      'house': house_name,
+      'status': "arriving today"
     });
   }
 
@@ -81,6 +103,10 @@ class DatabaseService {
     return fieldCollection;
   }
 
+  getcollectionhistoryreference() {
+    return collection_historycollection;
+  }
+
   getWardDetails(uid) async {
     var ward;
     // await utypeCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
@@ -109,6 +135,15 @@ class DatabaseService {
         .where('ward', isEqualTo: ward)
         .get();
     for (var user in querySnapshot.docs) {
+      var stat = add_collection_history(
+          user.reference.id,
+          user['name'],
+          globfield!.uid,
+          ward,
+          user['panchayath'],
+          user['house'],
+          user['house_no']);
+      print(stat);
       print(user['name']);
       print(user.reference.id);
     }

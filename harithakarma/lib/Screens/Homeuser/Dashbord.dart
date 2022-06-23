@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Homeuser/profile.dart';
+import 'package:harithakarma/database.dart';
+import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
@@ -14,13 +19,101 @@ class SideDrawerHome extends StatelessWidget {
         title: Text('Home user'),
         backgroundColor: Color.fromARGB(255, 23, 75, 7),
       ),
-      body: Center(
-        child: Text('Haritha Karma'),
+      body: Column(
+        children: [
+          StreamBuilder(
+            stream: DatabaseService()
+                .getcollectionhistoryreference()
+                .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .where("status", isEqualTo: "arriving today")
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: streamSnapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final DocumentSnapshot documentSnapshot =
+                        streamSnapshot.data!.docs[index];
+
+                    return Card(
+                      margin: const EdgeInsets.all(10),
+                      child: ListTile(
+                        title: Text("Collection agent:" +
+                            documentSnapshot['collector_name']),
+                        subtitle: Text("Status:" + documentSnapshot['status']),
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return Text("Next collection details not available");
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+          Text("Collection history"),
+          StreamBuilder(
+            stream: DatabaseService()
+                .getcollectionhistoryreference()
+                .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .where("status", isEqualTo: "collected")
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: streamSnapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final DocumentSnapshot documentSnapshot =
+                        streamSnapshot.data!.docs[index];
+
+                    return Card(
+                      margin: const EdgeInsets.all(10),
+                      child: ExpansionTileCard(
+                        title: Text("Collected by" +
+                            documentSnapshot['collector_name']),
+                        subtitle: Text(
+                            "Employee id:" + documentSnapshot['collector']),
+                      ),
+                    );
+                  },
+                );
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
 }
 
+// return ListView.builder(
+//   scrollDirection: Axis.vertical,
+//   shrinkWrap: true,
+//   itemCount: streamSnapshot.data!.docs.length,
+//   itemBuilder: (context, index) {
+//     final DocumentSnapshot documentSnapshot =
+//         streamSnapshot.data!.docs[index];
+//     return Padding(
+//       padding: const EdgeInsets.all(1.0),
+//       child: Card(
+//         child: Column(children: [
+//           Text("Field agent name:" +
+//               documentSnapshot['collector_name']),
+//           Text("Status:" + documentSnapshot['status'])
+//         ]),
+//       ),
+//     );
+//   },
+// );
 class homeSideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

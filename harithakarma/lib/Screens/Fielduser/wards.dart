@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/database.dart';
 import 'package:harithakarma/models/user.dart';
@@ -29,7 +30,7 @@ class wards extends StatelessWidget {
                       if (ward == '') {
                         return Text("No ward assigned yet");
                       } else {
-                        return Expanded(
+                        return Flexible(
                           child: ListView(
                               children: ward
                                   .map<Widget>((ward) => Container(
@@ -55,6 +56,48 @@ class wards extends StatelessWidget {
                     }
                     return CircularProgressIndicator();
                   })),
+              StreamBuilder(
+                stream: DatabaseService()
+                    .getcollectionhistoryreference()
+                    .where('collector',
+                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                    .where("status", isEqualTo: "arriving today")
+                    .snapshots(),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  if (streamSnapshot.hasData) {
+                    if (streamSnapshot.data!.docs.length != 0) {}
+                    ;
+                    return Flexible(
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: streamSnapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final DocumentSnapshot documentSnapshot =
+                              streamSnapshot.data!.docs[index];
+
+                          return Card(
+                            margin: const EdgeInsets.all(10),
+                            child: ExpansionTileCard(
+                              title: Text("Owner" + documentSnapshot['name']),
+                              subtitle: Text("ward" + documentSnapshot['ward']),
+                              children: [
+                                Text("House name" + documentSnapshot['house']),
+                                ElevatedButton(
+                                    onPressed: () {}, child: Text("Collected"))
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ],
           ),
         )

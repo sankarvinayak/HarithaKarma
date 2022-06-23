@@ -112,9 +112,9 @@ sethome(
   await prefs.setString('panchayath', panchayath);
   await prefs.setString('phone', phone);
   //globhome?.phone = phone;
-  await prefs.setInt('ward', wardno);
+  await prefs.setString('ward', wardno);
   //globhome?.ward_no = wardno;
-  await prefs.setInt('house_no', houseno);
+  await prefs.setString('house_no', houseno);
   //globhome?.house_no = houseno;
   await prefs.setString('house', house);
   //globhome?.house = house;
