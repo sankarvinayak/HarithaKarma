@@ -113,7 +113,7 @@ class _Login extends State<Login> {
                                   loading = false;
                                 });
                               } else {
-                                DatabaseService().getDetails(
+                                await DatabaseService().getDetails(
                                     FirebaseAuth.instance.currentUser!.uid,
                                     result);
 

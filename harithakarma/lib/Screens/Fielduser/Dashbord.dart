@@ -38,8 +38,8 @@ class SideDrawerField extends StatelessWidget {
                   if (streamSnapshot.hasData) {
                     if (streamSnapshot.data!.docs.length == 0) {
                       return FutureBuilder(
-                          future:
-                              DatabaseService().getWardDetails(globfield!.uid),
+                          future: DatabaseService().getWardDetails(
+                              FirebaseAuth.instance.currentUser!.uid),
                           builder: ((context, snapshot) {
                             if (snapshot.data != null) {
                               ward = snapshot.data;

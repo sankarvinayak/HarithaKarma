@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +9,8 @@ class DatabaseService {
   var panchayath;
   final CollectionReference collection_historycollection =
       FirebaseFirestore.instance.collection('collection_history');
+  final CollectionReference visit_history_collection =
+      FirebaseFirestore.instance.collection('visit_history');
   final CollectionReference utypeCollection =
       FirebaseFirestore.instance.collection('Utype');
   final CollectionReference adminCollection =
@@ -38,20 +41,20 @@ class DatabaseService {
   Future<void> add_collection_history(
       String uid,
       String name,
-      String? collector_id,
+      String? collectorId,
       String ward,
       String Panchayath,
-      String house_name,
-      String house_no) async {
+      String houseName,
+      String houseNo) async {
     return await collection_historycollection.doc().set({
       'uid': uid,
       'name': name,
-      'collector': collector_id,
+      'collector': collectorId,
       'collector_name': globfield!.name,
       'ward': ward,
       'panchayath': Panchayath,
-      'house_no': house_no,
-      'house': house_name,
+      'house_no': houseNo,
+      'house': houseName,
       'status': "arriving today"
     });
   }
@@ -62,8 +65,8 @@ class DatabaseService {
         .set({'ward': wards}, SetOptions(merge: true));
   }
 
-  Future<void> update_collection_status(String doc_id) async {
-    return await collection_historycollection.doc(doc_id).set(
+  Future<void> update_collection_status(String docId) async {
+    return await collection_historycollection.doc(docId).set(
         {'status': "collected", "datetime": DateTime.now()},
         SetOptions(merge: true));
   }
@@ -136,6 +139,7 @@ class DatabaseService {
   }
 
   gotoward(ward, panchayath) async {
+    ward_visit(ward);
     var querySnapshot = await homeCollection
         .where('panchayath', isEqualTo: panchayath)
         .where('ward', isEqualTo: ward)
@@ -189,6 +193,16 @@ class DatabaseService {
     });
   }
 
+  Future<void> ward_visit(String ward) async {
+    return await visit_history_collection.doc().set({
+      'Collector': globfield!.name,
+      'ward': ward,
+      'empid': globfield!.empid,
+      'panchayath': globfield!.panchayath,
+      'date': formatTimestamp(Timestamp.now())
+    });
+  }
+
   // getPanchayath() async {
   //   await adminCollection.doc().get().then((DocumentSnapshot snapshot) {
   //     panchayath = snapshot.data();
@@ -217,6 +231,10 @@ class DatabaseService {
     return adminCollection.orderBy('panchayath').snapshots();
   }
 
+  getwardhistory() {
+    return visit_history_collection;
+  }
+
   gethomename(uid, utype) async {
     var docSnapshot = await homeCollection.doc(uid).get();
     if (docSnapshot.exists) {
@@ -226,9 +244,9 @@ class DatabaseService {
   }
 
   getDetails(String uid, String utype) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('uid', uid);
-    await prefs.setString('utype', utype);
+    // final prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('uid', uid);
+    // await prefs.setString('utype', utype);
     if (utype == "Admin") {
       employee admin = employee.c();
       admin.uid = uid;
@@ -242,8 +260,10 @@ class DatabaseService {
         admin.name = data?['name'].toString();
         admin.panchayath = data?['panchayath'].toString();
         admin.phone = data?['phone'].toString();
-        setadmin(uid, admin.name, admin.email, admin.panchayath, admin.phone,
-            admin.empid);
+        print(admin.name);
+        print(admin.panchayath);
+        await setadmin(uid, admin.name, admin.email, admin.panchayath,
+            admin.phone, admin.empid);
         // <-- The value you want to retrieve.
         // Call setState if needed.
       }
@@ -265,7 +285,7 @@ class DatabaseService {
         home.name = data?['name'].toString();
         home.owner = data?['owner'].toString();
       }
-      sethome(uid, home.name, home.email, home.panchayath, home.phone,
+      await sethome(uid, home.name, home.email, home.panchayath, home.phone,
           home.ward_no, home.house_no, home.house, home.owner);
     } else {
       employee employ = employee.c();
@@ -281,8 +301,8 @@ class DatabaseService {
         employ.panchayath = data?['panchayath'].toString();
         employ.phone = data?['phone'].toString();
       }
-      setfield(uid, employ.name, employ.email, employ.panchayath, employ.phone,
-          employ.empid);
+      await setfield(uid, employ.name, employ.email, employ.panchayath,
+          employ.phone, employ.empid);
     }
   }
 

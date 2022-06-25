@@ -59,6 +59,7 @@ class employee extends appUser {
 
 employee? globadmin;
 setadmin(uid, name, email, panchayath, phone, empid) async {
+  globadmin = employee('Admin', uid, email, name, panchayath, phone, empid);
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('empid', empid);
   //globadmin?.empid = empid;
@@ -74,7 +75,6 @@ setadmin(uid, name, email, panchayath, phone, empid) async {
   //globadmin?.phone = phone;
   await prefs.setString('uid', uid);
   //globadmin?.uid = uid;
-  globadmin = employee('Admin', uid, email, name, panchayath, phone, empid);
 }
 
 initadmin() async {
@@ -99,6 +99,8 @@ initadmin() async {
 homeUser? globhome;
 sethome(
     uid, name, email, panchayath, phone, wardno, houseno, house, owner) async {
+  globhome = homeUser('Home', uid, email, name, panchayath, phone, house,
+      houseno, owner, wardno);
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('uid', uid);
   //globhome?.uid = uid;
@@ -120,8 +122,6 @@ sethome(
   //globhome?.house = house;
   await prefs.setString('owner', owner);
   //globhome?.owner = owner;
-  globhome = homeUser('Home', uid, email, name, panchayath, phone, house,
-      houseno, owner, wardno);
 }
 
 inithome() async {
@@ -159,6 +159,7 @@ setfield(
   phone,
   empid,
 ) async {
+  globfield = employee('Field', uid, email, name, panchayath, phone, empid);
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('empid', empid);
   //globfield?.empid = empid;
@@ -174,7 +175,6 @@ setfield(
   //globfield?.phone = phone;
   await prefs.setString('uid', uid);
   //globfield?.uid = uid;
-  globfield = employee('Field', uid, email, name, panchayath, phone, empid);
 }
 
 initfield() async {
