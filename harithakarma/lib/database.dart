@@ -9,6 +9,8 @@ class DatabaseService {
   var panchayath;
   final CollectionReference collection_historycollection =
       FirebaseFirestore.instance.collection('collection_history');
+  final CollectionReference complaintscollection =
+      FirebaseFirestore.instance.collection('complaints');
   final CollectionReference visit_history_collection =
       FirebaseFirestore.instance.collection('visit_history');
   final CollectionReference utypeCollection =
@@ -71,6 +73,24 @@ class DatabaseService {
         SetOptions(merge: true));
   }
 
+  Future<void> update_complaint_status(String docId) async {
+    return await complaintscollection.doc(docId).set({
+      'status': "closed",
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> add_complaint(String title, String desc, String? ward) async {
+    return await complaintscollection.doc().set(
+      {
+        'title': title,
+        "date": formatTimestamp(Timestamp.now()),
+        'desc': desc,
+        "ward": ward,
+        "status": "pending",
+        "panchayath": globhome!.panchayath
+      },
+    );
+  }
   // Future<void> updateAdmin(String name, String email, String uid, String empid,
   //     String Panchayath, String phone) async {
   //   return await adminCollection.doc(uid).update({

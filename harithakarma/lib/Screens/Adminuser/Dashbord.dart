@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Adminuser/complaints.dart';
 import 'package:harithakarma/Screens/Adminuser/profile.dart';
 import 'package:harithakarma/Screens/Adminuser/users.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
@@ -167,6 +168,16 @@ class _SideDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => adminProfile()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.rate_review_outlined),
+            title: Text('Complaints'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => complaints_admin()));
             },
           ),
           ListTile(
