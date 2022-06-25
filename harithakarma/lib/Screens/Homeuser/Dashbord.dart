@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Homeuser/complaints.dart';
 import 'package:harithakarma/Screens/Homeuser/profile.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/database.dart';
@@ -153,6 +154,16 @@ class homeSideDrawer extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.rate_review_outlined),
+            title: Text('Complaints'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => complaints()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
