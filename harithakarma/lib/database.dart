@@ -56,10 +56,16 @@ class DatabaseService {
     });
   }
 
-  Future<void> ward(String uid, String wards) async {
+  Future<void> set_ward(String uid, List wards) async {
     return await fieldCollection
         .doc(uid)
         .set({'ward': wards}, SetOptions(merge: true));
+  }
+
+  Future<void> update_collection_status(String doc_id) async {
+    return await collection_historycollection.doc(doc_id).set(
+        {'status': "collected", "datetime": DateTime.now()},
+        SetOptions(merge: true));
   }
 
   // Future<void> updateAdmin(String name, String email, String uid, String empid,
@@ -117,7 +123,7 @@ class DatabaseService {
     var docSnapshot = await fieldCollection.doc(uid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-      ward = data?['ward'].toString(); // <-- The value you want to retrieve.
+      ward = data?['ward']; // <-- The value you want to retrieve.
       // Call setState if needed.
     }
     //print(ward);
@@ -125,7 +131,7 @@ class DatabaseService {
       return '';
     } else {
       print(ward);
-      return ward.toString().split(',');
+      return ward;
     }
   }
 

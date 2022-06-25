@@ -22,40 +22,6 @@ class wards extends StatelessWidget {
           child: Column(
             children: [
               Text("Wards assigned"),
-              FutureBuilder(
-                  future: DatabaseService().getWardDetails(globfield!.uid),
-                  builder: ((context, snapshot) {
-                    if (snapshot.data != null) {
-                      ward = snapshot.data;
-                      if (ward == '') {
-                        return Text("No ward assigned yet");
-                      } else {
-                        return Flexible(
-                          child: ListView(
-                              children: ward
-                                  .map<Widget>((ward) => Container(
-                                          child: Card(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(ward),
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  DatabaseService().gotoward(
-                                                      ward,
-                                                      globfield!.panchayath);
-                                                },
-                                                child: Text("Go"))
-                                          ],
-                                        ),
-                                      )))
-                                  .toList()),
-                        );
-                      }
-                    }
-                    return CircularProgressIndicator();
-                  })),
               StreamBuilder(
                 stream: DatabaseService()
                     .getcollectionhistoryreference()
@@ -66,33 +32,76 @@ class wards extends StatelessWidget {
                 builder:
                     (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   if (streamSnapshot.hasData) {
-                    if (streamSnapshot.data!.docs.length != 0) {}
-                    ;
-                    return Flexible(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: streamSnapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final DocumentSnapshot documentSnapshot =
-                              streamSnapshot.data!.docs[index];
+                    if (streamSnapshot.data!.docs.length == 0) {
+                      return FutureBuilder(
+                          future:
+                              DatabaseService().getWardDetails(globfield!.uid),
+                          builder: ((context, snapshot) {
+                            if (snapshot.data != null) {
+                              ward = snapshot.data;
+                              if (ward == '') {
+                                return Text("No ward assigned yet");
+                              } else {
+                                return Flexible(
+                                  child: ListView(
+                                      children: ward
+                                          .map<Widget>((ward) => Container(
+                                                  child: Card(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(ward),
+                                                    ElevatedButton(
+                                                        onPressed: () {
+                                                          DatabaseService()
+                                                              .gotoward(
+                                                                  ward,
+                                                                  globfield!
+                                                                      .panchayath);
+                                                        },
+                                                        child: Text("Go"))
+                                                  ],
+                                                ),
+                                              )))
+                                          .toList()),
+                                );
+                              }
+                            }
+                            return CircularProgressIndicator();
+                          }));
+                    } else {
+                      return Flexible(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: streamSnapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
+                                streamSnapshot.data!.docs[index];
 
-                          return Card(
-                            margin: const EdgeInsets.all(10),
-                            child: ExpansionTileCard(
-                              title: Text("Owner" + documentSnapshot['name']),
-                              subtitle: Text("ward" + documentSnapshot['ward']),
-                              children: [
-                                Text("House name" + documentSnapshot['house']),
-                                ElevatedButton(
-                                    onPressed: () {}, child: Text("Collected"))
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                            return Card(
+                              margin: const EdgeInsets.all(10),
+                              child: ExpansionTileCard(
+                                title: Text("Owner" + documentSnapshot['name']),
+                                subtitle:
+                                    Text("ward" + documentSnapshot['ward']),
+                                children: [
+                                  Text(
+                                      "House name" + documentSnapshot['house']),
+                                  ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text("Collected"))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
                   }
+                  ;
                   return const Center(
                     child: CircularProgressIndicator(),
                   );

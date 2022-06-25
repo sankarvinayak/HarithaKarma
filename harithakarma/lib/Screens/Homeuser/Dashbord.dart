@@ -3,11 +3,13 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Homeuser/profile.dart';
+import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/main.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SideDrawerHome extends StatelessWidget {
@@ -70,14 +72,14 @@ class SideDrawerHome extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
-
+                    print(formatTimestamp(documentSnapshot['datetime']));
                     return Card(
                       margin: const EdgeInsets.all(10),
                       child: ExpansionTileCard(
-                        title: Text("Collected by" +
+                        title: Text("Collected by:" +
                             documentSnapshot['collector_name']),
-                        subtitle: Text(
-                            "Employee id:" + documentSnapshot['collector']),
+                        subtitle: Text("Date:" +
+                            formatTimestamp(documentSnapshot['datetime'])),
                       ),
                     );
                   },

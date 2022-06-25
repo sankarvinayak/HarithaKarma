@@ -107,9 +107,10 @@ class usertypes extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final DocumentSnapshot documentSnapshot =
                             streamSnapshot.data!.docs[index];
-                        String ward;
+                        var ward;
                         try {
-                          ward = documentSnapshot['ward'];
+                          ward = documentSnapshot['ward'].toString();
+                          print(ward);
                         } catch (e) {
                           ward = "No ward assigned";
                         }
@@ -128,7 +129,12 @@ class usertypes extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    Text("Wards assigned:" + ward),
+                                    Text("Wards assigned:" +
+                                        ward
+                                            .toString()
+                                            .substring(
+                                                1, ward.toString().length - 1)
+                                            .replaceAll(' ', '')),
                                     Container(
                                       //margin: EdgeInsets.all(5),
                                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -148,10 +154,15 @@ class usertypes extends StatelessWidget {
                                                                 InputDecoration(
                                                                     hintText:
                                                                         "wards seperated by comma"),
-                                                            controller:
-                                                                TextEditingController()
-                                                                  ..text = ward
-                                                                      .toString(),
+                                                            controller: TextEditingController()
+                                                              ..text = ward
+                                                                  .toString()
+                                                                  .substring(
+                                                                      1,
+                                                                      ward.toString().length -
+                                                                          1)
+                                                                  .replaceAll(
+                                                                      ' ', ''),
                                                             onChanged: (text) =>
                                                                 {ward = text},
                                                           )
@@ -165,11 +176,13 @@ class usertypes extends StatelessWidget {
                                                     actions: [
                                                       TextButton(
                                                           onPressed: () {
-                                                            DatabaseService().ward(
-                                                                documentSnapshot
-                                                                    .reference
-                                                                    .id,
-                                                                ward);
+                                                            DatabaseService()
+                                                                .set_ward(
+                                                                    documentSnapshot
+                                                                        .reference
+                                                                        .id,
+                                                                    ward.split(
+                                                                        ','));
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
