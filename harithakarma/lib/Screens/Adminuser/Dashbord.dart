@@ -16,7 +16,6 @@ printpanchayath() {
 }
 
 class SideDrawerAdminHome extends StatelessWidget {
-  List? wardlist;
   String? panchayath = printpanchayath();
   @override
   Widget build(BuildContext context) {
@@ -48,8 +47,9 @@ class SideDrawerAdminHome extends StatelessWidget {
                         margin: const EdgeInsets.all(10),
                         child: ListTile(
                           title: Wrap(
+                            spacing: 20,
                             children: [
-                              Text("Ward:" + documentSnapshot['ward'] + "   "),
+                              Text("Ward:" + documentSnapshot['ward']),
                               Text("Agent:" + documentSnapshot['Collector'])
                             ],
                           ),
@@ -70,7 +70,56 @@ class SideDrawerAdminHome extends StatelessWidget {
                 );
               },
             ),
-            Text("Overall details")
+            Text("Overall details"),
+            StreamBuilder(
+              stream: DatabaseService()
+                  .visit_history_collection
+                  .where('panchayath', isEqualTo: globadmin?.panchayath)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  List wardlist = [];
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: streamSnapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[index];
+                      if (!wardlist.contains(documentSnapshot['ward'])) {
+                        wardlist.add(documentSnapshot['ward']);
+                        return GestureDetector(
+                          onTap: () {
+                            print("Click");
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.all(10),
+                            child: ListTile(
+                              title: Wrap(
+                                spacing: 20,
+                                runSpacing: 20,
+                                children: [
+                                  Text("Ward:" + documentSnapshot['ward']),
+                                ],
+                              ),
+                              trailing: SizedBox(
+                                width: 100,
+                                child: Row(
+                                  children: [],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return Text('');
+                    },
+                  );
+                }
+
+                return Text("No data");
+              },
+            ),
           ],
         ));
   }
