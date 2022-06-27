@@ -27,7 +27,7 @@ class SideDrawerField extends StatelessWidget {
               Text("Wards assigned"),
               StreamBuilder(
                 stream: DatabaseService()
-                    .getcollectionhistoryreference()
+                    .collection_historycollection
                     .where('collector',
                         isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                     .where("status", isEqualTo: "arriving today")

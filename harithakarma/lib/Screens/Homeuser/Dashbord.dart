@@ -14,6 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SideDrawerHome extends StatelessWidget {
+  bool isrequested = false;
+  //try{}catch(e){}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +26,11 @@ class SideDrawerHome extends StatelessWidget {
       ),
       body: Column(
         children: [
+          ElevatedButton(
+              onPressed: () {}, child: Text("Request waste collection")),
           StreamBuilder(
             stream: DatabaseService()
-                .getcollectionhistoryreference()
+                .collection_historycollection
                 .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                 .where("status", isEqualTo: "arriving today")
                 .snapshots(),
@@ -61,7 +65,7 @@ class SideDrawerHome extends StatelessWidget {
           Text("Collection history"),
           StreamBuilder(
             stream: DatabaseService()
-                .getcollectionhistoryreference()
+                .collection_historycollection
                 .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                 .where("status", isEqualTo: "collected")
                 .orderBy('datetime', descending: true)
@@ -77,11 +81,18 @@ class SideDrawerHome extends StatelessWidget {
                     print(formatTimestamp(documentSnapshot['datetime']));
                     return Card(
                       margin: const EdgeInsets.all(10),
-                      child: ExpansionTileCard(
+                      child: ListTile(
                         title: Text("Collected by:" +
                             documentSnapshot['collector_name']),
-                        subtitle: Text("Date:" +
-                            formatTimestamp(documentSnapshot['datetime'])),
+                        subtitle: Row(
+                          children: [
+                            Flexible(
+                              child: Text("Date:" +
+                                  formatTimestamp(
+                                      documentSnapshot['datetime'])),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   },

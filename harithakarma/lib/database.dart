@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/models/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+//A class theough which all calls to the Firebase Firestore database is made
 class DatabaseService {
-  //String? uid;
   String? utype;
   var panchayath;
+  final CollectionReference collection_request =
+      FirebaseFirestore.instance.collection('collection_request');
   final CollectionReference collection_historycollection =
       FirebaseFirestore.instance.collection('collection_history');
   final CollectionReference complaintscollection =
@@ -22,6 +23,7 @@ class DatabaseService {
   final CollectionReference homeCollection =
       FirebaseFirestore.instance.collection('Home');
 
+//Add user data to the database
   Future<void> SetUserData(
       String uid, String name, String userRole, String email) async {
     return await utypeCollection
@@ -29,6 +31,17 @@ class DatabaseService {
         .set({'uid': uid, 'name': name, 'userRole': userRole, 'email': email});
   }
 
+  Future<void> add_request(
+      String panchayath, String ward, String userRole, String email) async {
+    var uid = null;
+    return await collection_request.doc(uid).set({
+      'panchayath': panchayath,
+      'ward': ward,
+      'uid': FieldValue.arrayUnion(uid)
+    });
+  }
+
+//Add admin data to the database
   Future<void> addAdmin(String name, String email, String uid, String empid,
       String Panchayath, String phone) async {
     return await adminCollection.doc(uid).set({
@@ -40,6 +53,7 @@ class DatabaseService {
     });
   }
 
+//add data to collection history
   Future<void> add_collection_history(
       String uid,
       String name,
@@ -61,24 +75,28 @@ class DatabaseService {
     });
   }
 
+//set ward for a field user
   Future<void> set_ward(String uid, List wards) async {
     return await fieldCollection
         .doc(uid)
         .set({'ward': wards}, SetOptions(merge: true));
   }
 
+//update collection status
   Future<void> update_collection_status(String docId) async {
     return await collection_historycollection.doc(docId).set(
         {'status': "collected", "datetime": DateTime.now()},
         SetOptions(merge: true));
   }
 
+//update complaint status
   Future<void> update_complaint_status(String docId) async {
     return await complaintscollection.doc(docId).set({
       'status': "closed",
     }, SetOptions(merge: true));
   }
 
+//create a new complaint
   Future<void> add_complaint(String title, String desc, String? ward) async {
     return await complaintscollection.doc().set(
       {
@@ -91,17 +109,8 @@ class DatabaseService {
       },
     );
   }
-  // Future<void> updateAdmin(String name, String email, String uid, String empid,
-  //     String Panchayath, String phone) async {
-  //   return await adminCollection.doc(uid).update({
-  //     'name': name,
-  //     'email': email,
-  //     'empid': empid,
-  //     'panchayath': Panchayath,
-  //     'phone': phone
-  //   });
-  // }
 
+//add details of home user
   Future<void> addHome(
       String name,
       String email,
@@ -120,44 +129,22 @@ class DatabaseService {
       'owner': owner,
       'house': house,
       'phone': phone
-      // 'timestamp': DateTime.now()
     });
   }
 
-  getHomeReference() {
-    return homeCollection;
-  }
-
-  getFieldReference() {
-    return fieldCollection;
-  }
-
-  getcollectionhistoryreference() {
-    return collection_historycollection;
-  }
-
+//get ward details of a field user
   getWardDetails(uid) async {
     var ward;
-    // await utypeCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
-    //   var dic = snapshot.data() as Map<String, dynamic>;
-    //   this.utype = dic['userRole'].toString();
-    // });
-    //     var collection = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await fieldCollection.doc(uid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-      ward = data?['ward']; // <-- The value you want to retrieve.
-      // Call setState if needed.
+      ward = data?['ward'];
     }
-    //print(ward);
-    if (ward == 'null') {
-      return '';
-    } else {
-      print(ward);
-      return ward;
-    }
+
+    return ward;
   }
 
+//select a ward for visit by field user add each home user to the list of home to collect
   gotoward(ward, panchayath) async {
     ward_visit(ward);
     var querySnapshot = await homeCollection
@@ -177,31 +164,9 @@ class DatabaseService {
       print(user['name']);
       print(user.reference.id);
     }
-    //print(querySnapshot.docs.length);
   }
 
-  // Future<void> updateHome(
-  //     String name,
-  //     String email,
-  //     String uid,
-  //     String Panchayath,
-  //     int ward,
-  //     int houseno,
-  //     String owner,
-  //     String house,
-  //     String phone) async {
-  //   return await homeCollection.doc(uid).update({
-  //     'name': name,
-  //     'panchayath': Panchayath,
-  //     'ward': ward,
-  //     'house_no': houseno,
-  //     'owner': owner,
-  //     'house': house,
-  //     'phone': phone
-  //     // 'timestamp': DateTime.now()
-  //   });
-  // }
-
+//add details of field agent
   Future<void> addField(String name, String email, String uid, String empid,
       String Panchayath, String phone) async {
     return await fieldCollection.doc(uid).set({
@@ -213,6 +178,7 @@ class DatabaseService {
     });
   }
 
+//add details to ward visit history
   Future<void> ward_visit(String ward) async {
     return await visit_history_collection.doc().set({
       'Collector': globfield!.name,
@@ -223,50 +189,23 @@ class DatabaseService {
     });
   }
 
-  // getPanchayath() async {
-  //   await adminCollection.doc().get().then((DocumentSnapshot snapshot) {
-  //     panchayath = snapshot.data();
-  //   });
-  //   return panchayath;
-  // }
-
+//get user type on login
   getutype(uid) async {
-    // await utypeCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
-    //   var dic = snapshot.data() as Map<String, dynamic>;
-    //   this.utype = dic['userRole'].toString();
-    // });
-    //     var collection = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await utypeCollection.doc(uid).get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-      this.utype =
-          data?['userRole'].toString(); // <-- The value you want to retrieve.
-      // Call setState if needed.
-    }
-    print(utype);
-    return utype;
-  }
-
-  getpanchayath() {
-    return adminCollection.orderBy('panchayath').snapshots();
-  }
-
-  getwardhistory() {
-    return visit_history_collection;
-  }
-
-  gethomename(uid, utype) async {
-    var docSnapshot = await homeCollection.doc(uid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
       this.utype = data?['userRole'].toString();
     }
+    return utype;
   }
 
+//list of available panchayaths
+  getpanchayath() {
+    return adminCollection.orderBy('panchayath').snapshots();
+  }
+
+//get details of user on login initialize and store user details offline
   getDetails(String uid, String utype) async {
-    // final prefs = await SharedPreferences.getInstance();
-    // await prefs.setString('uid', uid);
-    // await prefs.setString('utype', utype);
     if (utype == "Admin") {
       employee admin = employee.c();
       admin.uid = uid;
@@ -284,8 +223,6 @@ class DatabaseService {
         print(admin.panchayath);
         await setadmin(uid, admin.name, admin.email, admin.panchayath,
             admin.phone, admin.empid);
-        // <-- The value you want to retrieve.
-        // Call setState if needed.
       }
       return admin;
     } else if (utype == "Home") {
@@ -324,17 +261,5 @@ class DatabaseService {
       await setfield(uid, employ.name, employ.email, employ.panchayath,
           employ.phone, employ.empid);
     }
-  }
-
-  setuserAdmin(Panchayath) async {
-    QuerySnapshot querySnapshot =
-        await adminCollection.where('panchayath', isEqualTo: Panchayath).get();
-    var doc = querySnapshot.docs[0];
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('Adminemail', doc['email']);
-    prefs.setString('Adminname', doc['name']);
-    prefs.setString('Adminphone', doc['phone']);
-    //print(doc['name']);
-    return "hi";
   }
 }

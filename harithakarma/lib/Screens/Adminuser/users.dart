@@ -31,7 +31,7 @@ class usertypes extends StatelessWidget {
             children: [
               StreamBuilder(
                 stream: DatabaseService()
-                    .getHomeReference()
+                    .homeCollection
                     .where('panchayath', isEqualTo: globadmin!.panchayath)
                     .snapshots(),
                 builder:
@@ -96,7 +96,7 @@ class usertypes extends StatelessWidget {
               ),
               StreamBuilder(
                 stream: DatabaseService()
-                    .getFieldReference()
+                    .fieldCollection
                     .where('panchayath', isEqualTo: globadmin!.panchayath)
                     .snapshots(),
                 builder:
