@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/Screens/Fielduser/profile.dart';
-import 'package:harithakarma/Screens/Fielduser/wards.dart';
 import 'package:harithakarma/main.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -144,10 +143,7 @@ class _SideDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.dashboard),
             title: Text('Dashbord'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => wards()))
-            },
+            onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             leading: Icon(Icons.person),
