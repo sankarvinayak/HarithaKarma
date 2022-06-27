@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/complaints.dart';
 import 'package:harithakarma/Screens/Adminuser/profile.dart';
 import 'package:harithakarma/Screens/Adminuser/users.dart';
+import 'package:harithakarma/Screens/Adminuser/ward_details.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/database.dart';
@@ -91,7 +92,11 @@ class SideDrawerAdminHome extends StatelessWidget {
                         wardlist.add(documentSnapshot['ward']);
                         return GestureDetector(
                           onTap: () {
-                            print("Click");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ward(documentSnapshot['ward'])));
                           },
                           child: Card(
                             margin: const EdgeInsets.all(10),

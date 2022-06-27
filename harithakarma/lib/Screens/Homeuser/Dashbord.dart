@@ -64,6 +64,7 @@ class SideDrawerHome extends StatelessWidget {
                 .getcollectionhistoryreference()
                 .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                 .where("status", isEqualTo: "collected")
+                .orderBy('datetime', descending: true)
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               if (streamSnapshot.hasData) {

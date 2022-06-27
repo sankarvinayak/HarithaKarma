@@ -87,7 +87,7 @@ class DatabaseService {
         'desc': desc,
         "ward": ward,
         "status": "pending",
-        "panchayath": globhome!.panchayath
+        "panchayath": globhome!.panchayath,
       },
     );
   }
