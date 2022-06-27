@@ -5,6 +5,18 @@ An application for haritha karma sena who coordinate waste collection in kerala.
 - Android SDK
 - Physical or virtual mechine (For testing and debugging)
 - IDE (Android studio,VS Code....)
+- Google account for firebase
+
+## Running
+Get the source code either by downloading ZIP file or by using 
+```
+git clone https://github.com/sankarvinayak/HarithaKarma
+```
+and can be run by excicuting
+```
+flutter pub get
+flutter run
+```
 ## Users
 Every user can
 - Register with email and password
