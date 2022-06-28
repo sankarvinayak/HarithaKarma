@@ -55,7 +55,35 @@ class SideDrawerField extends StatelessWidget {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Text(ward),
+                                                    Text("Ward:" + ward),
+                                                    FutureBuilder(
+                                                        future: DatabaseService()
+                                                            .get_ward_requet_count(
+                                                                ward),
+                                                        builder: ((context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                              .hasData) {
+                                                            return Text("Request:" +
+                                                                snapshot.data
+                                                                    .toString());
+                                                          }
+                                                          return CircularProgressIndicator();
+                                                        })),
+                                                    FutureBuilder(
+                                                        future: DatabaseService()
+                                                            .get_lastvisited(
+                                                                ward),
+                                                        builder: ((context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                              .hasData) {
+                                                            return Text("visit:" +
+                                                                snapshot.data
+                                                                    .toString());
+                                                          }
+                                                          return CircularProgressIndicator();
+                                                        })),
                                                     ElevatedButton(
                                                         onPressed: () {
                                                           DatabaseService()

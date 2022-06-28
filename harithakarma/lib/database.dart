@@ -70,6 +70,38 @@ class DatabaseService {
     }
   }
 
+  get_ward_requet_count(String ward) async {
+    var querySnapshot = await collection_request
+        .where('panchayath', isEqualTo: globfield!.panchayath)
+        .where('ward', isEqualTo: ward)
+        .get();
+    // print("Function call");
+    try {
+      List<dynamic> users = querySnapshot.docs[0]['uid'];
+      // print(users.length);
+      return users.length.toString();
+    } catch (e) {
+      //print(0);
+      return 0.toString();
+    }
+  }
+
+  get_lastvisited(String ward) async {
+    var querySnapshot = await visit_history_collection
+        .where('panchayath', isEqualTo: globfield!.panchayath)
+        .where('ward', isEqualTo: ward)
+        .orderBy('date', descending: true)
+        .get();
+    try {
+      String date = querySnapshot.docs[0]['date'];
+      print(date);
+      return date;
+    } catch (e) {
+      print(e);
+      return "";
+    }
+  }
+
 //Add admin data to the database
   Future<void> addAdmin(String name, String email, String uid, String empid,
       String Panchayath, String phone) async {
