@@ -12,7 +12,7 @@ Get the source code either by downloading ZIP file or by using
 ```
 git clone https://github.com/sankarvinayak/HarithaKarma
 ```
-setup [firebase](https://console.firebase.google.com) by following the setup guide
+setup [firebase](https://console.firebase.google.com) by following the [setup guide](https://firebase.google.com/docs/flutter/setup)
 and project can be run by excicuting
 ```
 flutter pub get
