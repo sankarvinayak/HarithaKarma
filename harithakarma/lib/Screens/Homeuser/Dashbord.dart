@@ -13,11 +13,18 @@ import 'package:harithakarma/main.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SideDrawerHome extends StatelessWidget {
-  bool isrequested = false;
+class SideDrawerHome extends StatefulWidget {
+  @override
+  _SideDrawerHome createState() => _SideDrawerHome();
+}
+
+class _SideDrawerHome extends State<SideDrawerHome> {
+  //bool isrequested = DatabaseService().check_requested();
+
   //try{}catch(e){}
   @override
   Widget build(BuildContext context) {
+    var isrequested = true;
     return Scaffold(
       drawer: homeSideDrawer(),
       appBar: AppBar(
@@ -26,8 +33,25 @@ class SideDrawerHome extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-              onPressed: () {}, child: Text("Request waste collection")),
+          FutureBuilder(
+              future: DatabaseService().check_requested(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data != true) {
+                    return ElevatedButton(
+                        onPressed: () async {
+                          await DatabaseService().add_collection_request();
+                          setState(() {});
+                        },
+                        child: Text("Request waste collection"));
+                  }
+                }
+                return const Center(
+                  child: Text("Waste collection Requested"),
+                );
+              }),
+          // if (isrequested)
+
           StreamBuilder(
             stream: DatabaseService()
                 .collection_historycollection

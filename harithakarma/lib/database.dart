@@ -31,14 +31,43 @@ class DatabaseService {
         .set({'uid': uid, 'name': name, 'userRole': userRole, 'email': email});
   }
 
-  Future<void> add_request(
-      String panchayath, String ward, String userRole, String email) async {
-    var uid = null;
-    return await collection_request.doc(uid).set({
-      'panchayath': panchayath,
-      'ward': ward,
-      'uid': FieldValue.arrayUnion(uid)
-    });
+  Future<void> add_collection_request() async {
+    var doc_id = await check_request();
+    List uid = globhome!.uid!.split(' ');
+    List<dynamic> uid_d = List<dynamic>.from(uid);
+    return await collection_request.doc(doc_id).set({
+      'panchayath': globhome!.panchayath,
+      'ward': globhome!.ward_no,
+      'uid': FieldValue.arrayUnion(uid_d),
+      'status': "pending"
+    }, SetOptions(merge: true));
+  }
+
+  check_request() async {
+    var querySnapshot = await collection_request
+        .where('panchayath', isEqualTo: globhome!.panchayath)
+        .where('ward', isEqualTo: globhome!.ward_no)
+        .where('status', isEqualTo: 'pending')
+        .get();
+    try {
+      return querySnapshot.docs[0].reference.id;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  check_requested() async {
+    var querySnapshot = await collection_request
+        .where('panchayath', isEqualTo: globhome!.panchayath)
+        .where('ward', isEqualTo: globhome!.ward_no)
+        .where('status', isEqualTo: 'pending')
+        .get();
+    try {
+      List<dynamic> users = querySnapshot.docs[0]['uid'];
+      return users.contains(globhome!.uid);
+    } catch (e) {
+      return false;
+    }
   }
 
 //Add admin data to the database
