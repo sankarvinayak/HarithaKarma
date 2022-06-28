@@ -11,7 +11,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../database.dart';
 import '../../service/auth.dart';
 
-class SideDrawerField extends StatelessWidget {
+class SideDrawerField extends StatefulWidget {
+  @override
+  @override
+  _SideDrawerField createState() => _SideDrawerField();
+}
+
+class _SideDrawerField extends State<SideDrawerField> {
   var ward;
   @override
   Widget build(BuildContext context) {
@@ -85,12 +91,13 @@ class SideDrawerField extends StatelessWidget {
                                                           return CircularProgressIndicator();
                                                         })),
                                                     ElevatedButton(
-                                                        onPressed: () {
-                                                          DatabaseService()
+                                                        onPressed: () async {
+                                                          await DatabaseService()
                                                               .gotoward(
                                                                   ward,
                                                                   globfield!
                                                                       .panchayath);
+                                                          setState(() {});
                                                         },
                                                         child: Text("Go"))
                                                   ],
