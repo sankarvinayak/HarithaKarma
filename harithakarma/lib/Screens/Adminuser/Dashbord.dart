@@ -27,106 +27,119 @@ class SideDrawerAdminHome extends StatelessWidget {
           title: Text('Admin'),
           backgroundColor: Color.fromARGB(255, 23, 75, 7),
         ),
-        body: Column(
-          children: [
-            Text("Todays details"),
-            StreamBuilder(
-              stream: DatabaseService()
-                  .visit_history_collection
-                  .where('panchayath', isEqualTo: globadmin?.panchayath)
-                  .where('date', isEqualTo: formatTimestamp(Timestamp.now()))
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: streamSnapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final DocumentSnapshot documentSnapshot =
-                          streamSnapshot.data!.docs[index];
-                      return Card(
-                        margin: const EdgeInsets.all(10),
-                        child: ListTile(
-                          title: Wrap(
-                            spacing: 20,
-                            children: [
-                              Text("Ward:" + documentSnapshot['ward']),
-                              Text("Agent:" + documentSnapshot['Collector'])
-                            ],
-                          ),
-                          trailing: SizedBox(
-                            width: 100,
-                            child: Row(
-                              children: [],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
-            Text("Overall details"),
-            StreamBuilder(
-              stream: DatabaseService()
-                  .visit_history_collection
-                  .where('panchayath', isEqualTo: globadmin?.panchayath)
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  List wardlist = [];
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: streamSnapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final DocumentSnapshot documentSnapshot =
-                          streamSnapshot.data!.docs[index];
-                      if (!wardlist.contains(documentSnapshot['ward'])) {
-                        wardlist.add(documentSnapshot['ward']);
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ward(documentSnapshot['ward'])));
-                          },
-                          child: Card(
-                            margin: const EdgeInsets.all(10),
-                            child: ListTile(
-                              title: Wrap(
-                                spacing: 20,
-                                runSpacing: 20,
-                                children: [
-                                  Text("Ward:" + documentSnapshot['ward']),
-                                ],
-                              ),
-                              trailing: SizedBox(
-                                width: 100,
-                                child: Row(
-                                  children: [],
-                                ),
-                              ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "Todays details",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              StreamBuilder(
+                stream: DatabaseService()
+                    .visit_history_collection
+                    .where('panchayath', isEqualTo: globadmin?.panchayath)
+                    .where('date', isEqualTo: formatTimestamp(Timestamp.now()))
+                    .snapshots(),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  if (streamSnapshot.hasData) {
+                    return ListView.builder(
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: streamSnapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final DocumentSnapshot documentSnapshot =
+                            streamSnapshot.data!.docs[index];
+                        return Card(
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Ward:" + documentSnapshot['ward']),
+                                Text("Agent:" + documentSnapshot['Collector'])
+                              ],
                             ),
                           ),
                         );
-                      }
-                      return Text('');
-                    },
-                  );
-                }
+                      },
+                    );
+                  }
 
-                return Text("No data");
-              },
-            ),
-          ],
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+              Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Overall details",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
+              StreamBuilder(
+                stream: DatabaseService()
+                    .visit_history_collection
+                    .where('panchayath', isEqualTo: globadmin?.panchayath)
+                    .orderBy('ward')
+                    .snapshots(),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  if (streamSnapshot.hasData) {
+                    List wardlist = [];
+                    return ListView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount: streamSnapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final DocumentSnapshot documentSnapshot =
+                            streamSnapshot.data!.docs[index];
+                        if (!wardlist.contains(documentSnapshot['ward'])) {
+                          wardlist.add(documentSnapshot['ward']);
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ward(documentSnapshot['ward'])));
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.all(10),
+                              child: ListTile(
+                                title: Wrap(
+                                  spacing: 20,
+                                  runSpacing: 20,
+                                  children: [
+                                    Text("Ward:" + documentSnapshot['ward']),
+                                  ],
+                                ),
+                                trailing: SizedBox(
+                                  width: 100,
+                                  child: Row(
+                                    children: [],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          height: 0,
+                        );
+                      },
+                    );
+                  }
+
+                  return Text("No data");
+                },
+              ),
+            ],
+          ),
         ));
   }
 }

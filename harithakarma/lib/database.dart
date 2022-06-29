@@ -32,7 +32,7 @@ class DatabaseService {
   }
 
   Future<void> add_collection_request() async {
-    var doc_id = await check_request();
+    var doc_id = await check_request(globhome!.ward_no, globhome!.panchayath);
     List uid = globhome!.uid!.split(' ');
     List<dynamic> uid_d = List<dynamic>.from(uid);
     return await collection_request.doc(doc_id).set({
@@ -43,10 +43,10 @@ class DatabaseService {
     }, SetOptions(merge: true));
   }
 
-  check_request() async {
+  check_request(String? ward, String? panchayath) async {
     var querySnapshot = await collection_request
-        .where('panchayath', isEqualTo: globhome!.panchayath)
-        .where('ward', isEqualTo: globhome!.ward_no)
+        .where('panchayath', isEqualTo: panchayath)
+        .where('ward', isEqualTo: ward)
         .where('status', isEqualTo: 'pending')
         .get();
     try {
@@ -208,6 +208,7 @@ class DatabaseService {
 //select a ward for visit by field user add each home user to the list of home to collect
   gotoward(ward, panchayath) async {
     ward_visit(ward);
+    update_request_status(ward);
     var querySnapshot = await homeCollection
         .where('panchayath', isEqualTo: panchayath)
         .where('ward', isEqualTo: ward)
@@ -237,6 +238,15 @@ class DatabaseService {
       'panchayath': Panchayath,
       'phone': phone
     });
+  }
+
+  Future<void> update_request_status(String ward) async {
+    var docid = await check_request(ward, globfield!.panchayath);
+    if (docid != null) {
+      return await collection_request.doc(docid).set({
+        'status': "collected",
+      }, SetOptions(merge: true));
+    }
   }
 
 //add details to ward visit history

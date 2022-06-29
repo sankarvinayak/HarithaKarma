@@ -30,7 +30,13 @@ class _SideDrawerField extends State<SideDrawerField> {
         body: Container(
           child: Column(
             children: [
-              Text("Wards assigned"),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "Wards assigned",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
               StreamBuilder(
                 stream: DatabaseService()
                     .collection_historycollection
