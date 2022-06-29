@@ -42,47 +42,49 @@ class usertypes extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final DocumentSnapshot documentSnapshot =
                             streamSnapshot.data!.docs[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: ExpansionTileCard(
-                            expandedColor: Color.fromARGB(255, 185, 221, 155),
-                            baseColor: Color.fromARGB(255, 204, 235, 211),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            title: Text(documentSnapshot['name']),
-                            subtitle: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "Ward Number:" + documentSnapshot['ward'])),
-                            children: [
-                              Divider(
-                                thickness: 1.0,
-                                height: 1.0,
-                              ),
-                              Align(
+                        return Container(
+                          margin: const EdgeInsets.all(5),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: ExpansionTileCard(
+                              expandedColor: Color.fromARGB(255, 228, 253, 187),
+                              baseColor: Color.fromARGB(255, 204, 235, 211),
+
+                              title: Text(documentSnapshot['name']),
+                              subtitle: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 5.0,
-                                        vertical: 5.0,
-                                      ),
-                                      child: Text("Owner:" +
-                                          documentSnapshot['owner']))),
-                              Text("House Number:" +
-                                  documentSnapshot['house_no']),
-                              Text("House Name:" + documentSnapshot['house']),
-                              Text("Phone:" + documentSnapshot['phone']),
-                            ],
-                            // margin: const EdgeInsets.all(10),
-                            // child: ListTile(
-                            //   title: Text(documentSnapshot['name']),
-                            //   trailing: SizedBox(
-                            //     width: 100,
-                            //     child: Row(
-                            //       children: [],
-                            //     ),
-                            //   ),
-                            // ),
+                                  child: Text("Ward Number:" +
+                                      documentSnapshot['ward'])),
+                              children: [
+                                Divider(
+                                  thickness: 1.0,
+                                  height: 1.0,
+                                ),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 5.0,
+                                          vertical: 5.0,
+                                        ),
+                                        child: Text("Owner:" +
+                                            documentSnapshot['owner']))),
+                                Text("House Number:" +
+                                    documentSnapshot['house_no']),
+                                Text("House Name:" + documentSnapshot['house']),
+                                Text("Phone:" + documentSnapshot['phone']),
+                              ],
+                              // margin: const EdgeInsets.all(10),
+                              // child: ListTile(
+                              //   title: Text(documentSnapshot['name']),
+                              //   trailing: SizedBox(
+                              //     width: 100,
+                              //     child: Row(
+                              //       children: [],
+                              //     ),
+                              //   ),
+                              // ),
+                            ),
                           ),
                         );
                       },
@@ -102,6 +104,7 @@ class usertypes extends StatelessWidget {
                 builder:
                     (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   if (streamSnapshot.hasData) {
+                    bool is_assigned = true;
                     return ListView.builder(
                       itemCount: streamSnapshot.data!.docs.length,
                       itemBuilder: (context, index) {
@@ -111,12 +114,14 @@ class usertypes extends StatelessWidget {
                         try {
                           ward = documentSnapshot['ward'].toString();
                           print(ward);
+                          is_assigned = true;
                         } catch (e) {
                           ward = "No ward assigned";
+                          is_assigned = false;
                         }
-                        if (ward == '') {
-                          ward = "No ward assigned";
-                        }
+                        // if (ward == '') {
+                        //   ward = "No ward assigned";
+                        // }
 
                         return Card(
                           margin: const EdgeInsets.all(10),
@@ -130,17 +135,20 @@ class usertypes extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Text("Wards assigned:" +
-                                        ward
-                                            .toString()
-                                            .substring(
-                                                1, ward.toString().length - 1)
-                                            .replaceAll(' ', '')),
+                                        (is_assigned
+                                            ? ward
+                                                .toString()
+                                                .substring(1,
+                                                    ward.toString().length - 1)
+                                                .replaceAll(' ', '')
+                                            : ward)),
                                     Container(
                                       //margin: EdgeInsets.all(5),
                                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
 
                                       child: ElevatedButton(
                                         onPressed: () {
+                                          bool isedit = false;
                                           showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
@@ -150,6 +158,9 @@ class usertypes extends StatelessWidget {
                                                                 "No ward assigned") !=
                                                             0
                                                         ? TextField(
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
                                                             decoration:
                                                                 InputDecoration(
                                                                     hintText:
@@ -164,25 +175,36 @@ class usertypes extends StatelessWidget {
                                                                   .replaceAll(
                                                                       ' ', ''),
                                                             onChanged: (text) =>
-                                                                {ward = text},
+                                                                {
+                                                              ward = text,
+                                                              isedit = true
+                                                            },
                                                           )
                                                         : TextField(
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
                                                             decoration:
                                                                 InputDecoration(
                                                                     hintText:
                                                                         "wards seperated by comma"),
                                                             onChanged: (text) =>
-                                                                {ward = text}),
+                                                                {
+                                                                  ward = text,
+                                                                  isedit = true
+                                                                }),
                                                     actions: [
                                                       TextButton(
                                                           onPressed: () {
-                                                            DatabaseService()
-                                                                .set_ward(
-                                                                    documentSnapshot
-                                                                        .reference
-                                                                        .id,
-                                                                    ward.split(
-                                                                        ','));
+                                                            if (isedit) {
+                                                              DatabaseService().set_ward(
+                                                                  documentSnapshot
+                                                                      .reference
+                                                                      .id,
+                                                                  ward.split(
+                                                                      ','));
+                                                            }
+
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();

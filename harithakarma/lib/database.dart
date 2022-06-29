@@ -74,6 +74,7 @@ class DatabaseService {
     var querySnapshot = await collection_request
         .where('panchayath', isEqualTo: globfield!.panchayath)
         .where('ward', isEqualTo: ward)
+        .where('status', isEqualTo: "pending")
         .get();
     // print("Function call");
     try {

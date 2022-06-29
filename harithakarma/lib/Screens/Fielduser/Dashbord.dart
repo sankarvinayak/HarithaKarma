@@ -62,51 +62,58 @@ class _SideDrawerField extends State<SideDrawerField> {
                                       children: ward
                                           .map<Widget>((ward) => Container(
                                                   child: Card(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text("Ward:" + ward),
-                                                    FutureBuilder(
-                                                        future: DatabaseService()
-                                                            .get_ward_requet_count(
-                                                                ward),
-                                                        builder: ((context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            return Text("Request:" +
-                                                                snapshot.data
-                                                                    .toString());
-                                                          }
-                                                          return CircularProgressIndicator();
-                                                        })),
-                                                    FutureBuilder(
-                                                        future: DatabaseService()
-                                                            .get_lastvisited(
-                                                                ward),
-                                                        builder: ((context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            return Text("visit:" +
-                                                                snapshot.data
-                                                                    .toString());
-                                                          }
-                                                          return CircularProgressIndicator();
-                                                        })),
-                                                    ElevatedButton(
-                                                        onPressed: () async {
-                                                          await DatabaseService()
-                                                              .gotoward(
-                                                                  ward,
-                                                                  globfield!
-                                                                      .panchayath);
-                                                          setState(() {});
-                                                        },
-                                                        child: Text("Go"))
-                                                  ],
+                                                margin: const EdgeInsets.all(7),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text("Ward:" + ward),
+                                                      FutureBuilder(
+                                                          future: DatabaseService()
+                                                              .get_ward_requet_count(
+                                                                  ward),
+                                                          builder: ((context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              return Text(
+                                                                  "Request:" +
+                                                                      snapshot
+                                                                          .data
+                                                                          .toString());
+                                                            }
+                                                            return CircularProgressIndicator();
+                                                          })),
+                                                      FutureBuilder(
+                                                          future: DatabaseService()
+                                                              .get_lastvisited(
+                                                                  ward),
+                                                          builder: ((context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              return Text("visit:" +
+                                                                  snapshot.data
+                                                                      .toString());
+                                                            }
+                                                            return CircularProgressIndicator();
+                                                          })),
+                                                      ElevatedButton(
+                                                          onPressed: () async {
+                                                            await DatabaseService()
+                                                                .gotoward(
+                                                                    ward,
+                                                                    globfield!
+                                                                        .panchayath);
+                                                            setState(() {});
+                                                          },
+                                                          child: Text("Go"))
+                                                    ],
+                                                  ),
                                                 ),
                                               )))
                                           .toList()),
