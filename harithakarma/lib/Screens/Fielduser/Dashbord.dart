@@ -120,7 +120,7 @@ class _SideDrawerField extends State<SideDrawerField> {
                                 );
                               }
                             }
-                            return CircularProgressIndicator();
+                            return Text("No data available");
                           }));
                     } else {
                       return Flexible(
@@ -160,7 +160,7 @@ class _SideDrawerField extends State<SideDrawerField> {
                   }
                   ;
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("No data available"),
                   );
                 },
               ),
