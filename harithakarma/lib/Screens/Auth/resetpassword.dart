@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:harithakarma/Screens/Auth/resetpassword.dart';
 import 'package:harithakarma/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
@@ -9,18 +8,17 @@ import '../Homeuser/Dashbord.dart';
 import '../Adminuser/Dashbord.dart';
 import '../Fielduser/Dashbord.dart';
 
-class Login extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
-  _Login createState() => _Login();
+  _ResetPassword createState() => _ResetPassword();
 }
 
-class _Login extends State<Login> {
+class _ResetPassword extends State<ResetPassword> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  String error = '';
+  String text = '';
   bool loading = false;
   String email = '';
-  String password = '';
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -49,7 +47,7 @@ class _Login extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Login',
+                            'Reset Password',
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
@@ -75,19 +73,9 @@ class _Login extends State<Login> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        suffixIcon: Icon(Icons.visibility_off),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      },
-                    ),
+                    Text(text,
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 16, 94, 16))),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -96,17 +84,6 @@ class _Login extends State<Login> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ResetPassword()));
-                            },
-                            child: Text.rich(
-                              TextSpan(text: 'Forget password? ', children: []),
-                            ),
-                          ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xffEE7B23),
@@ -115,39 +92,17 @@ class _Login extends State<Login> {
                             onPressed: () async {
                               setState(() => loading = true);
                               dynamic result =
-                                  await _auth.SignIn(email, password);
+                                  await _auth.sendPasswordResetEmail(email);
                               if (result == null) {
                                 setState(() {
                                   loading = false;
+                                  text =
+                                      "Password reset email send if there is a registered account";
                                 });
-                              } else {
-                                await DatabaseService().getDetails(
-                                    FirebaseAuth.instance.currentUser!.uid,
-                                    result);
-
-                                if (result == "Admin") {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerAdminHome()));
-                                } else if (result == "Field") {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerField()));
-                                } else {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerHome()));
-                                }
                               }
                             },
-                            child: Text('Login'),
-                          )
+                            child: Text('Send password reset email'),
+                          ),
                         ],
                       ),
                     ),

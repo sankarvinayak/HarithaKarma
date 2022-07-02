@@ -33,7 +33,7 @@ class _SideDrawerField extends State<SideDrawerField> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  "Wards assigned",
+                  "Wards details",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
