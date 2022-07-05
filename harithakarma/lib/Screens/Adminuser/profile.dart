@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Shared/netcheck.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Shared/loading.dart';

@@ -8,7 +8,7 @@ import 'package:harithakarma/main.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../database.dart';
+import '../../service/database.dart';
 import '../../service/auth.dart';
 
 class SideDrawerField extends StatefulWidget {

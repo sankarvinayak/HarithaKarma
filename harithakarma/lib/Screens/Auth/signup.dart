@@ -8,7 +8,7 @@ import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
 import 'package:harithakarma/Shared/loading.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import '../Homeuser/Dashbord.dart';
 
 class Signup extends StatefulWidget {
@@ -119,9 +119,6 @@ class _Signup extends State<Signup> {
                     const SizedBox(
                       height: 30.0,
                     ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
                     Container(
                       height: 60,
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -175,9 +172,6 @@ class _Signup extends State<Signup> {
                         errorText: 'enter valid phone no',
                         keyboard: TextInputType.phone,
                         isValid: (val) {}),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
                     const SizedBox(
                       height: 30.0,
                     ),
@@ -391,9 +385,6 @@ class _Signup extends State<Signup> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
@@ -422,7 +413,55 @@ class _Signup extends State<Signup> {
                               try {
                                 newUser = await _auth.signUpEmail(
                                     email!, password!, name!, _dropDownValue);
+
+                                if (newUser != null) {
+                                  // DatabaseService()
+                                  //     .saveUser(newUser, _dropDownValue);
+                                  if (_dropDownValue == 'Admin') {
+                                    setadmin(newUser, name, email, _Panchayath,
+                                        phone, empid);
+                                    DatabaseService().addAdmin(name!, email!,
+                                        newUser, empid!, _Panchayath, phone!);
+
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerAdminHome()));
+                                  } else if (_dropDownValue == 'Field') {
+                                    setfield(newUser, name, email, _Panchayath,
+                                        phone, empid);
+                                    DatabaseService().addField(name!, email!,
+                                        newUser, empid!, _Panchayath, phone!);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerField()));
+                                  } else {
+                                    sethome(newUser, name, email, _Panchayath,
+                                        phone, wardno, houseno, house, owner);
+                                    DatabaseService().addHome(
+                                        name!,
+                                        email!,
+                                        newUser,
+                                        _Panchayath,
+                                        wardno!,
+                                        houseno!,
+                                        owner!,
+                                        house!,
+                                        phone!);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerHome()));
+                                  }
+                                }
                               } catch (e) {
+                                setState(() {
+                                  isLoading = false;
+                                });
                                 showDialog(
                                     context: context,
                                     builder: (ctx) => AlertDialog(
@@ -436,121 +475,6 @@ class _Signup extends State<Signup> {
                                                 child: const Text("Close"))
                                           ],
                                         ));
-                              }
-
-                              if (newUser != null) {
-                                // DatabaseService()
-                                //     .saveUser(newUser, _dropDownValue);
-                                if (_dropDownValue == 'Admin') {
-                                  setadmin(newUser, name, email, _Panchayath,
-                                      phone, empid);
-                                  DatabaseService().addAdmin(name!, email!,
-                                      newUser, empid!, _Panchayath, phone!);
-
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerAdminHome()));
-                                } else if (_dropDownValue == 'Field') {
-                                  setfield(newUser, name, email, _Panchayath,
-                                      phone, empid);
-                                  DatabaseService().addField(name!, email!,
-                                      newUser, empid!, _Panchayath, phone!);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerField()));
-                                } else {
-                                  sethome(newUser, name, email, _Panchayath,
-                                      phone, wardno, houseno, house, owner);
-                                  DatabaseService().addHome(
-                                      name!,
-                                      email!,
-                                      newUser,
-                                      _Panchayath,
-                                      wardno!,
-                                      houseno!,
-                                      owner!,
-                                      house!,
-                                      phone!);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerHome()));
-                                }
-                              } else {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                try {
-                                  newUser = await _auth.signUpEmail(
-                                      email!, password!, name!, _dropDownValue);
-
-                                  if (newUser != null) {
-                                    // DatabaseService()
-                                    //     .saveUser(newUser, _dropDownValue);
-                                    if (_dropDownValue == 'Admin') {
-                                      setadmin(newUser, name, email,
-                                          _Panchayath, phone, empid);
-                                      DatabaseService().addAdmin(name!, email!,
-                                          newUser, empid!, _Panchayath, phone!);
-
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  SideDrawerAdminHome()));
-                                    } else if (_dropDownValue == 'Field') {
-                                      setfield(newUser, name, email,
-                                          _Panchayath, phone, empid);
-                                      DatabaseService().addField(name!, email!,
-                                          newUser, empid!, _Panchayath, phone!);
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  SideDrawerField()));
-                                    } else {
-                                      sethome(newUser, name, email, _Panchayath,
-                                          phone, wardno, houseno, house, owner);
-                                      DatabaseService().addHome(
-                                          name!,
-                                          email!,
-                                          newUser,
-                                          _Panchayath,
-                                          wardno!,
-                                          houseno!,
-                                          owner!,
-                                          house!,
-                                          phone!);
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  SideDrawerHome()));
-                                    }
-                                  } else {}
-                                } catch (e) {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                            title: Text("Error occured"),
-                                            content: Text(e.toString()),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(ctx).pop();
-                                                  },
-                                                  child: Text("Close"))
-                                            ],
-                                          ));
-                                }
                               }
                             },
                             child: const Text('Register'),

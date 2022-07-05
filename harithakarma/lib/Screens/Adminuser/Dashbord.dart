@@ -6,7 +6,7 @@ import 'package:harithakarma/Screens/Adminuser/users.dart';
 import 'package:harithakarma/Screens/Adminuser/ward_details.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

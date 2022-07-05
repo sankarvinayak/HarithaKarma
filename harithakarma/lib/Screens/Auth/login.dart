@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
 import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
 import 'package:harithakarma/Shared/custom_wigdets/PasswordBox.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
 import 'signup.dart';
@@ -119,48 +119,65 @@ class _Login extends State<Login> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              print(email);
-                              print(validEmail);
+                              if (email != '' && password != '') {
+                                print(email);
+                                print(validEmail);
 
-                              print(password);
-                              print(validPassword);
+                                print(password);
+                                print(validPassword);
 
-                              setState(() => loading = true);
-                              try {
-                                result = await _auth.SignIn(email, password);
+                                setState(() => loading = true);
+                                try {
+                                  result = await _auth.SignIn(email, password);
 
-                                await DatabaseService().getDetails(
-                                    FirebaseAuth.instance.currentUser!.uid,
-                                    result);
+                                  await DatabaseService().getDetails(
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                      result);
 
-                                if (result == "Admin") {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerAdminHome()));
-                                } else if (result == "Field") {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerField()));
-                                } else {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerHome()));
+                                  if (result == "Admin") {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerAdminHome()));
+                                  } else if (result == "Field") {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerField()));
+                                  } else {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerHome()));
+                                  }
+                                } catch (e) {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title: Text("Error occured"),
+                                            content: Text(e.toString()),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: Text("Close"))
+                                            ],
+                                          ));
                                 }
-                              } catch (e) {
-                                setState(() {
-                                  loading = false;
-                                });
+                              } else {
                                 showDialog(
                                     context: context,
                                     builder: (ctx) => AlertDialog(
                                           title: Text("Error occured"),
-                                          content: Text(e.toString()),
+                                          content: Text(
+                                              "Enter username and password"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
