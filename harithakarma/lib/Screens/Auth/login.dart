@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
+import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
+import 'package:harithakarma/Shared/custom_wigdets/PasswordBox.dart';
 import 'package:harithakarma/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
@@ -60,35 +62,25 @@ class _Login extends State<Login> {
                     SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        suffixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
-                    ),
+                    InputBox(
+                        onChange: (val) {
+                          setState(() => email = val);
+                        },
+                        regexValue: RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
+                        specifiedIcon: Icons.email,
+                        label: 'email_id',
+                        errorText: 'enter a vaild email',
+                        keyboard: TextInputType.emailAddress),
                     SizedBox(
                       height: 20.0,
                     ),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        suffixIcon: Icon(Icons.visibility_off),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      },
-                    ),
+                    PasswordBox(
+                        onChange: (val) {
+                          setState(() => password = val);
+                        },
+                        regexValue: RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -114,6 +106,8 @@ class _Login extends State<Login> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
+                              print(email);
+                              print(password);
                               setState(() => loading = true);
                               try {
                                 result = await _auth.SignIn(email, password);
