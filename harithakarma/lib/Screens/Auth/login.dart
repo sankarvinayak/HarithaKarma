@@ -21,6 +21,7 @@ class _Login extends State<Login> {
   bool loading = false;
   String email = '';
   String password = '';
+  dynamic result = null;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -114,8 +115,24 @@ class _Login extends State<Login> {
                             ),
                             onPressed: () async {
                               setState(() => loading = true);
-                              dynamic result =
-                                  await _auth.SignIn(email, password);
+                              try {
+                                result = await _auth.SignIn(email, password);
+                              } catch (e) {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                          title: Text("Error occured"),
+                                          content: Text(e.toString()),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                },
+                                                child: Text("Close"))
+                                          ],
+                                        ));
+                              }
+
                               if (result == null) {
                                 setState(() {
                                   loading = false;

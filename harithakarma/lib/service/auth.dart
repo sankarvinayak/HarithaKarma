@@ -15,9 +15,8 @@ class AuthService {
 
       User? user = result.user;
       return DatabaseService().getutype(user!.uid);
-    } catch (error) {
-      print(error.toString());
-      return null;
+    } on FirebaseException catch (e) {
+      throw (e.message.toString());
     }
   }
 
@@ -57,9 +56,8 @@ class AuthService {
       await DatabaseService()
           .SetUserData(authResult.user!.uid, name, userRole, email);
       return authResult.user!.uid;
-    } catch (e) {
-      print(e.toString());
-      return null;
+    } on FirebaseException catch (e) {
+      throw (e.message.toString());
     }
   }
 

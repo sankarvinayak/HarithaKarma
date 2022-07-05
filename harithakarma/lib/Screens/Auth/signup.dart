@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
+import 'package:harithakarma/Screens/Auth/resetpassword.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
@@ -29,6 +30,7 @@ class _Signup extends State<Signup> {
   String? wardno;
   String? houseno;
   String? owner;
+  var newUser = null;
 
   @override
   Widget build(BuildContext context) {
@@ -421,9 +423,16 @@ class _Signup extends State<Signup> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Forget password?',
-                            style: TextStyle(fontSize: 12.0),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ResetPassword()));
+                            },
+                            child: Text.rich(
+                              TextSpan(text: 'Forget password? ', children: []),
+                            ),
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -434,8 +443,25 @@ class _Signup extends State<Signup> {
                               setState(() {
                                 isLoading = true;
                               });
-                              final newUser = await _auth.signUpEmail(
-                                  email!, password!, name!, _dropDownValue);
+                              try {
+                                newUser = await _auth.signUpEmail(
+                                    email!, password!, name!, _dropDownValue);
+                              } catch (e) {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                          title: Text("Error occured"),
+                                          content: Text(e.toString()),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                },
+                                                child: Text("Close"))
+                                          ],
+                                        ));
+                              }
+
                               if (newUser != null) {
                                 // DatabaseService()
                                 //     .saveUser(newUser, _dropDownValue);
