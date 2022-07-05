@@ -24,6 +24,9 @@ class _Login extends State<Login> {
   String email = '';
   String password = '';
   dynamic result = null;
+  bool validEmail = false;
+  bool validPassword = false;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -50,7 +53,7 @@ class _Login extends State<Login> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             'Login',
                             style: TextStyle(
@@ -59,12 +62,17 @@ class _Login extends State<Login> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     InputBox(
                         onChange: (val) {
                           setState(() => email = val);
+                        },
+                        isValid: (val) {
+                          setState(() {
+                            validEmail = val;
+                          });
                         },
                         regexValue: RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
@@ -72,16 +80,21 @@ class _Login extends State<Login> {
                         label: 'Email',
                         errorText: 'enter a vaild email',
                         keyboard: TextInputType.emailAddress),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     PasswordBox(
                         onChange: (val) {
                           setState(() => password = val);
                         },
+                        isValid: (val) {
+                          setState(() {
+                            validPassword = val;
+                          });
+                        },
                         regexValue: RegExp(
                             r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     Padding(
@@ -96,18 +109,22 @@ class _Login extends State<Login> {
                                   MaterialPageRoute(
                                       builder: (context) => ResetPassword()));
                             },
-                            child: Text.rich(
+                            child: const Text.rich(
                               TextSpan(text: 'Forget password? ', children: []),
                             ),
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xffEE7B23),
+                              primary: const Color(0xffEE7B23),
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
                               print(email);
+                              print(validEmail);
+
                               print(password);
+                              print(validPassword);
+
                               setState(() => loading = true);
                               try {
                                 result = await _auth.SignIn(email, password);
@@ -154,18 +171,18 @@ class _Login extends State<Login> {
                                         ));
                               }
                             },
-                            child: Text('Login'),
+                            child: const Text('Login'),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Signup()));
                       },
-                      child: Text.rich(
+                      child: const Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [
                           TextSpan(
                             text: 'Regsiter',

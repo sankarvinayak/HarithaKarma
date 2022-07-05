@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
+import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
+import 'package:harithakarma/Shared/custom_wigdets/PasswordBox.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
@@ -30,6 +32,8 @@ class _Signup extends State<Signup> {
   String? houseno;
   String? owner;
   var newUser = null;
+  bool validEmail = false;
+  bool validPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +63,7 @@ class _Signup extends State<Signup> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Register',
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
@@ -67,62 +71,60 @@ class _Signup extends State<Signup> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        suffixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
+                    InputBox(
+                        onChange: (val) {
+                          email = val;
+                        },
+                        regexValue: RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
+                        specifiedIcon: Icons.email_outlined,
+                        label: 'Email',
+                        errorText: 'enter valid email address',
+                        keyboard: TextInputType.emailAddress,
+                        isValid: (val) {
+                          setState(() => validEmail = val);
+                        }),
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      obscureText: true,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        password = value;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        suffixIcon: Icon(Icons.visibility_off),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
+                    PasswordBox(
+                        onChange: (val) {
+                          setState(() => password = val);
+                        },
+                        isValid: (val) {
+                          setState(() {
+                            setState(() => validPassword = val);
+                          });
+                        },
+                        regexValue: RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')),
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        name = value;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Name ',
-                        suffixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                    InputBox(
+                        onChange: (val) {
+                          name = val;
+                        },
+                        regexValue: RegExp(r'^[a-z A-Z]+$'),
+                        specifiedIcon: Icons.person,
+                        label: 'Name',
+                        errorText: 'enter valid name',
+                        keyboard: TextInputType.name,
+                        isValid: (val) {
+                          setState(() => validEmail = val);
+                        }),
+                    const SizedBox(
+                      height: 30.0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     Container(
                       height: 60,
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
                         border:
@@ -132,14 +134,14 @@ class _Signup extends State<Signup> {
                         hint: Container(
                           alignment: Alignment.center,
                           child: _dropDownValue == null
-                              ? Text('User')
+                              ? const Text('User')
                               : Text(
                                   _dropDownValue,
                                 ),
                         ),
                         isExpanded: true,
                         iconSize: 40.0,
-                        style: TextStyle(color: Colors.black, fontSize: 17.0),
+                        style: const TextStyle(color: Colors.black, fontSize: 17.0),
                         items: ['Home', 'Field', 'Admin'].map(
                           (val) {
                             return DropdownMenuItem<String>(
@@ -159,84 +161,73 @@ class _Signup extends State<Signup> {
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        phone = value;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Phone',
-                        suffixIcon: Icon(Icons.phone_android),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                    InputBox(
+                        onChange: (val) {
+                          phone = val;
+                        },
+                        regexValue: RegExp(r'^[0-9]{10}$'),
+                        specifiedIcon: Icons.phone,
+                        label: 'Phone',
+                        errorText: 'enter valid phone no',
+                        keyboard: TextInputType.phone,
+                        isValid: (val) {}),
+                    const SizedBox(
+                      height: 30.0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     _dropDownValue == "Admin"
                         ? (Column(
                             children: <Widget>[
-                              TextField(
-                                textAlign: TextAlign.center,
-                                onChanged: (value) {
-                                  empid = value;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: 'Employee id',
-                                  suffixIcon: Icon(Icons.document_scanner),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
+                              InputBox(
+                                  onChange: (val) {
+                                    empid = val;
+                                  },
+                                  regexValue: RegExp(r'^[0-9]{10}$'),
+                                  specifiedIcon: Icons.document_scanner,
+                                  label: 'Employee ID',
+                                  errorText: 'enter valid id',
+                                  keyboard: TextInputType.number,
+                                  isValid: (val) {}),
+                              const SizedBox(
                                 height: 30.0,
                               ),
-                              TextField(
-                                textAlign: TextAlign.center,
-                                onChanged: (value) {
-                                  _Panchayath = value;
-                                },
-                                decoration: InputDecoration(
-                                  hintText:
+                              InputBox(
+                                  onChange: (val) {
+                                    _Panchayath = val;
+                                  },
+                                  regexValue: RegExp(r'^[a-z A-Z]{4,}$'),
+                                  specifiedIcon: Icons.location_city,
+                                  label:
                                       'Panchayath/Muncipality/Corperation name',
-                                  suffixIcon: Icon(Icons.location_city),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                ),
-                              )
+                                  errorText: '',
+                                  keyboard: TextInputType.name,
+                                  isValid: (val) {}),
                             ],
                           ))
                         : _dropDownValue == "Field"
                             ? (Column(
                                 children: <Widget>[
-                                  TextField(
-                                    textAlign: TextAlign.center,
-                                    onChanged: (value) {
-                                      empid = value;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'Employee id',
-                                      suffixIcon: Icon(Icons.document_scanner),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
+                                  InputBox(
+                                      onChange: (val) {
+                                        empid = val;
+                                      },
+                                      regexValue: RegExp(r'^[0-9]{10}$'),
+                                      specifiedIcon: Icons.document_scanner,
+                                      label: 'Employee ID',
+                                      errorText: 'enter valid id',
+                                      keyboard: TextInputType.number,
+                                      isValid: (val) {}),
+                                  const SizedBox(
                                     height: 30.0,
                                   ),
                                   Container(
                                       height: 60,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 10.0),
                                       decoration: BoxDecoration(
                                         borderRadius:
@@ -258,7 +249,7 @@ class _Signup extends State<Signup> {
                                             hint: Container(
                                               alignment: Alignment.center,
                                               child: _Panchayath == null
-                                                  ? Text(
+                                                  ? const Text(
                                                       'Panchayath/Muncipality/Corperation name')
                                                   : Text(
                                                       _Panchayath,
@@ -290,7 +281,7 @@ class _Signup extends State<Signup> {
                                 children: [
                                   Container(
                                       height: 60,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 10.0),
                                       decoration: BoxDecoration(
                                         borderRadius:
@@ -312,7 +303,7 @@ class _Signup extends State<Signup> {
                                             hint: Container(
                                               alignment: Alignment.center,
                                               child: _Panchayath == null
-                                                  ? Text(
+                                                  ? const Text(
                                                       'Panchayath/Muncipality/Corperation name')
                                                   : Text(
                                                       _Panchayath,
@@ -338,83 +329,68 @@ class _Signup extends State<Signup> {
                                           );
                                         },
                                       )),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30.0,
                                   ),
-                                  TextField(
-                                    textAlign: TextAlign.center,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (value) {
-                                      wardno = value;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'Ward number',
-                                      suffixIcon: Icon(Icons.location_city),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
+                                  InputBox(
+                                      onChange: (val) {
+                                        wardno = val;
+                                      },
+                                      regexValue: RegExp(r'^[0-9]{1,2}$'),
+                                      specifiedIcon: Icons.apartment,
+                                      label: 'Ward Number',
+                                      errorText: 'enter valid ward number',
+                                      keyboard: TextInputType.number,
+                                      isValid: (val) {}),
+                                  const SizedBox(
                                     height: 30.0,
                                   ),
-                                  TextField(
-                                    textAlign: TextAlign.center,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (value) {
-                                      houseno = value;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'House no',
-                                      suffixIcon: Icon(Icons.house),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
+                                  InputBox(
+                                      onChange: (val) {
+                                        houseno = val;
+                                      },
+                                      regexValue: RegExp(r'^[0-9]{1,4}$'),
+                                      specifiedIcon: Icons.house,
+                                      label: 'House Number',
+                                      errorText: 'enter valid house number',
+                                      keyboard: TextInputType.number,
+                                      isValid: (val) {}),
+                                  const SizedBox(
                                     height: 30.0,
                                   ),
-                                  TextField(
-                                    textAlign: TextAlign.center,
-                                    onChanged: (value) {
-                                      house = value;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'House name',
-                                      suffixIcon: Icon(Icons.house),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
+                                  InputBox(
+                                      onChange: (val) {
+                                        house = val;
+                                      },
+                                      regexValue: RegExp(r'^[a-z A-Z]+$'),
+                                      specifiedIcon: Icons.home_filled,
+                                      label: 'House Name',
+                                      errorText: 'enter valid House name',
+                                      keyboard: TextInputType.name,
+                                      isValid: (val) {
+                                        setState(() => validEmail = val);
+                                      }),
+                                  const SizedBox(
                                     height: 30.0,
                                   ),
-                                  TextField(
-                                    textAlign: TextAlign.center,
-                                    onChanged: (value) {
-                                      owner = value;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'House Owner name',
-                                      suffixIcon:
-                                          Icon(Icons.person_outline_rounded),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  )
+                                  InputBox(
+                                      onChange: (val) {
+                                        owner = val;
+                                      },
+                                      regexValue: RegExp(r'^[a-z A-Z]+$'),
+                                      specifiedIcon: Icons.person_outline,
+                                      label: 'House Owner name',
+                                      errorText: 'enter valid name',
+                                      keyboard: TextInputType.name,
+                                      isValid: (val) {
+                                        setState(() => validEmail = val);
+                                      }),
                                 ],
                               )),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     Padding(
@@ -429,20 +405,82 @@ class _Signup extends State<Signup> {
                                   MaterialPageRoute(
                                       builder: (context) => ResetPassword()));
                             },
-                            child: Text.rich(
+                            child: const Text.rich(
                               TextSpan(text: 'Forget password? ', children: []),
                             ),
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xffEE7B23),
+                              primary: const Color(0xffEE7B23),
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              if (email != null &&
-                                  password != null &&
-                                  name != null &&
-                                  _dropDownValue != null) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              try {
+                                newUser = await _auth.signUpEmail(
+                                    email!, password!, name!, _dropDownValue);
+                              } catch (e) {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                          title: const Text("Error occured"),
+                                          content: Text(e.toString()),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                },
+                                                child: const Text("Close"))
+                                          ],
+                                        ));
+                              }
+
+                              if (newUser != null) {
+                                // DatabaseService()
+                                //     .saveUser(newUser, _dropDownValue);
+                                if (_dropDownValue == 'Admin') {
+                                  setadmin(newUser, name, email, _Panchayath,
+                                      phone, empid);
+                                  DatabaseService().addAdmin(name!, email!,
+                                      newUser, empid!, _Panchayath, phone!);
+
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerAdminHome()));
+                                } else if (_dropDownValue == 'Field') {
+                                  setfield(newUser, name, email, _Panchayath,
+                                      phone, empid);
+                                  DatabaseService().addField(name!, email!,
+                                      newUser, empid!, _Panchayath, phone!);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerField()));
+                                } else {
+                                  sethome(newUser, name, email, _Panchayath,
+                                      phone, wardno, houseno, house, owner);
+                                  DatabaseService().addHome(
+                                      name!,
+                                      email!,
+                                      newUser,
+                                      _Panchayath,
+                                      wardno!,
+                                      houseno!,
+                                      owner!,
+                                      house!,
+                                      phone!);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              SideDrawerHome()));
+                                }
+                              } else {
                                 setState(() {
                                   isLoading = true;
                                 });
@@ -514,13 +552,24 @@ class _Signup extends State<Signup> {
                                 }
                               }
                             },
-                            child: Text('Register'),
+                            child: const Text('Register'),
                           )
                         ],
                       ),
                     ),
+<<<<<<< HEAD
                     SizedBox(height: 12.0),
                     SizedBox(
+=======
+                    const SizedBox(height: 12.0),
+                    Text(
+                      error,
+                      style: const TextStyle(
+                          color: const Color.fromARGB(255, 218, 25, 11),
+                          fontSize: 14.0),
+                    ),
+                    const SizedBox(
+>>>>>>> regex-check
                       height: 30.0,
                     ),
                     GestureDetector(
@@ -529,16 +578,16 @@ class _Signup extends State<Signup> {
                           context,
                         );
                       },
-                      child: Text.rich(
+                      child: const Text.rich(
                         TextSpan(text: 'Already have an account ', children: [
-                          TextSpan(
+                          const TextSpan(
                             text: 'Login',
                             style: TextStyle(color: Color(0xffEE7B23)),
                           ),
                         ]),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                   ],
