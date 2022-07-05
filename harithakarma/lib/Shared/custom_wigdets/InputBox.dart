@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class InputBox extends StatefulWidget {
   final Function(String) onChange;
+  final Function(bool) isValid;
   RegExp regexValue;
   IconData specifiedIcon;
   String label;
@@ -15,7 +16,8 @@ class InputBox extends StatefulWidget {
       required this.specifiedIcon,
       required this.label,
       required this.errorText,
-      required this.keyboard})
+      required this.keyboard,
+      required this.isValid})
       : super(key: key);
   @override
   State<InputBox> createState() => _InputBoxState();
@@ -24,6 +26,7 @@ class InputBox extends StatefulWidget {
 class _InputBoxState extends State<InputBox> {
   final TextEditingController formCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool valid = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +42,23 @@ class _InputBoxState extends State<InputBox> {
                   if (value == null ||
                       value.isEmpty ||
                       !widget.regexValue.hasMatch(value)) {
+                    valid = false;
                     return widget.errorText;
+                  } else {
+                    valid = true;
+                    return null;
                   }
-                  return null;
                 },
                 decoration: InputDecoration(
                     labelText: widget.label,
                     suffixIcon: Icon(widget.specifiedIcon),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20))),
-                onChanged: (val) =>
-                    {_formKey.currentState!.validate(), widget.onChange(val)}),
+                onChanged: (val) => {
+                      _formKey.currentState!.validate(),
+                      widget.onChange(val),
+                      widget.isValid(valid)
+                    }),
           ],
         ));
   }

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 class PasswordBox extends StatefulWidget {
   final Function(String) onChange;
+  final Function(bool) isValid;
   RegExp regexValue;
 
-  PasswordBox({Key? key, required this.onChange, required this.regexValue})
+  PasswordBox(
+      {Key? key,
+      required this.onChange,
+      required this.regexValue,
+      required this.isValid})
       : super(key: key);
   @override
   State<PasswordBox> createState() => _PasswordBoxState();
@@ -14,6 +19,8 @@ class _PasswordBoxState extends State<PasswordBox> {
   final TextEditingController formCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool passwordVisible = false;
+  bool valid = false;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -30,9 +37,12 @@ class _PasswordBoxState extends State<PasswordBox> {
                   if (value == null ||
                       value.isEmpty ||
                       !widget.regexValue.hasMatch(value)) {
+                    valid = false;
                     return 'Include at least : \n 8 characters \n 1 UpperCase \n 1 LowerCase \n 1 Numeric Character \n 1 Special Character';
+                  } else {
+                    valid = true;
+                    return null;
                   }
-                  return null;
                 },
                 decoration: InputDecoration(
                     labelText: 'password',
@@ -46,8 +56,11 @@ class _PasswordBoxState extends State<PasswordBox> {
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20))),
-                onChanged: (val) =>
-                    {_formKey.currentState!.validate(), widget.onChange(val)}),
+                onChanged: (val) => {
+                      _formKey.currentState!.validate(),
+                      widget.onChange(val),
+                      widget.isValid(valid)
+                    }),
           ],
         ));
   }
