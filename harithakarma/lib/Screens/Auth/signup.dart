@@ -141,7 +141,8 @@ class _Signup extends State<Signup> {
                         ),
                         isExpanded: true,
                         iconSize: 40.0,
-                        style: const TextStyle(color: Colors.black, fontSize: 17.0),
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 17.0),
                         items: ['Home', 'Field', 'Admin'].map(
                           (val) {
                             return DropdownMenuItem<String>(
@@ -557,21 +558,7 @@ class _Signup extends State<Signup> {
                         ],
                       ),
                     ),
-<<<<<<< HEAD
-                    SizedBox(height: 12.0),
-                    SizedBox(
-=======
                     const SizedBox(height: 12.0),
-                    Text(
-                      error,
-                      style: const TextStyle(
-                          color: const Color.fromARGB(255, 218, 25, 11),
-                          fontSize: 14.0),
-                    ),
-                    const SizedBox(
->>>>>>> regex-check
-                      height: 30.0,
-                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(
