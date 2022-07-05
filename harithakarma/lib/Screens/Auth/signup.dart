@@ -21,7 +21,6 @@ class _Signup extends State<Signup> {
   String? email;
   String? password;
   String? name;
-  String error = '';
   String? insti;
   bool isLoading = false;
   var _dropDownValue;
@@ -440,77 +439,79 @@ class _Signup extends State<Signup> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              try {
-                                newUser = await _auth.signUpEmail(
-                                    email!, password!, name!, _dropDownValue);
-                              } catch (e) {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                          title: Text("Error occured"),
-                                          content: Text(e.toString()),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(ctx).pop();
-                                                },
-                                                child: Text("Close"))
-                                          ],
-                                        ));
-                              }
-
-                              if (newUser != null) {
-                                // DatabaseService()
-                                //     .saveUser(newUser, _dropDownValue);
-                                if (_dropDownValue == 'Admin') {
-                                  setadmin(newUser, name, email, _Panchayath,
-                                      phone, empid);
-                                  DatabaseService().addAdmin(name!, email!,
-                                      newUser, empid!, _Panchayath, phone!);
-
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerAdminHome()));
-                                } else if (_dropDownValue == 'Field') {
-                                  setfield(newUser, name, email, _Panchayath,
-                                      phone, empid);
-                                  DatabaseService().addField(name!, email!,
-                                      newUser, empid!, _Panchayath, phone!);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerField()));
-                                } else {
-                                  sethome(newUser, name, email, _Panchayath,
-                                      phone, wardno, houseno, house, owner);
-                                  DatabaseService().addHome(
-                                      name!,
-                                      email!,
-                                      newUser,
-                                      _Panchayath,
-                                      wardno!,
-                                      houseno!,
-                                      owner!,
-                                      house!,
-                                      phone!);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerHome()));
-                                }
-                              } else {
+                              if (email != null &&
+                                  password != null &&
+                                  name != null &&
+                                  _dropDownValue != null) {
                                 setState(() {
-                                  isLoading = false;
-                                  error =
-                                      'Could not sign in with those credentials';
+                                  isLoading = true;
                                 });
+                                try {
+                                  newUser = await _auth.signUpEmail(
+                                      email!, password!, name!, _dropDownValue);
+
+                                  if (newUser != null) {
+                                    // DatabaseService()
+                                    //     .saveUser(newUser, _dropDownValue);
+                                    if (_dropDownValue == 'Admin') {
+                                      setadmin(newUser, name, email,
+                                          _Panchayath, phone, empid);
+                                      DatabaseService().addAdmin(name!, email!,
+                                          newUser, empid!, _Panchayath, phone!);
+
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  SideDrawerAdminHome()));
+                                    } else if (_dropDownValue == 'Field') {
+                                      setfield(newUser, name, email,
+                                          _Panchayath, phone, empid);
+                                      DatabaseService().addField(name!, email!,
+                                          newUser, empid!, _Panchayath, phone!);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  SideDrawerField()));
+                                    } else {
+                                      sethome(newUser, name, email, _Panchayath,
+                                          phone, wardno, houseno, house, owner);
+                                      DatabaseService().addHome(
+                                          name!,
+                                          email!,
+                                          newUser,
+                                          _Panchayath,
+                                          wardno!,
+                                          houseno!,
+                                          owner!,
+                                          house!,
+                                          phone!);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  SideDrawerHome()));
+                                    }
+                                  } else {}
+                                } catch (e) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title: Text("Error occured"),
+                                            content: Text(e.toString()),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: Text("Close"))
+                                            ],
+                                          ));
+                                }
                               }
                             },
                             child: Text('Register'),
@@ -519,12 +520,6 @@ class _Signup extends State<Signup> {
                       ),
                     ),
                     SizedBox(height: 12.0),
-                    Text(
-                      error,
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 218, 25, 11),
-                          fontSize: 14.0),
-                    ),
                     SizedBox(
                       height: 30.0,
                     ),

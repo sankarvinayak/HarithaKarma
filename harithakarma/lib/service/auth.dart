@@ -21,8 +21,6 @@ class AuthService {
   }
 
   Future sendPasswordResetEmail(String email) async {
-    print("Inreset function");
-    var reset_result = null;
     try {
       await _auth.sendPasswordResetEmail(email: email);
       print("Email send");

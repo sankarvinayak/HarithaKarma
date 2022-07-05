@@ -64,7 +64,7 @@ class _complaints extends State<complaints> {
                 height: 20,
               ),
               issubmit
-                  ? Text("COmplaint submitted")
+                  ? Text("Complaint submitted")
                   : ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xffEE7B23),

@@ -69,7 +69,7 @@ class _Login extends State<Login> {
                         regexValue: RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
                         specifiedIcon: Icons.email,
-                        label: 'email_id',
+                        label: 'Email',
                         errorText: 'enter a vaild email',
                         keyboard: TextInputType.emailAddress),
                     SizedBox(
@@ -111,27 +111,7 @@ class _Login extends State<Login> {
                               setState(() => loading = true);
                               try {
                                 result = await _auth.SignIn(email, password);
-                              } catch (e) {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                          title: Text("Error occured"),
-                                          content: Text(e.toString()),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(ctx).pop();
-                                                },
-                                                child: Text("Close"))
-                                          ],
-                                        ));
-                              }
 
-                              if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                });
-                              } else {
                                 await DatabaseService().getDetails(
                                     FirebaseAuth.instance.currentUser!.uid,
                                     result);
@@ -155,6 +135,23 @@ class _Login extends State<Login> {
                                           builder: (BuildContext context) =>
                                               SideDrawerHome()));
                                 }
+                              } catch (e) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                          title: Text("Error occured"),
+                                          content: Text(e.toString()),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                },
+                                                child: Text("Close"))
+                                          ],
+                                        ));
                               }
                             },
                             child: Text('Login'),
