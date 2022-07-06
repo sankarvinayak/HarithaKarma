@@ -128,7 +128,7 @@ class _Login extends State<Login> {
 
                                 setState(() => loading = true);
                                 try {
-                                  result = await _auth.SignIn(email, password);
+                                  result = await _auth.signIn(email, password);
 
                                   await DatabaseService().getDetails(
                                       FirebaseAuth.instance.currentUser!.uid,

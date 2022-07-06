@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
-class complaints_admin extends StatelessWidget {
+class ComplaintsAdmin extends StatelessWidget {
+  const ComplaintsAdmin({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 23, 75, 7),
+          backgroundColor: const Color.fromARGB(255, 23, 75, 7),
           title: const Text('Complaints'),
         ),
         body: StreamBuilder(
@@ -39,15 +41,14 @@ class complaints_admin extends StatelessWidget {
                         ),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xffEE7B23),
+                              primary: const Color(0xffEE7B23),
                               onPrimary: Colors.white,
                             ),
                             onPressed: () {
-                              print(documentSnapshot.reference.id);
                               DatabaseService().update_complaint_status(
                                   documentSnapshot.reference.id);
                             },
-                            child: Text("Close"))
+                            child: const Text("Close"))
                       ],
                     ),
                   );

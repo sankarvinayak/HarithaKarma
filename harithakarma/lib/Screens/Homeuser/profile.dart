@@ -19,8 +19,8 @@ class _homeProfile extends State<homeProfile> {
   String? uid = globhome!.uid;
   String? name = globhome!.name;
   String? phone = globhome!.phone;
-  String? ward_no = globhome!.ward_no;
-  String? house_no = globhome!.house_no;
+  String? ward_no = globhome!.wardNo;
+  String? house_no = globhome!.houseNo;
   String? house = globhome!.house;
   String? owner = globhome!.owner;
   String? panchayath = globhome!.panchayath;

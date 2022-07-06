@@ -1,14 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 import 'package:harithakarma/service/database.dart';
-import 'package:harithakarma/models/user.dart';
-import 'package:harithakarma/service/firestore_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future SignIn(@required String email, @required String password) async {
+  Future signIn(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -23,9 +19,8 @@ class AuthService {
   Future sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      print("Email send");
     } catch (e) {
-      print(e);
+      return null;
     }
   }
 
@@ -38,7 +33,9 @@ class AuthService {
           .get();
 
       return itemList;
-    } catch (e) {}
+    } catch (e) {
+      return null;
+    }
   }
 
   Future signUpEmail(
@@ -63,7 +60,6 @@ class AuthService {
     try {
       return await _auth.signOut();
     } catch (error) {
-      print(error.toString());
       return null;
     }
   }

@@ -3,25 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
-class ward extends StatelessWidget {
-  String? ward_no;
-  ward(String ward_no) {
-    this.ward_no = ward_no;
-  }
+class Ward extends StatelessWidget {
+  final String? wardNo;
+  const Ward(this.wardNo, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 75, 7),
-        title: Text("Ward " + ward_no!),
+        backgroundColor: const Color.fromARGB(255, 23, 75, 7),
+        title: Text("Ward ${wardNo!} "),
       ),
       body: StreamBuilder(
         stream: DatabaseService()
             .visit_history_collection
             .orderBy('date', descending: true)
             .where('panchayath', isEqualTo: globadmin!.panchayath)
-            .where('ward', isEqualTo: ward_no)
+            .where('ward', isEqualTo: wardNo)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {

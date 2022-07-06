@@ -1,87 +1,43 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// class AppUser {
-//   String uid;
-//   String name;
-//   String email;
-//   String userRole;
-//   AppUser(this.uid, this.name, this.email, this.userRole);
-// // factory AppUser.fromDocumentSnapshot({required DocumentSnapshot<Map<String,dynamic>> doc}){
-// //     return AppUser(
-// //         title: doc.data()!["title"],
-// //         content:doc.data()!["content"],
-// //     );
-// // }
-// //   AppUser.fromData(Map<String, dynamic> data)
-// //       : uid = data['id'],
-// //         name = data['name'],
-// //         email = data['email'],
-// //         userRole = data['userRole'];
-// //   Map<String, dynamic> toJson() {
-// //     return {'uid': uid, 'name': name, 'email': email, 'userRole': userRole};
-// //   }
-// //
-//   Map<String, dynamic> toMap() {
-//     return {"uid": uid, "name": name, "email": email, "userRole": userRole};
-//   }
-
-//   factory AppUser.fromDocumentSnapshot(
-//       {required DocumentSnapshot<Map<String, dynamic>> doc}) {
-//     return AppUser(
-//       "",
-//       "",
-//       "",
-//       doc.data()!["content"],
-//     );
-//   }
-// }
 import 'package:shared_preferences/shared_preferences.dart';
 
-class appUser {
+class AppUser {
   String? utype;
   String? uid;
   String? name;
   String? email;
   String? panchayath;
   String? phone;
-  appUser.c();
-  appUser(
+  AppUser.c();
+  AppUser(
       this.utype, this.uid, this.email, this.name, this.panchayath, this.phone);
 }
 
-class employee extends appUser {
+class Employee extends AppUser {
   String? empid;
 
-  employee(super.utype, super.uid, super.email, super.name, super.panchayath,
+  Employee(super.utype, super.uid, super.email, super.name, super.panchayath,
       super.phone, this.empid);
-  employee.c() : super.c();
+  Employee.c() : super.c();
 }
 
-employee? globadmin;
+Employee? globadmin;
 setadmin(uid, name, email, panchayath, phone, empid) async {
-  globadmin = employee('Admin', uid, email, name, panchayath, phone, empid);
+  globadmin = Employee('Admin', uid, email, name, panchayath, phone, empid);
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('empid', empid);
-  //globadmin?.empid = empid;
   await prefs.setString('utype', 'Admin');
-  //globadmin?.utype = 'Admin';
   await prefs.setString('name', name);
-  //globadmin?.name = name;
   await prefs.setString('email', email);
-  //globadmin?.email = email;
   await prefs.setString('panchayath', panchayath);
-  //globadmin?.panchayath = panchayath;
   await prefs.setString('phone', phone);
-  //globadmin?.phone = phone;
   await prefs.setString('uid', uid);
-  //globadmin?.uid = uid;
 }
 
 initadmin() async {
   final prefs = await SharedPreferences.getInstance();
 
   final String? empid = prefs.getString('empid');
-  final String utype = 'Admin';
+  const String utype = 'Admin';
 
   final String? name = prefs.getString('name');
 
@@ -93,42 +49,32 @@ initadmin() async {
 
   final String? uid = prefs.getString('uid');
   ;
-  globadmin = employee(utype, uid, email, name, panchayath, phone, empid);
+  globadmin = Employee(utype, uid, email, name, panchayath, phone, empid);
 }
 
-homeUser? globhome;
+HomeUser? globhome;
 sethome(
     uid, name, email, panchayath, phone, wardno, houseno, house, owner) async {
-  globhome = homeUser('Home', uid, email, name, panchayath, phone, house,
+  globhome = HomeUser('Home', uid, email, name, panchayath, phone, house,
       houseno, owner, wardno);
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('uid', uid);
-  //globhome?.uid = uid;
-  //globhome?.utype = 'Home';
   await prefs.setString('utype', 'Home');
-  //globhome?.name = name;
   await prefs.setString('name', name);
-  //globhome?.email = email;
   await prefs.setString('email', email);
-  //globhome?.panchayath = panchayath;
   await prefs.setString('panchayath', panchayath);
   await prefs.setString('phone', phone);
-  //globhome?.phone = phone;
   await prefs.setString('ward', wardno);
-  //globhome?.ward_no = wardno;
   await prefs.setString('house_no', houseno);
-  //globhome?.house_no = houseno;
   await prefs.setString('house', house);
-  //globhome?.house = house;
   await prefs.setString('owner', owner);
-  //globhome?.owner = owner;
 }
 
 inithome() async {
   final prefs = await SharedPreferences.getInstance();
 
   final String? uid = prefs.getString('uid');
-  final String utype = 'Home';
+  const String utype = 'Home';
 
   final String? name = prefs.getString('name');
 
@@ -140,17 +86,16 @@ inithome() async {
 
   final String? ward = prefs.getString('ward');
 
-  final String? house_no = prefs.getString('house_no');
+  final String? houseNo = prefs.getString('house_no');
 
   final String? house = prefs.getString('house');
 
   final String? owner = prefs.getString('owner');
-  globhome = homeUser(
-      utype, uid, email, name, panchayath, phone, house, house_no, owner, ward);
-  print(globhome!.name);
+  globhome = HomeUser(
+      utype, uid, email, name, panchayath, phone, house, houseNo, owner, ward);
 }
 
-employee? globfield;
+Employee? globfield;
 setfield(
   uid,
   name,
@@ -159,29 +104,22 @@ setfield(
   phone,
   empid,
 ) async {
-  globfield = employee('Field', uid, email, name, panchayath, phone, empid);
+  globfield = Employee('Field', uid, email, name, panchayath, phone, empid);
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('empid', empid);
-  //globfield?.empid = empid;
   await prefs.setString('utype', 'Field');
-  //globfield?.utype = 'Field';
   await prefs.setString('name', name);
-  //globfield?.name = name;
   await prefs.setString('email', email);
-  //globfield?.email = email;
   await prefs.setString('panchayath', panchayath);
-  //globfield?.panchayath = panchayath;
   await prefs.setString('phone', phone);
-  //globfield?.phone = phone;
   await prefs.setString('uid', uid);
-  //globfield?.uid = uid;
 }
 
 initfield() async {
   final prefs = await SharedPreferences.getInstance();
 
   final String? empid = prefs.getString('empid');
-  final String? utype = 'Field';
+  const String utype = 'Field';
 
   final String? name = prefs.getString('name');
 
@@ -193,7 +131,7 @@ initfield() async {
 
   final String? uid = prefs.getString('uid');
   ;
-  globfield = employee(utype, uid, email, name, panchayath, phone, empid);
+  globfield = Employee(utype, uid, email, name, panchayath, phone, empid);
 }
 
 cleardata() async {
@@ -201,20 +139,20 @@ cleardata() async {
   await prefs.remove('uid');
   await prefs.remove('utype');
   await prefs.remove('name');
-  globadmin = new employee.c();
-  globfield = new employee.c();
-  globhome = new homeUser.c();
+  globadmin = Employee.c();
+  globfield = Employee.c();
+  globhome = HomeUser.c();
 }
 
-class homeUser extends appUser {
-  String? ward_no;
-  String? house_no;
+class HomeUser extends AppUser {
+  String? wardNo;
+  String? houseNo;
   String? house;
   String? owner;
 
-  homeUser(super.utype, super.uid, super.email, super.name, super.panchayath,
-      super.phone, this.house, this.house_no, this.owner, this.ward_no);
-  homeUser.c() : super.c();
+  HomeUser(super.utype, super.uid, super.email, super.name, super.panchayath,
+      super.phone, this.house, this.houseNo, this.owner, this.wardNo);
+  HomeUser.c() : super.c();
 }
 
 unique(values) {

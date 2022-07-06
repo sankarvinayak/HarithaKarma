@@ -72,7 +72,7 @@ class _complaints extends State<complaints> {
                       ),
                       onPressed: () {
                         if (DatabaseService().add_complaint(
-                                title!, desc!, globhome!.ward_no) !=
+                                title!, desc!, globhome!.wardNo) !=
                             null) {
                           setState(() {
                             issubmit = true;
