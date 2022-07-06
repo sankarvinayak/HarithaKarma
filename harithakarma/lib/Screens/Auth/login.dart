@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
+import 'package:harithakarma/Shared/custom_wigdets/PasswordBox.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
 import 'signup.dart';
@@ -22,6 +24,9 @@ class _Login extends State<Login> {
   String email = '';
   String password = '';
   dynamic result = null;
+  bool validEmail = false;
+  bool validPassword = false;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -48,7 +53,7 @@ class _Login extends State<Login> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             'Login',
                             style: TextStyle(
@@ -57,39 +62,39 @@ class _Login extends State<Login> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        suffixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
-                    ),
-                    SizedBox(
+                    InputBox(
+                        onChange: (val) {
+                          setState(() => email = val);
+                        },
+                        isValid: (val) {
+                          setState(() {
+                            validEmail = val;
+                          });
+                        },
+                        regexValue: RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
+                        specifiedIcon: Icons.email,
+                        label: 'Email',
+                        errorText: 'enter a vaild email',
+                        keyboard: TextInputType.emailAddress),
+                    const SizedBox(
                       height: 20.0,
                     ),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        suffixIcon: Icon(Icons.visibility_off),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      },
-                    ),
-                    SizedBox(
+                    PasswordBox(
+                        onChange: (val) {
+                          setState(() => password = val);
+                        },
+                        isValid: (val) {
+                          setState(() {
+                            validPassword = val;
+                          });
+                        },
+                        regexValue: RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')),
+                    const SizedBox(
                       height: 30.0,
                     ),
                     Padding(
@@ -104,25 +109,75 @@ class _Login extends State<Login> {
                                   MaterialPageRoute(
                                       builder: (context) => ResetPassword()));
                             },
-                            child: Text.rich(
+                            child: const Text.rich(
                               TextSpan(text: 'Forget password? ', children: []),
                             ),
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xffEE7B23),
+                              primary: const Color(0xffEE7B23),
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              setState(() => loading = true);
-                              try {
-                                result = await _auth.SignIn(email, password);
-                              } catch (e) {
+                              if (email != '' && password != '') {
+                                print(email);
+                                print(validEmail);
+
+                                print(password);
+                                print(validPassword);
+
+                                setState(() => loading = true);
+                                try {
+                                  result = await _auth.signIn(email, password);
+
+                                  await DatabaseService().getDetails(
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                      result);
+
+                                  if (result == "Admin") {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerAdminHome()));
+                                  } else if (result == "Field") {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerField()));
+                                  } else {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SideDrawerHome()));
+                                  }
+                                } catch (e) {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title: Text("Error occured"),
+                                            content: Text(e.toString()),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: Text("Close"))
+                                            ],
+                                          ));
+                                }
+                              } else {
                                 showDialog(
                                     context: context,
                                     builder: (ctx) => AlertDialog(
                                           title: Text("Error occured"),
-                                          content: Text(e.toString()),
+                                          content: Text(
+                                              "Enter username and password"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
@@ -132,49 +187,19 @@ class _Login extends State<Login> {
                                           ],
                                         ));
                               }
-
-                              if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                });
-                              } else {
-                                await DatabaseService().getDetails(
-                                    FirebaseAuth.instance.currentUser!.uid,
-                                    result);
-
-                                if (result == "Admin") {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerAdminHome()));
-                                } else if (result == "Field") {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerField()));
-                                } else {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              SideDrawerHome()));
-                                }
-                              }
                             },
-                            child: Text('Login'),
+                            child: const Text('Login'),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Signup()));
                       },
-                      child: Text.rich(
+                      child: const Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [
                           TextSpan(
                             text: 'Regsiter',

@@ -32,12 +32,12 @@ class DatabaseService {
   }
 
   Future<void> add_collection_request() async {
-    var doc_id = await check_request(globhome!.ward_no, globhome!.panchayath);
+    var doc_id = await check_request(globhome!.wardNo, globhome!.panchayath);
     List uid = globhome!.uid!.split(' ');
     List<dynamic> uid_d = List<dynamic>.from(uid);
     return await collection_request.doc(doc_id).set({
       'panchayath': globhome!.panchayath,
-      'ward': globhome!.ward_no,
+      'ward': globhome!.wardNo,
       'uid': FieldValue.arrayUnion(uid_d),
       'status': "pending"
     }, SetOptions(merge: true));
@@ -59,7 +59,7 @@ class DatabaseService {
   check_requested() async {
     var querySnapshot = await collection_request
         .where('panchayath', isEqualTo: globhome!.panchayath)
-        .where('ward', isEqualTo: globhome!.ward_no)
+        .where('ward', isEqualTo: globhome!.wardNo)
         .where('status', isEqualTo: 'pending')
         .get();
     try {
@@ -279,7 +279,7 @@ class DatabaseService {
 //get details of user on login initialize and store user details offline
   getDetails(String uid, String utype) async {
     if (utype == "Admin") {
-      employee admin = employee.c();
+      Employee admin = Employee.c();
       admin.uid = uid;
       admin.utype = utype;
       var docSnapshot = await adminCollection.doc(uid).get();
@@ -298,7 +298,7 @@ class DatabaseService {
       }
       return admin;
     } else if (utype == "Home") {
-      homeUser home = homeUser.c();
+      HomeUser home = HomeUser.c();
       home.uid = uid;
       home.utype = utype;
       var docSnapshot = await homeCollection.doc(uid).get();
@@ -308,16 +308,16 @@ class DatabaseService {
         home.phone = data?['phone'].toString();
         home.email = data?['email'].toString();
         home.panchayath = data?['panchayath'].toString();
-        home.house_no = data?['house_no'];
-        home.ward_no = data?['ward'];
+        home.houseNo = data?['house_no'];
+        home.wardNo = data?['ward'];
         home.house = data?['house'].toString();
         home.name = data?['name'].toString();
         home.owner = data?['owner'].toString();
       }
       await sethome(uid, home.name, home.email, home.panchayath, home.phone,
-          home.ward_no, home.house_no, home.house, home.owner);
+          home.wardNo, home.houseNo, home.house, home.owner);
     } else {
-      employee employ = employee.c();
+      Employee employ = Employee.c();
       employ.uid = uid;
       employ.utype = utype;
       var docSnapshot = await fieldCollection.doc(uid).get();

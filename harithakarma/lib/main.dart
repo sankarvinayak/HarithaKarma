@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
 import 'package:harithakarma/Screens/Homeuser/Dashbord.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/Auth/login.dart';

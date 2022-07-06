@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
 class complaints extends StatefulWidget {
@@ -64,7 +64,7 @@ class _complaints extends State<complaints> {
                 height: 20,
               ),
               issubmit
-                  ? Text("COmplaint submitted")
+                  ? Text("Complaint submitted")
                   : ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xffEE7B23),
@@ -72,7 +72,7 @@ class _complaints extends State<complaints> {
                       ),
                       onPressed: () {
                         if (DatabaseService().add_complaint(
-                                title!, desc!, globhome!.ward_no) !=
+                                title!, desc!, globhome!.wardNo) !=
                             null) {
                           setState(() {
                             issubmit = true;

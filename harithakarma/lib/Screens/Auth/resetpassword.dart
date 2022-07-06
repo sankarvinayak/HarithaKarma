@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
 import 'signup.dart';
@@ -46,7 +47,7 @@ class _ResetPassword extends State<ResetPassword> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Reset Password',
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
@@ -54,29 +55,27 @@ class _ResetPassword extends State<ResetPassword> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        suffixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
-                    ),
-                    SizedBox(
+                    InputBox(
+                        onChange: (val) {
+                          setState(() => email = val);
+                        },
+                        isValid: (val) {},
+                        regexValue: RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
+                        specifiedIcon: Icons.email,
+                        label: 'email_id',
+                        errorText: 'enter a vaild email',
+                        keyboard: TextInputType.emailAddress),
+                    const SizedBox(
                       height: 20.0,
                     ),
                     Text(text,
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 16, 94, 16))),
-                    SizedBox(
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 16, 94, 16))),
+                    const SizedBox(
                       height: 30.0,
                     ),
                     Padding(
@@ -86,7 +85,7 @@ class _ResetPassword extends State<ResetPassword> {
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xffEE7B23),
+                              primary: const Color(0xffEE7B23),
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
@@ -101,18 +100,18 @@ class _ResetPassword extends State<ResetPassword> {
                                 });
                               }
                             },
-                            child: Text('Send password reset email'),
+                            child: const Text('Send password reset email'),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Signup()));
                       },
-                      child: Text.rich(
+                      child: const Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [
                           TextSpan(
                             text: 'Regsiter',

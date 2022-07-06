@@ -6,31 +6,28 @@ import 'package:harithakarma/Screens/Adminuser/users.dart';
 import 'package:harithakarma/Screens/Adminuser/ward_details.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../service/auth.dart';
 
-printpanchayath() {
-  print(globadmin?.panchayath);
-  return globadmin?.panchayath;
-}
-
 class SideDrawerAdminHome extends StatelessWidget {
-  String? panchayath = printpanchayath();
+  final String? panchayath = globadmin?.panchayath;
+
+  SideDrawerAdminHome({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: _SideDrawer(),
         appBar: AppBar(
-          title: Text('Admin'),
-          backgroundColor: Color.fromARGB(255, 23, 75, 7),
+          title: const Text('Admin'),
+          backgroundColor: const Color.fromARGB(255, 23, 75, 7),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
                   "Todays details",
@@ -60,8 +57,8 @@ class SideDrawerAdminHome extends StatelessWidget {
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Ward:" + documentSnapshot['ward']),
-                                Text("Agent:" + documentSnapshot['Collector'])
+                                Text("Ward:${documentSnapshot['ward']}"),
+                                Text("Agent:${documentSnapshot['Collector']}")
                               ],
                             ),
                           ),
@@ -75,7 +72,7 @@ class SideDrawerAdminHome extends StatelessWidget {
                   );
                 },
               ),
-              Padding(
+              const Padding(
                   padding: EdgeInsets.all(10),
                   child: Text(
                     "Overall details",
@@ -106,7 +103,7 @@ class SideDrawerAdminHome extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          ward(documentSnapshot['ward'])));
+                                          Ward(documentSnapshot['ward'])));
                             },
                             child: Card(
                               margin: const EdgeInsets.all(10),
@@ -115,27 +112,24 @@ class SideDrawerAdminHome extends StatelessWidget {
                                   spacing: 20,
                                   runSpacing: 20,
                                   children: [
-                                    Text("Ward:" + documentSnapshot['ward']),
+                                    Text("Ward :${documentSnapshot['ward']}"),
                                   ],
                                 ),
-                                trailing: SizedBox(
+                                trailing: const SizedBox(
                                   width: 100,
-                                  child: Row(
-                                    children: [],
-                                  ),
                                 ),
                               ),
                             ),
                           );
                         }
-                        return SizedBox(
+                        return const SizedBox(
                           height: 0,
                         );
                       },
                     );
                   }
 
-                  return Text("No data");
+                  return const Text("No data");
                 },
               ),
             ],
@@ -150,7 +144,10 @@ class _SideDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 23, 75, 7),
+            ),
             child: Center(
               child: Text(
                 'HarithaKarma',
@@ -158,54 +155,51 @@ class _SideDrawer extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 23, 75, 7),
-            ),
           ),
           ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text('Dashbord'),
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Dashbord'),
               onTap: () {
                 Navigator.of(context).pop();
               }),
           ListTile(
-            leading: Icon(Icons.people),
-            title: Text('Users'),
+            leading: const Icon(Icons.people),
+            title: const Text('Users'),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => usertypes()));
+                      builder: (BuildContext context) => UserTypes()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
+            leading: const Icon(Icons.person),
+            title: const Text('Profile'),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => adminProfile()));
+                      builder: (BuildContext context) => AdminProfile()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.rate_review_outlined),
-            title: Text('Complaints'),
+            leading: const Icon(Icons.rate_review_outlined),
+            title: const Text('Complaints'),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => complaints_admin()));
+                      builder: (BuildContext context) => ComplaintsAdmin()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Logout'),
             onTap: () async {
               final prefs = await SharedPreferences.getInstance();
               await prefs.remove('utype');

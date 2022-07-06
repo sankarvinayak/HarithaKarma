@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
-import 'package:harithakarma/database.dart';
+import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
-class usertypes extends StatelessWidget {
+class UserTypes extends StatelessWidget {
+  const UserTypes({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class usertypes extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, value) {
             return [
-              SliverAppBar(
+              const SliverAppBar(
                 backgroundColor: Color.fromARGB(255, 23, 75, 7),
                 title: Text('Users'),
                 pinned: true,
@@ -47,43 +49,52 @@ class usertypes extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(1.0),
                             child: ExpansionTileCard(
-                              expandedColor: Color.fromARGB(255, 228, 253, 187),
-                              baseColor: Color.fromARGB(255, 204, 235, 211),
-
+                              expandedColor:
+                                  const Color.fromARGB(255, 228, 253, 187),
+                              baseColor:
+                                  const Color.fromARGB(255, 204, 235, 211),
                               title: Text(documentSnapshot['name']),
                               subtitle: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Ward Number:" +
-                                      documentSnapshot['ward'])),
+                                  child: Text(
+                                      "Ward Number:${documentSnapshot['ward']}")),
                               children: [
-                                Divider(
+                                const Divider(
                                   thickness: 1.0,
                                   height: 1.0,
                                 ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 5.0,
-                                          vertical: 5.0,
-                                        ),
-                                        child: Text("Owner:" +
-                                            documentSnapshot['owner']))),
-                                Text("House Number:" +
-                                    documentSnapshot['house_no']),
-                                Text("House Name:" + documentSnapshot['house']),
-                                Text("Phone:" + documentSnapshot['phone']),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                          child: Text(
+                                              "Owner:${documentSnapshot['owner']}")),
+                                      Flexible(
+                                        child: Text(
+                                            "House Number:${documentSnapshot['house_no']}"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          "House Name:${documentSnapshot['house']}"),
+                                      Flexible(
+                                        child: Text(
+                                            "Phone:${documentSnapshot['phone']}"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
-                              // margin: const EdgeInsets.all(10),
-                              // child: ListTile(
-                              //   title: Text(documentSnapshot['name']),
-                              //   trailing: SizedBox(
-                              //     width: 100,
-                              //     child: Row(
-                              //       children: [],
-                              //     ),
-                              //   ),
-                              // ),
                             ),
                           ),
                         );
@@ -104,47 +115,38 @@ class usertypes extends StatelessWidget {
                 builder:
                     (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                   if (streamSnapshot.hasData) {
-                    bool is_assigned = true;
+                    bool isAssigned = true;
                     return ListView.builder(
                       itemCount: streamSnapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         final DocumentSnapshot documentSnapshot =
                             streamSnapshot.data!.docs[index];
-                        var ward;
+                        String ward;
                         try {
                           ward = documentSnapshot['ward'].toString();
-                          print(ward);
-                          is_assigned = true;
+                          isAssigned = true;
                         } catch (e) {
                           ward = "No ward assigned";
-                          is_assigned = false;
+                          isAssigned = false;
                         }
-                        // if (ward == '') {
-                        //   ward = "No ward assigned";
-                        // }
 
                         return Card(
                           margin: const EdgeInsets.all(10),
                           child: ExpansionTileCard(
                             title: Text(documentSnapshot['name']),
                             subtitle: Text(
-                                "Employee id:" + documentSnapshot['empid']),
+                                "Employee id:${documentSnapshot['empid']}"),
                             children: [
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    Text("Wards assigned:" +
-                                        (is_assigned
-                                            ? ward
-                                                .toString()
-                                                .substring(1,
-                                                    ward.toString().length - 1)
-                                                .replaceAll(' ', '')
-                                            : ward)),
+                                    Text(
+                                        "Wards assigned:${(isAssigned ? ward.toString().substring(1, ward.toString().length - 1).replaceAll(' ', '') : ward)}"),
                                     Container(
                                       //margin: EdgeInsets.all(5),
-                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
 
                                       child: ElevatedButton(
                                         onPressed: () {
@@ -152,7 +154,7 @@ class usertypes extends StatelessWidget {
                                           showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
-                                                    title: Text(
+                                                    title: const Text(
                                                         "Edit wards assigned"),
                                                     content: ward.compareTo(
                                                                 "No ward assigned") !=
@@ -162,7 +164,7 @@ class usertypes extends StatelessWidget {
                                                                 TextInputType
                                                                     .number,
                                                             decoration:
-                                                                InputDecoration(
+                                                                const InputDecoration(
                                                                     hintText:
                                                                         "wards seperated by comma"),
                                                             controller: TextEditingController()
@@ -185,7 +187,7 @@ class usertypes extends StatelessWidget {
                                                                 TextInputType
                                                                     .number,
                                                             decoration:
-                                                                InputDecoration(
+                                                                const InputDecoration(
                                                                     hintText:
                                                                         "wards seperated by comma"),
                                                             onChanged: (text) =>
@@ -210,13 +212,12 @@ class usertypes extends StatelessWidget {
                                                                     context)
                                                                 .pop();
                                                           },
-                                                          child: Text('Submit'))
+                                                          child: const Text(
+                                                              'Submit'))
                                                     ],
                                                   ));
-                                          print(documentSnapshot.reference.id);
-                                          print(ward);
                                         },
-                                        child: Text("Edit"),
+                                        child: const Text("Edit"),
                                       ),
                                     )
                                   ],
