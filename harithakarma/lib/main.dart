@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
-import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
-import 'package:harithakarma/Screens/Homeuser/Dashbord.dart';
+import 'package:flutter/services.dart';
+import 'package:harithakarma/Screens/Adminuser/dashbord.dart';
+import 'package:harithakarma/Screens/Fielduser/dashbord.dart';
+import 'package:harithakarma/Screens/Homeuser/dashbord.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/Auth/login.dart';
@@ -13,16 +14,22 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
 
   final String? utype = prefs.getString('utype');
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color.fromARGB(255, 23, 75, 7),
+  ));
   if (utype == 'Admin') {
     initadmin();
-    runApp(MaterialApp(home: SideDrawerAdminHome()));
+    runApp(MaterialApp(
+        debugShowCheckedModeBanner: false, home: SideDrawerAdminHome()));
   } else if (utype == 'Field') {
     initfield();
-    runApp(const MaterialApp(home: SideDrawerField()));
+    runApp(const MaterialApp(
+        debugShowCheckedModeBanner: false, home: SideDrawerField()));
   } else if (utype == 'Home') {
     inithome();
-    runApp(const MaterialApp(home: SideDrawerHome()));
+    runApp(const MaterialApp(
+        debugShowCheckedModeBanner: false, home: SideDrawerHome()));
   } else {
-    runApp(const MaterialApp(home: Login()));
+    runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Login()));
   }
 }

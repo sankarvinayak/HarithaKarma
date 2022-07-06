@@ -45,7 +45,7 @@ class _PasswordBoxState extends State<PasswordBox> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'password',
+                    labelText: 'Password',
                     suffixIcon: IconButton(
                       icon: passwordVisible
                           ? const Icon(Icons.visibility)

@@ -19,7 +19,7 @@ class SideDrawerField extends StatefulWidget {
 }
 
 class _SideDrawerField extends State<SideDrawerField> {
-  var ward;
+  dynamic ward;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

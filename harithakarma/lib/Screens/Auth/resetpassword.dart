@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
+import 'package:harithakarma/Shared/custom_wigdets/inputbox.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
 import 'signup.dart';
