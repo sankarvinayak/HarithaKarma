@@ -4,6 +4,7 @@ import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
 import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
 import 'package:harithakarma/Shared/custom_wigdets/PasswordBox.dart';
+import 'package:harithakarma/Shared/panchayat_dropDown.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/Dashbord.dart';
@@ -231,45 +232,53 @@ class _Signup extends State<Signup> {
                                             style: BorderStyle.solid,
                                             width: 0.50),
                                       ),
-                                      child: StreamBuilder<QuerySnapshot>(
-                                        stream:
-                                            DatabaseService().getpanchayath(),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<QuerySnapshot>
-                                                snapshot) {
-                                          if (!snapshot.hasData)
-                                            return Container();
-
-                                          return DropdownButton(
-                                            hint: Container(
-                                              alignment: Alignment.center,
-                                              child: _Panchayath == null
-                                                  ? const Text(
-                                                      'Panchayath/Muncipality/Corperation name')
-                                                  : Text(
-                                                      _Panchayath,
-                                                    ),
-                                            ),
-                                            isExpanded: true,
-                                            value: _Panchayath,
-                                            items: snapshot.data!.docs
-                                                .map((value) {
-                                              return DropdownMenuItem(
-                                                value: value.get('panchayath'),
-                                                child: Text(
-                                                    '${value.get('panchayath')}'),
-                                              );
-                                            }).toList(),
-                                            onChanged: (value) {
-                                              setState(
-                                                () {
-                                                  _Panchayath = value;
-                                                },
-                                              );
-                                            },
-                                          );
+                                      child: PanchayatDropDownList(
+                                        Panchayat: (val) {
+                                          setState(() {
+                                            _Panchayath = val;
+                                          });
                                         },
-                                      )),
+                                      )
+                                      // child: StreamBuilder<QuerySnapshot>(
+                                      //   stream:
+                                      //       DatabaseService().getpanchayath(),
+                                      //   builder: (BuildContext context,
+                                      //       AsyncSnapshot<QuerySnapshot>
+                                      //           snapshot) {
+                                      //     if (!snapshot.hasData)
+                                      //       return Container();
+
+                                      //     return DropdownButton(
+                                      //       hint: Container(
+                                      //         alignment: Alignment.center,
+                                      //         child: _Panchayath == null
+                                      //             ? const Text(
+                                      //                 'Panchayath/Muncipality/Corperation name')
+                                      //             : Text(
+                                      //                 _Panchayath,
+                                      //               ),
+                                      //       ),
+                                      //       isExpanded: true,
+                                      //       value: _Panchayath,
+                                      //       items: snapshot.data!.docs
+                                      //           .map((value) {
+                                      //         return DropdownMenuItem(
+                                      //           value: value.get('panchayath'),
+                                      //           child: Text(
+                                      //               '${value.get('panchayath')}'),
+                                      //         );
+                                      //       }).toList(),
+                                      //       onChanged: (value) {
+                                      //         setState(
+                                      //           () {
+                                      //             _Panchayath = value;
+                                      //           },
+                                      //         );
+                                      //       },
+                                      //     );
+                                      //   },
+                                      // )
+                                      ),
                                 ],
                               ))
                             : (Column(
@@ -285,45 +294,53 @@ class _Signup extends State<Signup> {
                                             style: BorderStyle.solid,
                                             width: 0.50),
                                       ),
-                                      child: StreamBuilder<QuerySnapshot>(
-                                        stream:
-                                            DatabaseService().getpanchayath(),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<QuerySnapshot>
-                                                snapshot) {
-                                          if (!snapshot.hasData)
-                                            return Container();
-
-                                          return DropdownButton(
-                                            hint: Container(
-                                              alignment: Alignment.center,
-                                              child: _Panchayath == null
-                                                  ? const Text(
-                                                      'Panchayath/Muncipality/Corperation name')
-                                                  : Text(
-                                                      _Panchayath,
-                                                    ),
-                                            ),
-                                            isExpanded: true,
-                                            value: _Panchayath,
-                                            items: snapshot.data!.docs
-                                                .map((value) {
-                                              return DropdownMenuItem(
-                                                value: value.get('panchayath'),
-                                                child: Text(
-                                                    '${value.get('panchayath')}'),
-                                              );
-                                            }).toList(),
-                                            onChanged: (value) {
-                                              setState(
-                                                () {
-                                                  _Panchayath = value;
-                                                },
-                                              );
-                                            },
-                                          );
+                                      child: PanchayatDropDownList(
+                                        Panchayat: (val) {
+                                          setState(() {
+                                            _Panchayath = val;
+                                          });
                                         },
-                                      )),
+                                      )
+                                      // child: StreamBuilder<QuerySnapshot>(
+                                      //   stream:
+                                      //       DatabaseService().getpanchayath(),
+                                      //   builder: (BuildContext context,
+                                      //       AsyncSnapshot<QuerySnapshot>
+                                      //           snapshot) {
+                                      //     if (!snapshot.hasData)
+                                      //       return Container();
+
+                                      //     return DropdownButton(
+                                      //       hint: Container(
+                                      //         alignment: Alignment.center,
+                                      //         child: _Panchayath == null
+                                      //             ? const Text(
+                                      //                 'Panchayath/Muncipality/Corperation name')
+                                      //             : Text(
+                                      //                 _Panchayath,
+                                      //               ),
+                                      //       ),
+                                      //       isExpanded: true,
+                                      //       value: _Panchayath,
+                                      //       items: snapshot.data!.docs
+                                      //           .map((value) {
+                                      //         return DropdownMenuItem(
+                                      //           value: value.get('panchayath'),
+                                      //           child: Text(
+                                      //               '${value.get('panchayath')}'),
+                                      //         );
+                                      //       }).toList(),
+                                      //       onChanged: (value) {
+                                      //         setState(
+                                      //           () {
+                                      //             _Panchayath = value;
+                                      //           },
+                                      //         );
+                                      //       },
+                                      //     );
+                                      //   },
+                                      // )
+                                      ),
                                   const SizedBox(
                                     height: 30.0,
                                   ),
@@ -407,6 +424,7 @@ class _Signup extends State<Signup> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
+                              print(_Panchayath);
                               setState(() {
                                 isLoading = true;
                               });
