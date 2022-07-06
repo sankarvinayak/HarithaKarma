@@ -16,7 +16,7 @@ class Ward extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: DatabaseService()
-            .visit_history_collection
+            .visitHistory
             .orderBy('date', descending: true)
             .where('panchayath', isEqualTo: globadmin!.panchayath)
             .where('ward', isEqualTo: wardNo)

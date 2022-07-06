@@ -5,14 +5,14 @@ import 'package:harithakarma/models/user.dart';
 //A class theough which all calls to the Firebase Firestore database is made
 class DatabaseService {
   String? utype;
-  var panchayath;
-  final CollectionReference collection_request =
+  String? panchayath;
+  final CollectionReference collectionRequest =
       FirebaseFirestore.instance.collection('collection_request');
-  final CollectionReference collection_historycollection =
+  final CollectionReference collectionHistory =
       FirebaseFirestore.instance.collection('collection_history');
-  final CollectionReference complaintscollection =
+  final CollectionReference complaints =
       FirebaseFirestore.instance.collection('complaints');
-  final CollectionReference visit_history_collection =
+  final CollectionReference visitHistory =
       FirebaseFirestore.instance.collection('visit_history');
   final CollectionReference utypeCollection =
       FirebaseFirestore.instance.collection('Utype');
@@ -24,27 +24,27 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Home');
 
 //Add user data to the database
-  Future<void> SetUserData(
+  Future<void> setUserData(
       String uid, String name, String userRole, String email) async {
     return await utypeCollection
         .doc(uid)
         .set({'uid': uid, 'name': name, 'userRole': userRole, 'email': email});
   }
 
-  Future<void> add_collection_request() async {
-    var doc_id = await check_request(globhome!.wardNo, globhome!.panchayath);
+  Future<void> addCollectionRequest() async {
+    var docId = await checkRequest(globhome!.wardNo, globhome!.panchayath);
     List uid = globhome!.uid!.split(' ');
-    List<dynamic> uid_d = List<dynamic>.from(uid);
-    return await collection_request.doc(doc_id).set({
+    List<dynamic> uidD = List<dynamic>.from(uid);
+    return await collectionRequest.doc(docId).set({
       'panchayath': globhome!.panchayath,
       'ward': globhome!.wardNo,
-      'uid': FieldValue.arrayUnion(uid_d),
+      'uid': FieldValue.arrayUnion(uidD),
       'status': "pending"
     }, SetOptions(merge: true));
   }
 
-  check_request(String? ward, String? panchayath) async {
-    var querySnapshot = await collection_request
+  checkRequest(String? ward, String? panchayath) async {
+    var querySnapshot = await collectionRequest
         .where('panchayath', isEqualTo: panchayath)
         .where('ward', isEqualTo: ward)
         .where('status', isEqualTo: 'pending')
@@ -56,8 +56,8 @@ class DatabaseService {
     }
   }
 
-  check_requested() async {
-    var querySnapshot = await collection_request
+  checkRequested() async {
+    var querySnapshot = await collectionRequest
         .where('panchayath', isEqualTo: globhome!.panchayath)
         .where('ward', isEqualTo: globhome!.wardNo)
         .where('status', isEqualTo: 'pending')
@@ -70,67 +70,62 @@ class DatabaseService {
     }
   }
 
-  get_ward_requet_count(String ward) async {
-    var querySnapshot = await collection_request
+  getWardRequestCount(String ward) async {
+    var querySnapshot = await collectionRequest
         .where('panchayath', isEqualTo: globfield!.panchayath)
         .where('ward', isEqualTo: ward)
         .where('status', isEqualTo: "pending")
         .get();
-    // print("Function call");
     try {
       List<dynamic> users = querySnapshot.docs[0]['uid'];
-      // print(users.length);
       return users.length.toString();
     } catch (e) {
-      //print(0);
       return 0.toString();
     }
   }
 
-  get_lastvisited(String ward) async {
-    var querySnapshot = await visit_history_collection
+  getLastvisited(String ward) async {
+    var querySnapshot = await visitHistory
         .where('panchayath', isEqualTo: globfield!.panchayath)
         .where('ward', isEqualTo: ward)
         .orderBy('date', descending: true)
         .get();
     try {
       String date = querySnapshot.docs[0]['date'];
-      print(date);
       return date;
     } catch (e) {
-      print(e);
       return "";
     }
   }
 
 //Add admin data to the database
   Future<void> addAdmin(String name, String email, String uid, String empid,
-      String Panchayath, String phone) async {
+      String panchayath, String phone) async {
     return await adminCollection.doc(uid).set({
       'name': name,
       'email': email,
       'empid': empid,
-      'panchayath': Panchayath,
+      'panchayath': panchayath,
       'phone': phone
     });
   }
 
 //add data to collection history
-  Future<void> add_collection_history(
+  Future<void> addCollectionHistory(
       String uid,
       String name,
       String? collectorId,
       String ward,
-      String Panchayath,
+      String panchayath,
       String houseName,
       String houseNo) async {
-    return await collection_historycollection.doc().set({
+    return await collectionHistory.doc().set({
       'uid': uid,
       'name': name,
       'collector': collectorId,
       'collector_name': globfield!.name,
       'ward': ward,
-      'panchayath': Panchayath,
+      'panchayath': panchayath,
       'house_no': houseNo,
       'house': houseName,
       'status': "arriving today"
@@ -138,29 +133,29 @@ class DatabaseService {
   }
 
 //set ward for a field user
-  Future<void> set_ward(String uid, List wards) async {
+  Future<void> setWard(String uid, List wards) async {
     return await fieldCollection
         .doc(uid)
         .set({'ward': wards}, SetOptions(merge: true));
   }
 
 //update collection status
-  Future<void> update_collection_status(String docId) async {
-    return await collection_historycollection.doc(docId).set(
+  Future<void> updateCollectionStatus(String docId) async {
+    return await collectionHistory.doc(docId).set(
         {'status': "collected", "datetime": DateTime.now()},
         SetOptions(merge: true));
   }
 
 //update complaint status
-  Future<void> update_complaint_status(String docId) async {
-    return await complaintscollection.doc(docId).set({
+  Future<void> updateComplaintStatus(String docId) async {
+    return await complaints.doc(docId).set({
       'status': "closed",
     }, SetOptions(merge: true));
   }
 
 //create a new complaint
-  Future<void> add_complaint(String title, String desc, String? ward) async {
-    return await complaintscollection.doc().set(
+  Future<void> addComplaint(String title, String desc, String? ward) async {
+    return await complaints.doc().set(
       {
         'title': title,
         "date": formatTimestamp(Timestamp.now()),
@@ -177,7 +172,7 @@ class DatabaseService {
       String name,
       String email,
       String uid,
-      String Panchayath,
+      String panchayath,
       String ward,
       String houseno,
       String owner,
@@ -185,7 +180,7 @@ class DatabaseService {
       String phone) async {
     return await homeCollection.doc(uid).set({
       'name': name,
-      'panchayath': Panchayath,
+      'panchayath': panchayath,
       'ward': ward,
       'house_no': houseno,
       'owner': owner,
@@ -196,7 +191,7 @@ class DatabaseService {
 
 //get ward details of a field user
   getWardDetails(uid) async {
-    var ward;
+    String? ward;
     var docSnapshot = await fieldCollection.doc(uid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
@@ -208,51 +203,42 @@ class DatabaseService {
 
 //select a ward for visit by field user add each home user to the list of home to collect
   gotoward(ward, panchayath) async {
-    ward_visit(ward);
-    update_request_status(ward);
+    wardVisit(ward);
+    updateRequestStatus(ward);
     var querySnapshot = await homeCollection
         .where('panchayath', isEqualTo: panchayath)
         .where('ward', isEqualTo: ward)
         .get();
     for (var user in querySnapshot.docs) {
-      var stat = add_collection_history(
-          user.reference.id,
-          user['name'],
-          globfield!.uid,
-          ward,
-          user['panchayath'],
-          user['house'],
-          user['house_no']);
-      print(stat);
-      print(user['name']);
-      print(user.reference.id);
+      addCollectionHistory(user.reference.id, user['name'], globfield!.uid,
+          ward, user['panchayath'], user['house'], user['house_no']);
     }
   }
 
 //add details of field agent
   Future<void> addField(String name, String email, String uid, String empid,
-      String Panchayath, String phone) async {
+      String panchayath, String phone) async {
     return await fieldCollection.doc(uid).set({
       'name': name,
       'email': email,
       'empid': empid,
-      'panchayath': Panchayath,
+      'panchayath': panchayath,
       'phone': phone
     });
   }
 
-  Future<void> update_request_status(String ward) async {
-    var docid = await check_request(ward, globfield!.panchayath);
+  Future<void> updateRequestStatus(String ward) async {
+    var docid = await checkRequest(ward, globfield!.panchayath);
     if (docid != null) {
-      return await collection_request.doc(docid).set({
+      return await collectionRequest.doc(docid).set({
         'status': "collected",
       }, SetOptions(merge: true));
     }
   }
 
 //add details to ward visit history
-  Future<void> ward_visit(String ward) async {
-    return await visit_history_collection.doc().set({
+  Future<void> wardVisit(String ward) async {
+    return await visitHistory.doc().set({
       'Collector': globfield!.name,
       'ward': ward,
       'empid': globfield!.empid,
@@ -266,7 +252,7 @@ class DatabaseService {
     var docSnapshot = await utypeCollection.doc(uid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-      this.utype = data?['userRole'].toString();
+      utype = data?['userRole'].toString();
     }
     return utype;
   }
@@ -291,8 +277,6 @@ class DatabaseService {
         admin.name = data?['name'].toString();
         admin.panchayath = data?['panchayath'].toString();
         admin.phone = data?['phone'].toString();
-        print(admin.name);
-        print(admin.panchayath);
         await setadmin(uid, admin.name, admin.email, admin.panchayath,
             admin.phone, admin.empid);
       }

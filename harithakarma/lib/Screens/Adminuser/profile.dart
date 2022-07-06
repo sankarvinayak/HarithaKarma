@@ -6,7 +6,7 @@ class AdminProfile extends StatefulWidget {
   const AdminProfile({Key? key}) : super(key: key);
 
   @override
-  _AdminProfile createState() => _AdminProfile();
+  State<AdminProfile> createState() => _AdminProfile();
 }
 
 class _AdminProfile extends State<AdminProfile> {
@@ -19,11 +19,6 @@ class _AdminProfile extends State<AdminProfile> {
   String? panchayath = globadmin!.panchayath;
   String error = '';
   String success = '';
-  // getUser() {
-  //   user = DatabaseService().getDetails(uid!, 'Home');
-  //   name = user!.name.toString();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

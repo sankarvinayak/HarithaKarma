@@ -12,18 +12,19 @@ import '../Adminuser/Dashbord.dart';
 import '../Fielduser/Dashbord.dart';
 
 class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
+
   @override
   _Login createState() => _Login();
 }
 
 class _Login extends State<Login> {
   final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
   String email = '';
   String password = '';
-  dynamic result = null;
+  dynamic result;
   bool validEmail = false;
   bool validPassword = false;
 
@@ -34,14 +35,14 @@ class _Login extends State<Login> {
     return loading
         ? Loading()
         : Scaffold(
-            body: Container(
+            body: SizedBox(
               height: height,
               width: width,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.45,
                       child: Image.asset(
@@ -133,7 +134,7 @@ class _Login extends State<Login> {
                                   await DatabaseService().getDetails(
                                       FirebaseAuth.instance.currentUser!.uid,
                                       result);
-
+                                  if (!mounted) return;
                                   if (result == "Admin") {
                                     Navigator.pushReplacement(
                                         context,
@@ -160,14 +161,14 @@ class _Login extends State<Login> {
                                   showDialog(
                                       context: context,
                                       builder: (ctx) => AlertDialog(
-                                            title: Text("Error occured"),
+                                            title: const Text("Error occured"),
                                             content: Text(e.toString()),
                                             actions: [
                                               TextButton(
                                                   onPressed: () {
                                                     Navigator.of(ctx).pop();
                                                   },
-                                                  child: Text("Close"))
+                                                  child: const Text("Close"))
                                             ],
                                           ));
                                 }
@@ -175,15 +176,15 @@ class _Login extends State<Login> {
                                 showDialog(
                                     context: context,
                                     builder: (ctx) => AlertDialog(
-                                          title: Text("Error occured"),
-                                          content: Text(
+                                          title: const Text("Error occured"),
+                                          content: const Text(
                                               "Enter username and password"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
                                                   Navigator.of(ctx).pop();
                                                 },
-                                                child: Text("Close"))
+                                                child: const Text("Close"))
                                           ],
                                         ));
                               }

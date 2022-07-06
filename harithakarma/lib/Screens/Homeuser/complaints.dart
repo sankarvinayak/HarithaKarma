@@ -71,7 +71,7 @@ class _complaints extends State<complaints> {
                         onPrimary: Colors.white,
                       ),
                       onPressed: () {
-                        if (DatabaseService().add_complaint(
+                        if (DatabaseService().addComplaint(
                                 title!, desc!, globhome!.wardNo) !=
                             null) {
                           setState(() {

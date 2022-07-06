@@ -39,7 +39,7 @@ class _SideDrawerField extends State<SideDrawerField> {
               ),
               StreamBuilder(
                 stream: DatabaseService()
-                    .collection_historycollection
+                    .collectionHistory
                     .where('collector',
                         isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                     .where("status", isEqualTo: "arriving today")
@@ -74,7 +74,7 @@ class _SideDrawerField extends State<SideDrawerField> {
                                                       Text("Ward:" + ward),
                                                       FutureBuilder(
                                                           future: DatabaseService()
-                                                              .get_ward_requet_count(
+                                                              .getWardRequestCount(
                                                                   ward),
                                                           builder: ((context,
                                                               snapshot) {
@@ -89,9 +89,10 @@ class _SideDrawerField extends State<SideDrawerField> {
                                                             return CircularProgressIndicator();
                                                           })),
                                                       FutureBuilder(
-                                                          future: DatabaseService()
-                                                              .get_lastvisited(
-                                                                  ward),
+                                                          future:
+                                                              DatabaseService()
+                                                                  .getLastvisited(
+                                                                      ward),
                                                           builder: ((context,
                                                               snapshot) {
                                                             if (snapshot
@@ -146,7 +147,7 @@ class _SideDrawerField extends State<SideDrawerField> {
                                       onPressed: () {
                                         print(documentSnapshot.reference.id);
                                         DatabaseService()
-                                            .update_collection_status(
+                                            .updateCollectionStatus(
                                                 documentSnapshot.reference.id);
                                       },
                                       child: Text("Collected"))

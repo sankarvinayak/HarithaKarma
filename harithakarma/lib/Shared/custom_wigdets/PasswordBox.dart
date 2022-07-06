@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class PasswordBox extends StatefulWidget {
   final Function(String) onChange;
   final Function(bool) isValid;
-  RegExp regexValue;
+  final RegExp regexValue;
 
-  PasswordBox(
+  const PasswordBox(
       {Key? key,
       required this.onChange,
       required this.regexValue,

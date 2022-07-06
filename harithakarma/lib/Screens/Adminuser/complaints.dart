@@ -15,7 +15,7 @@ class ComplaintsAdmin extends StatelessWidget {
         ),
         body: StreamBuilder(
           stream: DatabaseService()
-              .complaintscollection
+              .complaints
               .where('panchayath', isEqualTo: globadmin!.panchayath)
               .where('status', isEqualTo: "pending")
               .snapshots(),
@@ -45,7 +45,7 @@ class ComplaintsAdmin extends StatelessWidget {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () {
-                              DatabaseService().update_complaint_status(
+                              DatabaseService().updateComplaintStatus(
                                   documentSnapshot.reference.id);
                             },
                             child: const Text("Close"))

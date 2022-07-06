@@ -36,7 +36,7 @@ class SideDrawerAdminHome extends StatelessWidget {
               ),
               StreamBuilder(
                 stream: DatabaseService()
-                    .visit_history_collection
+                    .visitHistory
                     .where('panchayath', isEqualTo: globadmin?.panchayath)
                     .where('date', isEqualTo: formatTimestamp(Timestamp.now()))
                     .snapshots(),
@@ -80,7 +80,7 @@ class SideDrawerAdminHome extends StatelessWidget {
                   )),
               StreamBuilder(
                 stream: DatabaseService()
-                    .visit_history_collection
+                    .visitHistory
                     .where('panchayath', isEqualTo: globadmin?.panchayath)
                     .orderBy('ward')
                     .snapshots(),
@@ -138,7 +138,12 @@ class SideDrawerAdminHome extends StatelessWidget {
   }
 }
 
-class _SideDrawer extends StatelessWidget {
+class _SideDrawer extends StatefulWidget {
+  @override
+  State<_SideDrawer> createState() => _SideDrawerState();
+}
+
+class _SideDrawerState extends State<_SideDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -169,7 +174,7 @@ class _SideDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => UserTypes()));
+                      builder: (BuildContext context) => const UserTypes()));
             },
           ),
           ListTile(
@@ -179,7 +184,7 @@ class _SideDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AdminProfile()));
+                      builder: (BuildContext context) => const AdminProfile()));
             },
           ),
           ListTile(
@@ -189,7 +194,8 @@ class _SideDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ComplaintsAdmin()));
+                      builder: (BuildContext context) =>
+                          const ComplaintsAdmin()));
             },
           ),
           ListTile(
@@ -204,10 +210,11 @@ class _SideDrawer extends StatelessWidget {
               final prefs = await SharedPreferences.getInstance();
               await prefs.remove('utype');
               AuthService().signOut();
+              if (!mounted) return;
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => Login(),
+                  builder: (BuildContext context) => const Login(),
                 ),
                 (route) => false,
               );

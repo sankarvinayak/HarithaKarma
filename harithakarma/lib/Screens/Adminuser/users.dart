@@ -200,7 +200,7 @@ class UserTypes extends StatelessWidget {
                                                           onPressed: () {
                                                             if (isedit &&
                                                                 ward != '') {
-                                                              DatabaseService().set_ward(
+                                                              DatabaseService().setWard(
                                                                   documentSnapshot
                                                                       .reference
                                                                       .id,

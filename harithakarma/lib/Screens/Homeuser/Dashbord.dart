@@ -32,7 +32,7 @@ class _SideDrawerHome extends State<SideDrawerHome> {
           children: [
             StreamBuilder(
               stream: DatabaseService()
-                  .collection_historycollection
+                  .collectionHistory
                   .where('uid',
                       isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                   .where("status", isEqualTo: "arriving today")
@@ -62,14 +62,14 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                     );
                   } else {
                     return FutureBuilder(
-                        future: DatabaseService().check_requested(),
+                        future: DatabaseService().checkRequested(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             if (snapshot.data != true) {
                               return ElevatedButton(
                                   onPressed: () async {
                                     await DatabaseService()
-                                        .add_collection_request();
+                                        .addCollectionRequest();
                                     setState(() {});
                                   },
                                   child: Text("Request waste collection"));
@@ -102,7 +102,7 @@ class _SideDrawerHome extends State<SideDrawerHome> {
             ),
             StreamBuilder(
               stream: DatabaseService()
-                  .collection_historycollection
+                  .collectionHistory
                   .where('uid',
                       isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                   .where("status", isEqualTo: "collected")

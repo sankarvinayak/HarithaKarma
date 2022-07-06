@@ -49,7 +49,7 @@ class AuthService {
           email: email, password: password);
 
       await DatabaseService()
-          .SetUserData(authResult.user!.uid, name, userRole, email);
+          .setUserData(authResult.user!.uid, name, userRole, email);
       return authResult.user!.uid;
     } on FirebaseException catch (e) {
       throw (e.message.toString());

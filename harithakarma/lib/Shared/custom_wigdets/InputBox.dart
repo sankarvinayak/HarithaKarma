@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class InputBox extends StatefulWidget {
   final Function(String) onChange;
   final Function(bool) isValid;
-  RegExp regexValue;
-  IconData specifiedIcon;
-  String label;
-  String errorText;
-  TextInputType keyboard;
+  final RegExp regexValue;
+  final IconData specifiedIcon;
+  final String label;
+  final String errorText;
+  final TextInputType keyboard;
 
-  InputBox(
+  const InputBox(
       {Key? key,
       required this.onChange,
       required this.regexValue,
