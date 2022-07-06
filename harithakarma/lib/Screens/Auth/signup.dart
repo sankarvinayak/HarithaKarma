@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/Dashbord.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
@@ -13,8 +12,10 @@ import 'package:harithakarma/service/database.dart';
 import '../Homeuser/Dashbord.dart';
 
 class Signup extends StatefulWidget {
+  const Signup({Key? key}) : super(key: key);
+
   @override
-  _Signup createState() => _Signup();
+  State<Signup> createState() => _Signup();
 }
 
 class _Signup extends State<Signup> {
@@ -24,15 +25,14 @@ class _Signup extends State<Signup> {
   String? email;
   String? password;
   String? name;
-  String? insti;
   bool isLoading = false;
-  var _dropDownValue;
-  var _Panchayath = null;
+  String? _userType;
+  String? _panchayath;
   String? empid;
   String? wardno;
   String? houseno;
   String? owner;
-  var newUser = null;
+  String? newUser;
   bool validEmail = false;
   bool validPassword = false;
 
@@ -131,10 +131,10 @@ class _Signup extends State<Signup> {
                       child: DropdownButton(
                         hint: Container(
                           alignment: Alignment.center,
-                          child: _dropDownValue == null
+                          child: _userType == null
                               ? const Text('User')
                               : Text(
-                                  _dropDownValue,
+                                  _userType!,
                                 ),
                         ),
                         isExpanded: true,
@@ -154,8 +154,8 @@ class _Signup extends State<Signup> {
                         onChanged: (val) {
                           setState(
                             () {
-                              _Panchayath = null;
-                              _dropDownValue = val;
+                              _panchayath = null;
+                              _userType = val.toString();
                             },
                           );
                         },
@@ -177,7 +177,7 @@ class _Signup extends State<Signup> {
                     const SizedBox(
                       height: 30.0,
                     ),
-                    _dropDownValue == "Admin"
+                    _userType == "Admin"
                         ? (Column(
                             children: <Widget>[
                               InputBox(
@@ -195,7 +195,7 @@ class _Signup extends State<Signup> {
                               ),
                               InputBox(
                                   onChange: (val) {
-                                    _Panchayath = val;
+                                    _panchayath = val;
                                   },
                                   regexValue: RegExp(r'^[a-z A-Z]{4,}$'),
                                   specifiedIcon: Icons.location_city,
@@ -206,7 +206,7 @@ class _Signup extends State<Signup> {
                                   isValid: (val) {}),
                             ],
                           ))
-                        : _dropDownValue == "Field"
+                        : _userType == "Field"
                             ? (Column(
                                 children: <Widget>[
                                   InputBox(
@@ -234,9 +234,9 @@ class _Signup extends State<Signup> {
                                             width: 0.50),
                                       ),
                                       child: PanchayatDropDownList(
-                                        Panchayat: (val) {
+                                        panchayat: (val) {
                                           setState(() {
-                                            _Panchayath = val;
+                                            _panchayath = val.toString();
                                           });
                                         },
                                       )),
@@ -256,9 +256,9 @@ class _Signup extends State<Signup> {
                                             width: 0.50),
                                       ),
                                       child: PanchayatDropDownList(
-                                        Panchayat: (val) {
+                                        panchayat: (val) {
                                           setState(() {
-                                            _Panchayath = val;
+                                            _panchayath = val.toString();
                                           });
                                         },
                                       )),
@@ -333,7 +333,8 @@ class _Signup extends State<Signup> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ResetPassword()));
+                                      builder: (context) =>
+                                          const ResetPassword()));
                             },
                             child: const Text.rich(
                               TextSpan(text: 'Forget password? ', children: []),
@@ -345,66 +346,96 @@ class _Signup extends State<Signup> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              try {
-                                newUser = await _auth.signUpEmail(
-                                    email!, password!, name!, _dropDownValue);
+                              if (validEmail &&
+                                  validPassword &&
+                                  name != null &&
+                                  _userType != null) {
+                                try {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  newUser = await _auth.signUpEmail(
+                                      email!, password!, name!, _userType!);
 
-                                if (newUser != null) {
-                                  // DatabaseService()
-                                  //     .saveUser(newUser, _dropDownValue);
-                                  if (_dropDownValue == 'Admin') {
-                                    setadmin(newUser, name, email, _Panchayath,
-                                        phone, empid);
-                                    DatabaseService().addAdmin(name!, email!,
-                                        newUser, empid!, _Panchayath, phone!);
-
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SideDrawerAdminHome()));
-                                  } else if (_dropDownValue == 'Field') {
-                                    setfield(newUser, name, email, _Panchayath,
-                                        phone, empid);
-                                    DatabaseService().addField(name!, email!,
-                                        newUser, empid!, _Panchayath, phone!);
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SideDrawerField()));
-                                  } else {
-                                    sethome(newUser, name, email, _Panchayath,
-                                        phone, wardno, houseno, house, owner);
-                                    DatabaseService().addHome(
-                                        name!,
-                                        email!,
-                                        newUser,
-                                        _Panchayath,
-                                        wardno!,
-                                        houseno!,
-                                        owner!,
-                                        house!,
-                                        phone!);
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SideDrawerHome()));
+                                  if (newUser != null) {
+                                    if (_userType == 'Admin') {
+                                      setadmin(newUser, name, email,
+                                          _panchayath, phone, empid);
+                                      DatabaseService().addAdmin(
+                                          name!,
+                                          email!,
+                                          newUser!,
+                                          empid!,
+                                          _panchayath!,
+                                          phone!);
+                                      if (!mounted) return;
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  SideDrawerAdminHome()));
+                                    } else if (_userType == 'Field') {
+                                      setfield(newUser, name, email,
+                                          _panchayath, phone, empid);
+                                      DatabaseService().addField(
+                                          name!,
+                                          email!,
+                                          newUser!,
+                                          empid!,
+                                          _panchayath!,
+                                          phone!);
+                                      if (!mounted) return;
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  const SideDrawerField()));
+                                    } else {
+                                      sethome(newUser, name, email, _panchayath,
+                                          phone, wardno, houseno, house, owner);
+                                      DatabaseService().addHome(
+                                          name!,
+                                          email!,
+                                          newUser!,
+                                          _panchayath!,
+                                          wardno!,
+                                          houseno!,
+                                          owner!,
+                                          house!,
+                                          phone!);
+                                      if (!mounted) return;
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  const SideDrawerHome()));
+                                    }
                                   }
+                                } catch (e) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title: const Text("Error occured"),
+                                            content: Text(e.toString()),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: const Text("Close"))
+                                            ],
+                                          ));
                                 }
-                              } catch (e) {
-                                setState(() {
-                                  isLoading = false;
-                                });
+                              } else {
                                 showDialog(
                                     context: context,
                                     builder: (ctx) => AlertDialog(
                                           title: const Text("Error occured"),
-                                          content: Text(e.toString()),
+                                          content: const Text(
+                                              "Enter valid username and password"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
@@ -429,7 +460,7 @@ class _Signup extends State<Signup> {
                       },
                       child: const Text.rich(
                         TextSpan(text: 'Already have an account ', children: [
-                          const TextSpan(
+                          TextSpan(
                             text: 'Login',
                             style: TextStyle(color: Color(0xffEE7B23)),
                           ),

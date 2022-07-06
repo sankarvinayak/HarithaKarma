@@ -10,22 +10,20 @@ import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SideDrawerHome extends StatefulWidget {
+  const SideDrawerHome({Key? key}) : super(key: key);
+
   @override
-  _SideDrawerHome createState() => _SideDrawerHome();
+  State<SideDrawerHome> createState() => _SideDrawerHome();
 }
 
 class _SideDrawerHome extends State<SideDrawerHome> {
-  //bool isrequested = DatabaseService().check_requested();
-
-  //try{}catch(e){}
   @override
   Widget build(BuildContext context) {
-    var isrequested = true;
     return Scaffold(
-      drawer: homeSideDrawer(),
+      drawer: const HomeSideDrawer(),
       appBar: AppBar(
-        title: Text('Home user'),
-        backgroundColor: Color.fromARGB(255, 23, 75, 7),
+        title: const Text('Home user'),
+        backgroundColor: const Color.fromARGB(255, 23, 75, 7),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -39,7 +37,7 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                 if (streamSnapshot.hasData) {
-                  if (streamSnapshot.data!.docs.length != 0) {
+                  if (streamSnapshot.data!.docs.isNotEmpty) {
                     return ListView.builder(
                       primary: false,
                       scrollDirection: Axis.vertical,
@@ -52,10 +50,10 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                         return Card(
                           margin: const EdgeInsets.all(10),
                           child: ListTile(
-                            title: Text("Collection agent:" +
-                                documentSnapshot['collector_name']),
+                            title: Text(
+                                "Collection agent:${documentSnapshot['collector_name']}"),
                             subtitle:
-                                Text("Status:" + documentSnapshot['status']),
+                                Text("Status:${documentSnapshot['status']}"),
                           ),
                         );
                       },
@@ -72,7 +70,8 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                                         .addCollectionRequest();
                                     setState(() {});
                                   },
-                                  child: Text("Request waste collection"));
+                                  child:
+                                      const Text("Request waste collection"));
                             }
                           }
                           return const Center(
@@ -93,7 +92,7 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                 );
               },
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
               child: Text(
                 "Collection history",
@@ -117,18 +116,16 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                     itemBuilder: (context, index) {
                       final DocumentSnapshot documentSnapshot =
                           streamSnapshot.data!.docs[index];
-                      print(formatTimestamp(documentSnapshot['datetime']));
                       return Card(
                         margin: const EdgeInsets.all(10),
                         child: ListTile(
-                          title: Text("Collected by:" +
-                              documentSnapshot['collector_name']),
+                          title: Text(
+                              "Collected by:${documentSnapshot['collector_name']}"),
                           subtitle: Row(
                             children: [
                               Flexible(
-                                child: Text("Date:" +
-                                    formatTimestamp(
-                                        documentSnapshot['datetime'])),
+                                child: Text(
+                                    "Date: ${formatTimestamp(documentSnapshot['datetime'])}"),
                               )
                             ],
                           ),
@@ -150,13 +147,23 @@ class _SideDrawerHome extends State<SideDrawerHome> {
   }
 }
 
-class homeSideDrawer extends StatelessWidget {
+class HomeSideDrawer extends StatefulWidget {
+  const HomeSideDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<HomeSideDrawer> createState() => _HomeSideDrawerState();
+}
+
+class _HomeSideDrawerState extends State<HomeSideDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 23, 75, 7),
+            ),
             child: Center(
               child: Text(
                 'HarithaKarma',
@@ -164,51 +171,49 @@ class homeSideDrawer extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 23, 75, 7),
-            ),
           ),
           ListTile(
-            leading: Icon(Icons.dashboard),
-            title: Text('Dashbord'),
+            leading: const Icon(Icons.dashboard),
+            title: const Text('Dashbord'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
+            leading: const Icon(Icons.person),
+            title: const Text('Profile'),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => homeProfile()));
+                      builder: (BuildContext context) => const HomeProfile()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: Icon(Icons.rate_review_outlined),
-            title: Text('Complaints'),
+            leading: const Icon(Icons.rate_review_outlined),
+            title: const Text('Complaints'),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => complaints()));
+                      builder: (BuildContext context) => const Complaints()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Logout'),
             onTap: () async {
               final prefs = await SharedPreferences.getInstance();
               await prefs.remove('utype');
               AuthService().signOut();
+              if (!mounted) return;
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => Login(),
+                  builder: (BuildContext context) => const Login(),
                 ),
                 (route) => false,
               );

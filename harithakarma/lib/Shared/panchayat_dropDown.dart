@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:harithakarma/service/database.dart';
 
 class PanchayatDropDownList extends StatefulWidget {
-  final Function(Object) Panchayat;
+  final Function(Object) panchayat;
 
-  const PanchayatDropDownList({Key? key, required this.Panchayat})
+  const PanchayatDropDownList({Key? key, required this.panchayat})
       : super(key: key);
 
   @override
@@ -16,12 +13,11 @@ class PanchayatDropDownList extends StatefulWidget {
 }
 
 class _PanchayatDropDownListState extends State<PanchayatDropDownList> {
-  var _Panchayath;
+  String? _panchayath;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot>(
       stream: DatabaseService().getpanchayath(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Container();
@@ -29,14 +25,14 @@ class _PanchayatDropDownListState extends State<PanchayatDropDownList> {
         return DropdownButton(
           hint: Container(
             alignment: Alignment.center,
-            child: _Panchayath == null
+            child: _panchayath == null
                 ? const Text('Panchayath/Muncipality/Corperation name')
                 : Text(
-                    _Panchayath,
+                    _panchayath!,
                   ),
           ),
           isExpanded: true,
-          value: _Panchayath,
+          value: _panchayath,
           items: snapshot.data!.docs.map((value) {
             return DropdownMenuItem(
               value: value.get('panchayath'),
@@ -46,13 +42,13 @@ class _PanchayatDropDownListState extends State<PanchayatDropDownList> {
           onChanged: (value) {
             setState(
               () {
-                _Panchayath = value;
-                widget.Panchayat(value!);
+                _panchayath = value.toString();
+                widget.panchayat(value!);
               },
             );
           },
         );
       },
-    ));
+    );
   }
 }

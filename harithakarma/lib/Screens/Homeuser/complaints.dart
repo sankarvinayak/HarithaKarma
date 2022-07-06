@@ -1,14 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
-class complaints extends StatefulWidget {
+class Complaints extends StatefulWidget {
+  const Complaints({Key? key}) : super(key: key);
+
   @override
-  _complaints createState() => _complaints();
+  State<Complaints> createState() => _Complaints();
 }
 
-class _complaints extends State<complaints> {
+class _Complaints extends State<Complaints> {
   String? title;
   String? desc;
   bool issubmit = false;
@@ -16,7 +17,7 @@ class _complaints extends State<complaints> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 75, 7),
+        backgroundColor: const Color.fromARGB(255, 23, 75, 7),
         title: const Text('Complaints'),
       ),
       body: Padding(
@@ -30,7 +31,7 @@ class _complaints extends State<complaints> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   floatingLabelAlignment: FloatingLabelAlignment.start,
-                  floatingLabelStyle: TextStyle(
+                  floatingLabelStyle: const TextStyle(
                     color: Color.fromARGB(255, 23, 75, 7),
                     fontSize: 20,
                   ),
@@ -40,7 +41,7 @@ class _complaints extends State<complaints> {
                 enabled: true,
                 onChanged: (text) => {title = text},
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextField(
@@ -50,7 +51,7 @@ class _complaints extends State<complaints> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   floatingLabelAlignment: FloatingLabelAlignment.start,
-                  floatingLabelStyle: TextStyle(
+                  floatingLabelStyle: const TextStyle(
                     color: Color.fromARGB(255, 23, 75, 7),
                     fontSize: 20,
                   ),
@@ -60,27 +61,26 @@ class _complaints extends State<complaints> {
                 enabled: true,
                 onChanged: (text) => {desc = text},
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               issubmit
-                  ? Text("Complaint submitted")
+                  ? const Text("Complaint submitted")
                   : ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xffEE7B23),
+                        primary: const Color(0xffEE7B23),
                         onPrimary: Colors.white,
                       ),
                       onPressed: () {
-                        if (DatabaseService().addComplaint(
-                                title!, desc!, globhome!.wardNo) !=
-                            null) {
+                        DatabaseService()
+                            .addComplaint(title!, desc!, globhome!.wardNo);
+                        {
                           setState(() {
                             issubmit = true;
                           });
                         }
-                        ;
                       },
-                      child: Text("Submit"))
+                      child: const Text("Submit"))
             ],
           ),
         ),

@@ -48,7 +48,6 @@ initadmin() async {
   final String? phone = prefs.getString('phone');
 
   final String? uid = prefs.getString('uid');
-  ;
   globadmin = Employee(utype, uid, email, name, panchayath, phone, empid);
 }
 
@@ -130,7 +129,6 @@ initfield() async {
   final String? phone = prefs.getString('phone');
 
   final String? uid = prefs.getString('uid');
-  ;
   globfield = Employee(utype, uid, email, name, panchayath, phone, empid);
 }
 

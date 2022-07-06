@@ -1,22 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Shared/custom_wigdets/InputBox.dart';
-import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
 import 'signup.dart';
-import '../Homeuser/Dashbord.dart';
-import '../Adminuser/Dashbord.dart';
-import '../Fielduser/Dashbord.dart';
 
 class ResetPassword extends StatefulWidget {
+  const ResetPassword({Key? key}) : super(key: key);
+
   @override
-  _ResetPassword createState() => _ResetPassword();
+  State<ResetPassword> createState() => _ResetPassword();
 }
 
 class _ResetPassword extends State<ResetPassword> {
   final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
   String text = '';
   bool loading = false;
   String email = '';
@@ -25,16 +21,16 @@ class _ResetPassword extends State<ResetPassword> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return loading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
-            body: Container(
+            body: SizedBox(
               height: height,
               width: width,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.45,
                       child: Image.asset(
@@ -46,8 +42,8 @@ class _ResetPassword extends State<ResetPassword> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Text(
+                        children: const [
+                          Text(
                             'Reset Password',
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
@@ -108,8 +104,10 @@ class _ResetPassword extends State<ResetPassword> {
                     const SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Signup()));
                       },
                       child: const Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [

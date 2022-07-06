@@ -44,7 +44,6 @@ class _AdminProfile extends State<AdminProfile> {
                         error = 'network unavilable';
                       });
                     }
-                    ;
                   },
                 ), //IconButton
               ],
@@ -153,7 +152,6 @@ class _AdminProfile extends State<AdminProfile> {
                           error = 'network unavilable';
                         });
                       }
-                      ;
                     },
                     child: const Text('Update'),
                   )

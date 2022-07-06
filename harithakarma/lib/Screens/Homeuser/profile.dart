@@ -3,24 +3,21 @@ import 'package:harithakarma/Shared/netcheck.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
-class homeProfile extends StatefulWidget {
+class HomeProfile extends StatefulWidget {
+  const HomeProfile({Key? key}) : super(key: key);
+
   @override
-  _homeProfile createState() => _homeProfile();
+  State<HomeProfile> createState() => _HomeProfile();
 }
 
-getname() {
-  print(globhome!.name);
-  return globhome!.name;
-}
-
-class _homeProfile extends State<homeProfile> {
+class _HomeProfile extends State<HomeProfile> {
   bool isedit = false;
   String? email = globhome!.email;
   String? uid = globhome!.uid;
   String? name = globhome!.name;
   String? phone = globhome!.phone;
-  String? ward_no = globhome!.wardNo;
-  String? house_no = globhome!.houseNo;
+  String? wardNo = globhome!.wardNo;
+  String? houseNo = globhome!.houseNo;
   String? house = globhome!.house;
   String? owner = globhome!.owner;
   String? panchayath = globhome!.panchayath;
@@ -31,16 +28,17 @@ class _homeProfile extends State<homeProfile> {
   //   name = user!.name.toString();
   // }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: isedit
           ? AppBar(
               title: const Text('Edit Profile'),
-              backgroundColor: Color.fromARGB(255, 23, 75, 7),
+              backgroundColor: const Color.fromARGB(255, 23, 75, 7),
             )
           : AppBar(
               title: const Text('Profile'),
-              backgroundColor: Color.fromARGB(255, 23, 75, 7),
+              backgroundColor: const Color.fromARGB(255, 23, 75, 7),
               actions: <Widget>[
                 //IconButton
                 IconButton(
@@ -55,7 +53,6 @@ class _homeProfile extends State<homeProfile> {
                         error = 'network unavilable';
                       });
                     }
-                    ;
                   },
                 ), //IconButton
               ],
@@ -63,7 +60,7 @@ class _homeProfile extends State<homeProfile> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -72,7 +69,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -83,7 +80,7 @@ class _homeProfile extends State<homeProfile> {
               controller: TextEditingController()..text = name.toString(),
               onChanged: (text) => {name = text},
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -92,7 +89,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -103,7 +100,7 @@ class _homeProfile extends State<homeProfile> {
               controller: TextEditingController()..text = phone.toString(),
               onChanged: (text) => {phone = text},
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -112,7 +109,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -123,7 +120,7 @@ class _homeProfile extends State<homeProfile> {
               controller: TextEditingController()..text = house.toString(),
               onChanged: (text) => {house = text},
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -132,7 +129,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -140,10 +137,10 @@ class _homeProfile extends State<homeProfile> {
               ),
               textAlign: TextAlign.center,
               enabled: isedit,
-              controller: TextEditingController()..text = ward_no.toString(),
-              onChanged: (text) => {ward_no = text},
+              controller: TextEditingController()..text = wardNo.toString(),
+              onChanged: (text) => {wardNo = text},
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -152,7 +149,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -160,10 +157,10 @@ class _homeProfile extends State<homeProfile> {
               ),
               textAlign: TextAlign.center,
               enabled: isedit,
-              controller: TextEditingController()..text = house_no.toString(),
-              onChanged: (text) => {house_no = text},
+              controller: TextEditingController()..text = houseNo.toString(),
+              onChanged: (text) => {houseNo = text},
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -172,7 +169,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -183,7 +180,7 @@ class _homeProfile extends State<homeProfile> {
               controller: TextEditingController()..text = panchayath.toString(),
               onChanged: (text) => {panchayath = text.toString()},
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             TextField(
@@ -192,7 +189,7 @@ class _homeProfile extends State<homeProfile> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: TextStyle(
+                floatingLabelStyle: const TextStyle(
                   color: Color.fromARGB(255, 23, 75, 7),
                   fontSize: 20,
                 ),
@@ -205,53 +202,50 @@ class _homeProfile extends State<homeProfile> {
                 owner = text;
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             isedit
                 ? ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xffEE7B23),
+                      primary: const Color(0xffEE7B23),
                       onPrimary: Colors.white,
                     ),
                     onPressed: () async {
-                      print(owner);
                       if (await checkInternet()) {
-                        var result = DatabaseService().addHome(
+                        DatabaseService().addHome(
                             name!,
                             email!,
                             uid!,
                             panchayath!,
-                            ward_no!,
-                            house_no!,
+                            wardNo!,
+                            houseNo!,
                             owner!,
                             house!,
                             phone!);
-                        if (result != null) {
-                          sethome(uid, name, email, panchayath, phone, ward_no,
-                              house_no, house, owner);
-                          setState(() {
-                            isedit = false;
-                            success = "Updated successfully";
-                          });
-                        }
+
+                        sethome(uid, name, email, panchayath, phone, wardNo,
+                            houseNo, house, owner);
+                        setState(() {
+                          isedit = false;
+                          success = "Updated successfully";
+                        });
                       } else {
                         setState(() {
                           error = 'network unavilable';
                         });
                       }
-                      ;
                     },
                     child: const Text('Update'),
                   )
-                : SizedBox(
+                : const SizedBox(
                     height: 20.0,
                   ),
             Text(error,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0)),
             Text(success,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0))
           ],
         ),

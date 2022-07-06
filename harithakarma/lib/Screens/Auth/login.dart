@@ -15,15 +15,15 @@ class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
-  _Login createState() => _Login();
+  State<Login> createState() => _Login();
 }
 
 class _Login extends State<Login> {
   final AuthService _auth = AuthService();
   String error = '';
   bool loading = false;
-  String email = '';
-  String password = '';
+  String? email;
+  String? password;
   dynamic result;
   bool validEmail = false;
   bool validPassword = false;
@@ -33,7 +33,7 @@ class _Login extends State<Login> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return loading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             body: SizedBox(
               height: height,
@@ -108,7 +108,8 @@ class _Login extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ResetPassword()));
+                                      builder: (context) =>
+                                          const ResetPassword()));
                             },
                             child: const Text.rich(
                               TextSpan(text: 'Forget password? ', children: []),
@@ -120,16 +121,19 @@ class _Login extends State<Login> {
                               onPrimary: Colors.white,
                             ),
                             onPressed: () async {
-                              if (email != '' && password != '') {
-                                print(email);
-                                print(validEmail);
+                              if (email != null &&
+                                  password != null &&
+                                  validEmail) {
+                                // print(email);
+                                // print(validEmail);
 
-                                print(password);
-                                print(validPassword);
+                                // print(password);
+                                // print(validPassword);
 
                                 setState(() => loading = true);
                                 try {
-                                  result = await _auth.signIn(email, password);
+                                  result =
+                                      await _auth.signIn(email!, password!);
 
                                   await DatabaseService().getDetails(
                                       FirebaseAuth.instance.currentUser!.uid,
@@ -146,13 +150,13 @@ class _Login extends State<Login> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                SideDrawerField()));
+                                                const SideDrawerField()));
                                   } else {
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                SideDrawerHome()));
+                                                const SideDrawerHome()));
                                   }
                                 } catch (e) {
                                   setState(() {
@@ -178,7 +182,7 @@ class _Login extends State<Login> {
                                     builder: (ctx) => AlertDialog(
                                           title: const Text("Error occured"),
                                           content: const Text(
-                                              "Enter username and password"),
+                                              "Enter valid username and password"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
@@ -197,8 +201,10 @@ class _Login extends State<Login> {
                     const SizedBox(height: 20.0),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Signup()));
                       },
                       child: const Text.rich(
                         TextSpan(text: 'Don\'t have an account ', children: [
