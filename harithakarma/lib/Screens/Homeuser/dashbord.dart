@@ -65,13 +65,32 @@ class _SideDrawerHome extends State<SideDrawerHome> {
                           if (snapshot.hasData) {
                             if (snapshot.data != true) {
                               return ElevatedButton(
-                                  onPressed: () async {
-                                    await DatabaseService()
-                                        .addCollectionRequest();
-                                    setState(() {});
-                                  },
-                                  child:
-                                      const Text("Request waste collection"));
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title:
+                                                const Text("Confirm request"),
+                                            content: const Text(
+                                                "Confirm request for waste collection"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: const Text("cancel")),
+                                              TextButton(
+                                                  onPressed: () async {
+                                                    await DatabaseService()
+                                                        .addCollectionRequest();
+                                                    setState(() {});
+                                                  },
+                                                  child: const Text("Confirm"))
+                                            ],
+                                          ));
+                                },
+                                child: const Text("Request waste collection"),
+                              );
                             }
                           }
                           return const Center(
