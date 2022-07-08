@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Shared/netcheck.dart';
+import 'package:harithakarma/Shared/panchayat_dropdown.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
@@ -163,23 +164,39 @@ class _HomeProfile extends State<HomeProfile> {
             const SizedBox(
               height: 20.0,
             ),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                floatingLabelAlignment: FloatingLabelAlignment.start,
-                floatingLabelStyle: const TextStyle(
-                  color: Color.fromARGB(255, 23, 75, 7),
-                  fontSize: 20,
-                ),
-                labelText: 'Panchayath',
-              ),
-              textAlign: TextAlign.center,
-              enabled: isedit,
-              controller: TextEditingController()..text = panchayath.toString(),
-              onChanged: (text) => {panchayath = text.toString()},
-            ),
+            isedit
+                ? Container(
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(style: BorderStyle.solid, width: 0.50),
+                    ),
+                    child: PanchayatDropDownList(
+                      panchayat: (val) {
+                        setState(() {
+                          panchayath = val.toString();
+                        });
+                      },
+                    ))
+                : TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      floatingLabelAlignment: FloatingLabelAlignment.start,
+                      floatingLabelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 23, 75, 7),
+                        fontSize: 20,
+                      ),
+                      labelText: 'Panchayath',
+                    ),
+                    textAlign: TextAlign.center,
+                    enabled: isedit,
+                    controller: TextEditingController()
+                      ..text = panchayath.toString(),
+                    onChanged: (text) => {panchayath = text.toString()},
+                  ),
             const SizedBox(
               height: 20.0,
             ),
