@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Auth/login.dart';
+import 'package:harithakarma/Screens/deleteuser.dart';
 import 'package:harithakarma/Shared/netcheck.dart';
 import 'package:harithakarma/models/user.dart';
+import 'package:harithakarma/service/database.dart';
 
 class AdminProfile extends StatefulWidget {
   const AdminProfile({Key? key}) : super(key: key);
@@ -163,7 +166,55 @@ class _AdminProfile extends State<AdminProfile> {
                     color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0)),
             Text(success,
                 style: const TextStyle(
-                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0))
+                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0)),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: const Color.fromARGB(255, 143, 1, 1)),
+                onPressed: () async {
+                  int home = await DatabaseService().countHome(panchayath);
+                  int field = await DatabaseService().countField(panchayath);
+                  bool display = home == 0 && field == 0;
+                  showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                            title: const Text("Warning"),
+                            content: display
+                                ? const Text(
+                                    "By doing this your account will be deleted and this change is irriversible")
+                                : Text(
+                                    "There are $home home users and $field field users are registred under you so you cant delete your account"),
+                            actions: [
+                              if (display) ...[
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 143, 1, 1)),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              DeleteUser(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Delete account",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ],
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                  },
+                                  child: const Text("Close"))
+                            ],
+                          ));
+                },
+                child: const Text("Delete my account and asociated data"))
           ],
         ),
       ),

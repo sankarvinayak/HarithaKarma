@@ -43,6 +43,9 @@ dependencies:
   shared_preferences: ^2.0.15
   expansion_tile_card: ^2.0.0
   intl: ^0.17.0
+  firebase_storage: ^10.3.1
+  path: ^1.8.1
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:

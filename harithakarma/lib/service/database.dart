@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/models/user.dart';
+import 'package:harithakarma/service/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //A class theough which all calls to the Firebase Firestore database is made
 class DatabaseService {
@@ -194,8 +196,11 @@ class DatabaseService {
     List<dynamic> ward = [];
     var docSnapshot = await fieldCollection.doc(uid).get();
     if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-      ward = data?['ward'];
+      try {
+        Map<String, dynamic>? data =
+            docSnapshot.data() as Map<String, dynamic>?;
+        ward = data?['ward'];
+      } catch (e) {}
     }
 
     return ward;
@@ -316,6 +321,46 @@ class DatabaseService {
       }
       await setfield(uid, employ.name, employ.email, employ.panchayath,
           employ.phone, employ.empid);
+    }
+  }
+
+  Future<int> countHome(panchayath) async {
+    try {
+      var querySnapshot =
+          await homeCollection.where('panchayath', isEqualTo: panchayath).get();
+      return querySnapshot.size;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  Future<int> countField(panchayath) async {
+    try {
+      var querySnapshot = await fieldCollection
+          .where('panchayath', isEqualTo: panchayath)
+          .get();
+      return querySnapshot.size;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  deleteuser() async {
+    try {
+      AuthService().deleteUser();
+      final prefs = await SharedPreferences.getInstance();
+      final String? uid = prefs.getString('uid');
+      final String? utype = prefs.getString('utype');
+      utypeCollection.doc(uid).delete();
+      if (utype == 'Admin') {
+        adminCollection.doc(uid).delete();
+      } else if (utype == 'Field') {
+        fieldCollection.doc(uid).delete();
+      } else if (utype == 'Home') {
+        homeCollection.doc(uid).delete();
+      }
+    } catch (e) {
+      throw e.toString();
     }
   }
 }

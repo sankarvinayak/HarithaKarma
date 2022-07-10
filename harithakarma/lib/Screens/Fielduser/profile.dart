@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Auth/login.dart';
+import 'package:harithakarma/Screens/deleteuser.dart';
 import 'package:harithakarma/Shared/netcheck.dart';
 import 'package:harithakarma/Shared/panchayat_dropdown.dart';
 import 'package:harithakarma/service/database.dart';
@@ -184,7 +186,44 @@ class _FieldProfile extends State<FieldProfile> {
                     color: Color.fromARGB(255, 218, 25, 11), fontSize: 14.0)),
             Text(success,
                 style: const TextStyle(
-                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0))
+                    color: Color.fromARGB(255, 28, 218, 11), fontSize: 14.0)),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: const Color.fromARGB(255, 143, 1, 1)),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                                "By doing this your account will be deleted and this change is irriversible"),
+                            actions: [
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                      backgroundColor:
+                                          const Color.fromARGB(255, 143, 1, 1)),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            DeleteUser(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Delete account",
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                  },
+                                  child: const Text("Close"))
+                            ],
+                          ));
+                },
+                child: const Text("Delete my account and asociated data"))
           ],
         ),
       ),

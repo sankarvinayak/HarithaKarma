@@ -16,6 +16,14 @@ class AuthService {
     }
   }
 
+  Future relogin(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseException catch (e) {
+      throw (e.message.toString());
+    }
+  }
+
   Future sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -61,6 +69,14 @@ class AuthService {
       return await _auth.signOut();
     } catch (error) {
       return null;
+    }
+  }
+
+  Future deleteUser() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+    } on FirebaseException catch (e) {
+      throw (e.message.toString());
     }
   }
 }

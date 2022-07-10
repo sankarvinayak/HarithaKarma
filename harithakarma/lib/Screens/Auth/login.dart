@@ -20,7 +20,6 @@ class Login extends StatefulWidget {
 
 class _Login extends State<Login> {
   final AuthService _auth = AuthService();
-  String error = '';
   bool loading = false;
   String? email;
   String? password;
