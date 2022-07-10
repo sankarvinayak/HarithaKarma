@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harithakarma/Screens/Adminuser/dashbord.dart';
 import 'package:harithakarma/Screens/Fielduser/dashbord.dart';
-import 'package:harithakarma/Screens/Homeuser/dashbord.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeUserOrder.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeUserHome.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/Auth/login.dart';
@@ -28,7 +29,7 @@ Future<void> main() async {
   } else if (utype == 'Home') {
     inithome();
     runApp(const MaterialApp(
-        debugShowCheckedModeBanner: false, home: SideDrawerHome()));
+        debugShowCheckedModeBanner: false, home: HomeUserHome()));
   } else {
     runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Login()));
   }
