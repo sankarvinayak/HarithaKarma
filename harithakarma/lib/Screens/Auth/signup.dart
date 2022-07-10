@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Adminuser/dashbord.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeUserHome.dart';
 import 'package:harithakarma/Shared/custom_wigdets/inputbox.dart';
 import 'package:harithakarma/Shared/custom_wigdets/passwordbox.dart';
 import 'package:harithakarma/Shared/panchayat_dropdown.dart';
@@ -9,7 +10,6 @@ import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/dashbord.dart';
 import 'package:harithakarma/Shared/loading.dart';
 import 'package:harithakarma/service/database.dart';
-import '../Homeuser/dashbord.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -423,9 +423,9 @@ class _Signup extends State<Signup> {
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    const SideDrawerHome()));
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const HomeUserHome()));
                                       }
                                     }
                                   } catch (e) {
