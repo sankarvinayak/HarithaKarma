@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeSideDrawer.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeUserOrder.dart';
 import 'package:harithakarma/Shared/netcheck.dart';
 import 'package:harithakarma/Shared/panchayat_dropdown.dart';
 import 'package:harithakarma/service/database.dart';
@@ -32,6 +34,7 @@ class _HomeProfile extends State<HomeProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const HomeSideDrawer(),
       appBar: isedit
           ? AppBar(
               title: const Text('Edit Profile'),

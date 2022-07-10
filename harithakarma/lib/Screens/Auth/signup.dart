@@ -9,7 +9,7 @@ import 'package:harithakarma/service/auth.dart';
 import 'package:harithakarma/Screens/Fielduser/dashbord.dart';
 import 'package:harithakarma/Shared/loading.dart';
 import 'package:harithakarma/service/database.dart';
-import '../Homeuser/dashbord.dart';
+import '../Homeuser/HomeUserOrder.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -423,9 +423,9 @@ class _Signup extends State<Signup> {
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    const SideDrawerHome()));
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const HomeUserOrder()));
                                       }
                                     }
                                   } catch (e) {

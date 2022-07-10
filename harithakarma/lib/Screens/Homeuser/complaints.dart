@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeSideDrawer.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/models/user.dart';
 
@@ -16,6 +17,7 @@ class _Complaints extends State<Complaints> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const HomeSideDrawer(),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 23, 75, 7),
         title: const Text('Complaints'),
