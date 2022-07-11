@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/Screens/Homeuser/HomeUserHistory.dart';
-import 'package:harithakarma/Screens/Homeuser/HomeUserNotifications.dart';
 import 'package:harithakarma/Screens/Homeuser/HomeUserOrder.dart';
 import 'package:harithakarma/Screens/Homeuser/complaints.dart';
 import 'package:harithakarma/Screens/Homeuser/profile.dart';
-import 'package:harithakarma/Screens/Homeuser/settings.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

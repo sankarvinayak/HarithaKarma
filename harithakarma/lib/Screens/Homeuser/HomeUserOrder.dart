@@ -12,6 +12,8 @@ class HomeUserOrder extends StatefulWidget {
 }
 
 class _SideDrawerHome extends State<HomeUserOrder> {
+  bool requested = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

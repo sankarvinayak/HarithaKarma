@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/login.dart';
 import 'package:harithakarma/Screens/Homeuser/HomeUserHistory.dart';
 import 'package:harithakarma/Screens/Homeuser/HomeUserHome.dart';
-import 'package:harithakarma/Screens/Homeuser/HomeUserNotifications.dart';
 import 'package:harithakarma/Screens/Homeuser/HomeUserOrder.dart';
 import 'package:harithakarma/Screens/Homeuser/complaints.dart';
 import 'package:harithakarma/Screens/Homeuser/profile.dart';
-import 'package:harithakarma/Screens/Homeuser/settings.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,7 +45,7 @@ class _HomeSideDrawerState extends State<HomeSideDrawer> {
           ),
           ListTile(
             leading: const Icon(Icons.call),
-            title: const Text('Order'),
+            title: const Text('Request Collection'),
             onTap: () => {
               Navigator.pushReplacement(
                   context,
@@ -87,17 +85,6 @@ class _HomeSideDrawerState extends State<HomeSideDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notifications'),
-            onTap: () => {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          const HomeUserNotifications()))
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.rate_review_outlined),
             title: const Text('Complaints'),
             onTap: () {
@@ -105,16 +92,6 @@ class _HomeSideDrawerState extends State<HomeSideDrawer> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => const Complaints()));
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () => {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const Setting()))
             },
           ),
           ListTile(
