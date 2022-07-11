@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:harithakarma/service/database.dart';
 
 class AuthService {
@@ -61,6 +62,10 @@ class AuthService {
       return authResult.user!.uid;
     } on FirebaseException catch (e) {
       throw (e.message.toString());
+    } on PlatformException catch (e) {
+      throw (e.message.toString());
+    } catch (e) {
+      throw (e.toString());
     }
   }
 
