@@ -101,11 +101,14 @@ class _DeleteUserState extends State<DeleteUser> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
+                          primary: const Color.fromARGB(255, 143, 1, 1),
                           onPrimary: Colors.white,
                         ),
                         onPressed: () async {
-                          if (email != null && password != null && validEmail) {
+                          if (email != null &&
+                              password != null &&
+                              validEmail &&
+                              validPassword) {
                             // print(email);
                             // print(validEmail);
 

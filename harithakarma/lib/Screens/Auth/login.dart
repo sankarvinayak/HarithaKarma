@@ -216,7 +216,7 @@ class _Login extends State<Login> {
                         child: const Text.rich(
                           TextSpan(text: 'Don\'t have an account ', children: [
                             TextSpan(
-                              text: 'Regsiter',
+                              text: 'Register',
                               style: TextStyle(color: Color(0xffEE7B23)),
                             ),
                           ]),

@@ -14,6 +14,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('collection_history');
   final CollectionReference complaints =
       FirebaseFirestore.instance.collection('complaints');
+  final CollectionReference report =
+      FirebaseFirestore.instance.collection('report');
   final CollectionReference visitHistory =
       FirebaseFirestore.instance.collection('visit_history');
   final CollectionReference utypeCollection =
@@ -155,6 +157,12 @@ class DatabaseService {
     }, SetOptions(merge: true));
   }
 
+  Future<void> updateReportStatus(String docId) async {
+    return await report.doc(docId).set({
+      'status': "closed",
+    }, SetOptions(merge: true));
+  }
+
 //create a new complaint
   Future<void> addComplaint(String title, String desc, String? ward) async {
     return await complaints.doc().set(
@@ -163,6 +171,21 @@ class DatabaseService {
         "date": formatTimestamp(Timestamp.now()),
         'desc': desc,
         "ward": ward,
+        "status": "pending",
+        "panchayath": globhome!.panchayath,
+      },
+    );
+  }
+
+  Future<void> report_waste(
+      String title, String desc, String? ward, String? location) async {
+    return await report.doc().set(
+      {
+        'title': title,
+        "date": formatTimestamp(Timestamp.now()),
+        'desc': desc,
+        "ward": ward,
+        "location": location,
         "status": "pending",
         "panchayath": globhome!.panchayath,
       },
