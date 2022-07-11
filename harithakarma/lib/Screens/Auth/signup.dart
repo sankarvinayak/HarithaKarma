@@ -54,14 +54,14 @@ class _Signup extends State<Signup> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(
-                        height: 32,
+                        height: 60,
                       ),
                       SizedBox(
                         width: width * .75,
                         height: height * 0.35,
                         child: Image.asset(
-                          'assets/waste-management.png',
-                          fit: BoxFit.fill,
+                          'assets/icon.png',
+                          fit: BoxFit.fitHeight,
                         ),
                       ),
                       Padding(
