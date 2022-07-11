@@ -189,11 +189,11 @@ class _Signup extends State<Signup> {
                                     onChange: (val) {
                                       empid = val;
                                     },
-                                    regexValue: RegExp(r'^[0-9]{10}$'),
+                                    regexValue: RegExp(r'^[0-9 a-z A-Z]{5,}$'),
                                     specifiedIcon: Icons.document_scanner,
                                     label: 'Employee ID',
                                     errorText: 'enter valid id',
-                                    keyboard: TextInputType.number,
+                                    keyboard: TextInputType.text,
                                     isValid: (val) {}),
                                 const SizedBox(
                                   height: 30.0,
@@ -218,11 +218,12 @@ class _Signup extends State<Signup> {
                                         onChange: (val) {
                                           empid = val;
                                         },
-                                        regexValue: RegExp(r'^[0-9]{10}$'),
+                                        regexValue:
+                                            RegExp(r'^[0-9 a-z A-Z]{5,}$'),
                                         specifiedIcon: Icons.document_scanner,
                                         label: 'Employee ID',
                                         errorText: 'enter valid id',
-                                        keyboard: TextInputType.number,
+                                        keyboard: TextInputType.text,
                                         isValid: (val) {}),
                                     const SizedBox(
                                       height: 30.0,
