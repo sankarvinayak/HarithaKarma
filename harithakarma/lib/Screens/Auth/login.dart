@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:harithakarma/Screens/Auth/resetpassword.dart';
+import 'package:harithakarma/Screens/Homeuser/HomeUserHome.dart';
 import 'package:harithakarma/Shared/custom_wigdets/inputbox.dart';
 import 'package:harithakarma/Shared/custom_wigdets/passwordbox.dart';
 import 'package:harithakarma/service/database.dart';
 import 'package:harithakarma/service/auth.dart';
 import '../../Shared/loading.dart';
 import 'signup.dart';
-import '../Homeuser/dashbord.dart';
 import '../Adminuser/dashbord.dart';
 import '../Fielduser/dashbord.dart';
 
@@ -45,14 +45,14 @@ class _Login extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(
-                        height: 32,
+                        height: 60,
                       ),
                       SizedBox(
                         width: width * .75,
                         height: height * 0.35,
                         child: Image.asset(
-                          'assets/waste-management.png',
-                          fit: BoxFit.fill,
+                          'assets/icon.png',
+                          fit: BoxFit.fitHeight,
                         ),
                       ),
                       Padding(
@@ -162,7 +162,7 @@ class _Login extends State<Login> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  const SideDrawerHome()));
+                                                  const HomeUserHome()));
                                     }
                                   } catch (e) {
                                     setState(() {
