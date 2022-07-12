@@ -109,18 +109,15 @@ class _DeleteUserState extends State<DeleteUser> {
                               password != null &&
                               validEmail &&
                               validPassword) {
-                            // print(email);
-                            // print(validEmail);
-
-                            // print(password);
-                            // print(validPassword);
                             try {
                               await _auth.relogin(email!, password!);
-                              DatabaseService().deleteuser();
                               final prefs =
                                   await SharedPreferences.getInstance();
+                              final String? utype = prefs.getString('utype');
+                              final String? uid = prefs.getString('uid');
+                              await DatabaseService().deleteuser(utype, uid);
+
                               await prefs.remove('utype');
-                              AuthService().signOut();
                               if (!mounted) return;
                               Navigator.pushAndRemoveUntil(
                                 context,

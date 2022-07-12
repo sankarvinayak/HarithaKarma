@@ -34,7 +34,7 @@ class _ResetPassword extends State<ResetPassword> {
                       width: width,
                       height: height * 0.45,
                       child: Image.asset(
-                        'assets/waste-management.png',
+                        'assets/icon.png',
                         fit: BoxFit.fill,
                       ),
                     ),

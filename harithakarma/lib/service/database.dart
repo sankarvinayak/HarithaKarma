@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:harithakarma/Shared/format_timestamp.dart';
 import 'package:harithakarma/models/user.dart';
 import 'package:harithakarma/service/auth.dart';
@@ -368,20 +369,17 @@ class DatabaseService {
     }
   }
 
-  deleteuser() async {
+  deleteuser(utype, uid) async {
     try {
-      AuthService().deleteUser();
-      final prefs = await SharedPreferences.getInstance();
-      final String? uid = prefs.getString('uid');
-      final String? utype = prefs.getString('utype');
-      utypeCollection.doc(uid).delete();
       if (utype == 'Admin') {
         adminCollection.doc(uid).delete();
       } else if (utype == 'Field') {
         fieldCollection.doc(uid).delete();
-      } else if (utype == 'Home') {
+      } else {
         homeCollection.doc(uid).delete();
       }
+      utypeCollection.doc(uid).delete();
+      AuthService().deleteUser();
     } catch (e) {
       throw e.toString();
     }
