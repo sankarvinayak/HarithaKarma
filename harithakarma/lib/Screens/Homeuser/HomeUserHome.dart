@@ -47,47 +47,52 @@ class _HomeUserHomeState extends State<HomeUserHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomeUserOrder()));
-                        },
-                        child: Column(
-                          children: [
-                            Icon(Icons.home, size: height * .075),
-                            const Text('Request')
-                          ],
-                        ),
-                      ),
-                      const VerticalDivider(
-                        color: Color.fromARGB(255, 134, 129, 129),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const HomeUserHistory()));
-                        },
-                        child: Column(
-                          children: [
-                            Icon(Icons.history, size: height * .075),
-                            const Text('History')
-                          ],
-                        ),
-                      ),
-                      const VerticalDivider(
-                        color: Color.fromARGB(255, 134, 129, 129),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
                                   builder: (context) => const HomeProfile()));
                         },
                         child: Column(
                           children: [
                             Icon(Icons.person_outline, size: height * .075),
                             const Text('Profile')
+                          ],
+                        ),
+                      ),
+                      const VerticalDivider(
+                        color: Color.fromARGB(255, 134, 129, 129),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeUserOrder()));
+                        },
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/homeuser/collection_request.png',
+                              scale: 3.7,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            const Text('Collection Status')
+                          ],
+                        ),
+                      ),
+                      const VerticalDivider(
+                        color: Color.fromARGB(255, 134, 129, 129),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeUserHome()));
+                        },
+                        child: Column(
+                          children: [
+                            Icon(Icons.report_problem, size: height * .075),
+                            const Text('Report')
                           ],
                         ),
                       ),
@@ -111,12 +116,13 @@ class _HomeUserHomeState extends State<HomeUserHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomeUserHome()));
+                                  builder: (context) => const Complaints()));
                         },
                         child: Column(
                           children: [
-                            Icon(Icons.report_problem, size: height * .075),
-                            const Text('Report')
+                            Icon(Icons.report_gmailerrorred,
+                                size: height * .075),
+                            const Text('Complaints')
                           ],
                         ),
                       ),
@@ -128,13 +134,13 @@ class _HomeUserHomeState extends State<HomeUserHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Complaints()));
+                                  builder: (context) =>
+                                      const HomeUserHistory()));
                         },
                         child: Column(
                           children: [
-                            Icon(Icons.report_gmailerrorred,
-                                size: height * .075),
-                            const Text('Complaints')
+                            Icon(Icons.history, size: height * .075),
+                            const Text('History')
                           ],
                         ),
                       ),

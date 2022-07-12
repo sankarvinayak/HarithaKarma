@@ -37,10 +37,11 @@ class _HomeSideDrawerState extends State<HomeSideDrawer> {
             leading: const Icon(Icons.home),
             title: const Text('Home'),
             onTap: () => {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => const HomeUserHome()))
+                      builder: (BuildContext context) => const HomeUserHome()),
+                  (Route<dynamic> route) => false)
             },
           ),
           ListTile(
