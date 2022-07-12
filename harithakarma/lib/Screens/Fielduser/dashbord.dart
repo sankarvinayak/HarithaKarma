@@ -28,136 +28,142 @@ class _SideDrawerField extends State<SideDrawerField> {
           title: const Text('Field user'),
           backgroundColor: const Color.fromARGB(255, 23, 75, 7),
         ),
-        body: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "Wards details",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        body: Center(
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "Wards details",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            StreamBuilder(
-              stream: DatabaseService()
-                  .collectionHistory
-                  .where('collector',
-                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                  .where("status", isEqualTo: "arriving today")
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  if (streamSnapshot.data!.docs.isEmpty) {
-                    return FutureBuilder(
-                        future: DatabaseService().getWardDetails(
-                            FirebaseAuth.instance.currentUser!.uid),
-                        builder: ((context, snapshot) {
-                          if (snapshot.data != null) {
-                            ward = snapshot.data;
-                            if (ward.length == 0) {
-                              return const Text("No ward assigned yet");
-                            } else {
-                              return Flexible(
-                                child: ListView(
-                                    children: ward
-                                        .map<Widget>((ward) => Card(
-                                              margin: const EdgeInsets.all(7),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text("Ward:$ward"),
-                                                    FutureBuilder(
-                                                        future: DatabaseService()
-                                                            .getWardRequestCount(
-                                                                ward),
-                                                        builder: ((context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            return Text(
-                                                                "Request:${snapshot.data.toString()}");
-                                                          }
-                                                          return const CircularProgressIndicator();
-                                                        })),
-                                                    FutureBuilder(
-                                                        future:
-                                                            DatabaseService()
-                                                                .getLastvisited(
-                                                                    ward),
-                                                        builder: ((context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                              .hasData) {
-                                                            return Text(
-                                                                "visit:${snapshot.data.toString()}");
-                                                          }
-                                                          return const CircularProgressIndicator();
-                                                        })),
-                                                    ElevatedButton(
-                                                        onPressed: () async {
-                                                          await DatabaseService()
-                                                              .gotoward(
-                                                                  ward,
-                                                                  globfield!
-                                                                      .panchayath);
-                                                          setState(() {});
-                                                        },
-                                                        child: const Text("Go"))
-                                                  ],
+              StreamBuilder(
+                stream: DatabaseService()
+                    .collectionHistory
+                    .where('collector',
+                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                    .where("status", isEqualTo: "arriving today")
+                    .snapshots(),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  if (streamSnapshot.hasData) {
+                    if (streamSnapshot.data!.docs.isEmpty) {
+                      return FutureBuilder(
+                          future: DatabaseService().getWardDetails(
+                              FirebaseAuth.instance.currentUser!.uid),
+                          builder: ((context, snapshot) {
+                            if (snapshot.data != null) {
+                              ward = snapshot.data;
+                              if (ward.length == 0) {
+                                return const Text("No ward assigned yet");
+                              } else {
+                                return Flexible(
+                                  child: ListView(
+                                      children: ward
+                                          .map<Widget>((ward) => Card(
+                                                margin: const EdgeInsets.all(7),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text("Ward:$ward"),
+                                                      FutureBuilder(
+                                                          future: DatabaseService()
+                                                              .getWardRequestCount(
+                                                                  ward),
+                                                          builder: ((context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              return Text(
+                                                                  "Request:${snapshot.data.toString()}");
+                                                            }
+                                                            return const CircularProgressIndicator();
+                                                          })),
+                                                      FutureBuilder(
+                                                          future:
+                                                              DatabaseService()
+                                                                  .getLastvisited(
+                                                                      ward),
+                                                          builder: ((context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              return Text(
+                                                                  "visit:${snapshot.data.toString()}");
+                                                            }
+                                                            return const CircularProgressIndicator();
+                                                          })),
+                                                      ElevatedButton(
+                                                          onPressed: () async {
+                                                            await DatabaseService()
+                                                                .gotoward(
+                                                                    ward,
+                                                                    globfield!
+                                                                        .panchayath);
+                                                            setState(() {});
+                                                          },
+                                                          child:
+                                                              const Text("Go"))
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ))
-                                        .toList()),
-                              );
+                                              ))
+                                          .toList()),
+                                );
+                              }
                             }
-                          }
-                          return const Text("No data available");
-                        }));
-                  } else {
-                    return Flexible(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: streamSnapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final DocumentSnapshot documentSnapshot =
-                              streamSnapshot.data!.docs[index];
+                            return const Text("No data available");
+                          }));
+                    } else {
+                      return Flexible(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: streamSnapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
+                                streamSnapshot.data!.docs[index];
 
-                          return Card(
-                            margin: const EdgeInsets.all(10),
-                            child: ExpansionTileCard(
-                              title:
-                                  Text("Owner : ${documentSnapshot['name']}"),
-                              subtitle:
-                                  Text("ward : ${documentSnapshot['ward']}"),
-                              children: [
-                                Text(
-                                    "House name : ${documentSnapshot['house']}"),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      DatabaseService().updateCollectionStatus(
-                                          documentSnapshot.reference.id);
-                                    },
-                                    child: const Text("Collected"))
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                            return Card(
+                              margin: const EdgeInsets.all(10),
+                              child: ExpansionTileCard(
+                                title:
+                                    Text("Owner : ${documentSnapshot['name']}"),
+                                subtitle:
+                                    Text("ward : ${documentSnapshot['ward']}"),
+                                children: [
+                                  Text(
+                                      "House name : ${documentSnapshot['house']}"),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        DatabaseService()
+                                            .updateCollectionStatus(
+                                                documentSnapshot.reference.id);
+                                      },
+                                      child: const Text("Collected"))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
                   }
-                }
-                return const Center(
-                  child: Text("No data available"),
-                );
-              },
-            ),
-          ],
-        ));
+                  return const Center(
+                    child: Text("No data available"),
+                  );
+                },
+              ),
+            ],
+          ),
+        )
+        );
   }
 }
 
