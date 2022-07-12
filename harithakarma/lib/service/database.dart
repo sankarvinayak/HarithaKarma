@@ -216,7 +216,7 @@ class DatabaseService {
 
 //get ward details of a field user
   getWardDetails(uid) async {
-    List<dynamic> ward = [];
+    List<dynamic>? ward = [];
     var docSnapshot = await fieldCollection.doc(uid).get();
     if (docSnapshot.exists) {
       try {

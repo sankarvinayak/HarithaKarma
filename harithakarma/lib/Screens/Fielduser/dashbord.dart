@@ -28,7 +28,8 @@ class _SideDrawerField extends State<SideDrawerField> {
           title: const Text('Field user'),
           backgroundColor: const Color.fromARGB(255, 23, 75, 7),
         ),
-        body: Column(
+        body: Center (
+          child: Column(
           children: [
             const Padding(
               padding: EdgeInsets.all(10),
@@ -157,7 +158,7 @@ class _SideDrawerField extends State<SideDrawerField> {
               },
             ),
           ],
-        ));
+        )));
   }
 }
 
