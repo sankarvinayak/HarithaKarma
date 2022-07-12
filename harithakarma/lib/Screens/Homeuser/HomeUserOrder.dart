@@ -42,13 +42,15 @@ class _SideDrawerHome extends State<HomeUserOrder> {
                       final DocumentSnapshot documentSnapshot =
                           streamSnapshot.data!.docs[index];
 
-                      return Card(
-                        margin: const EdgeInsets.all(10),
-                        child: ListTile(
-                          title: Text(
-                              "Collection agent:${documentSnapshot['collector_name']}"),
-                          subtitle:
-                              Text("Status:${documentSnapshot['status']}"),
+                      return Center(
+                        child: Card(
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            title: Text(
+                                "Collection agent:${documentSnapshot['collector_name']}"),
+                            subtitle:
+                                Text("Status:${documentSnapshot['status']}"),
+                          ),
                         ),
                       );
                     },
