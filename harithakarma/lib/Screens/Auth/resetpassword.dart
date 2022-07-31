@@ -31,11 +31,14 @@ class _ResetPassword extends State<ResetPassword> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: width,
-                      height: height * 0.45,
+                      height: 50,
+                    ),
+                    SizedBox(
+                      width: width * .75,
+                      height: height * 0.35,
                       child: Image.asset(
                         'assets/icon.png',
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                     Padding(
@@ -62,7 +65,7 @@ class _ResetPassword extends State<ResetPassword> {
                         regexValue: RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
                         specifiedIcon: Icons.email,
-                        label: 'email_id',
+                        label: 'Email id',
                         errorText: 'enter a vaild email',
                         keyboard: TextInputType.emailAddress),
                     const SizedBox(
@@ -71,9 +74,6 @@ class _ResetPassword extends State<ResetPassword> {
                     Text(text,
                         style: const TextStyle(
                             color: Color.fromARGB(255, 16, 94, 16))),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(

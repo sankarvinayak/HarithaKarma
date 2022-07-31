@@ -4,6 +4,7 @@ import 'package:harithakarma/Screens/Homeuser/HomeUserHistory.dart';
 import 'package:harithakarma/Screens/Homeuser/HomeUserOrder.dart';
 import 'package:harithakarma/Screens/Homeuser/complaints.dart';
 import 'package:harithakarma/Screens/Homeuser/profile.dart';
+import 'package:harithakarma/Screens/Homeuser/report.dart';
 import 'package:harithakarma/service/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -87,7 +88,7 @@ class _HomeUserHomeState extends State<HomeUserHome> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomeUserHome()));
+                                  builder: (context) => const report()));
                         },
                         child: Column(
                           children: [
